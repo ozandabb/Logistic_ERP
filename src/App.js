@@ -1,15 +1,23 @@
-import React from 'react';
-import login from "../src/Views/SignIn/SignIn"
+import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch, useHistory, withRouter } from 'react-router-dom';
+import RootRouter from "./RootRouter";
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import {store, persistor} from './Redux/Store/Store';
+import './custom.scss'
 
-function App() {
-  return (
-    <Router>
-      <Route exact path="/" component={login} />
-    </Router>
 
-  );
+class App extends Component{
+  
+  render(){
+    return(
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <RootRouter/>
+        </PersistGate>
+      </Provider>
+    );
+  }
 }
 
 export default App;
