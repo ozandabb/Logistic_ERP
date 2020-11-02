@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, useHistory, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect} from 'react-redux'
 import indexRoutes from './Routes/index'
 import HRRoutes from './Routes/HR.route';
@@ -12,19 +12,21 @@ class App extends React.Component {
 
    
     let checkSignedIn =  this.props.auth.isAuthenticated;
-    console.log( this.props.auth.isAuthenticated);
     let role = (checkSignedIn) ? this.props.auth.user.role : "";
 
-    if(checkSignedIn == true ){
+    if(checkSignedIn === true ){
       routes = [ ...routes ];
+    }else if(checkSignedIn === false){
+      routes = [...routes ];
     }
 
-    if(checkSignedIn == true && role == 4){
+    if(checkSignedIn === true && role === 12){
       routes = [ ...HRRoutes, ...routes ];
     }
-    if(checkSignedIn == true && role == 5){
+    if(checkSignedIn === true && role === 5){
       routes = [ ...backOfficeRoutes, ...routes ];
     }
+    
 
 
     return routes;
@@ -33,6 +35,7 @@ class App extends React.Component {
     render(){
         return(
             <Router >
+            
             <Switch>
             { this.router().map((prop, key) => {
                 return (

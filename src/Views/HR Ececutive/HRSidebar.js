@@ -4,7 +4,7 @@ import React from "react";
 // import { connect } from 'react-redux';
 // import { logoutUser } from '../../actions/authAction';
 import { ProSidebar, Menu, MenuItem, SubMenu , SidebarHeader , SidebarContent , SidebarFooter } from 'react-pro-sidebar';
-import { faTable, faBars , faPlusSquare  , faAddressBook, faAtom, faTachometerAlt, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTable, faBars , faPlusSquare, faColumns  , faAddressBook,faSnowman,faObjectGroup,faTruck, faAtom,faSignOutAlt, faTachometerAlt,faPeopleArrows, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import "../../Asserts/commoncss/sidebar.css";
 import { Link, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -53,10 +53,13 @@ class HRSidebar extends React.Component {
 
           <ProSidebar>
             <Menu iconShape="circle">
-              <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faBars} />}>Dashboard<Link to="/hr/dashboard"/></MenuItem>
-              <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faBars} />}>Customers<Link to="/hr/customers"/></MenuItem>
-              <MenuItem active={activemenu === 'jj'} icon={<FontAwesomeIcon icon={faBars} />}>Dashboard<Link to="/hr/dashboard"/></MenuItem>
-              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faBars} />}>Customers<Link to="/hr/customers"/></MenuItem>
+              <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/hr/dashboard"/></MenuItem>
+              <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/hr/customers"/></MenuItem>
+              <MenuItem active={activemenu === 'jj'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/hr/dashboard"/></MenuItem>
+              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/hr/customers"/></MenuItem>
+              <MenuItem active={activemenu === 'jj'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/hr/dashboard"/></MenuItem>
+              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/hr/customers"/></MenuItem>
+              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout<Link to="/hr/customers"/></MenuItem>
               {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
                 <MenuItem active={submenu === 'CUSTOMER_REG'}>Customer Registration<Link to="/hrstaff/customer_registration"/></MenuItem>
                 <MenuItem active={submenu === 'SUPPLIER_REG'}>Supplier Registration<Link to="/hrstaff/supplier_registration"></Link></MenuItem>
