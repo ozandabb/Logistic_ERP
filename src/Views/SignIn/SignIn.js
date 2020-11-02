@@ -6,6 +6,9 @@ import img_1 from '../../Asserts/signin/img/img-03.jpg'
 import PropType from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/Action/authAction';
+import CommonController from '../../Controllers/Common.controller';
+import { setCurrentUser } from "../../Redux/Action/authAction";
+import { withRouter } from "react-router-dom";
 
   
 class SignIn extends Component {
@@ -32,30 +35,55 @@ class SignIn extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.auth.isAuthenticated) {
-          console.log("nextpoooooop:",nextProps.auth.user.user.role);
-            if(nextProps.auth.user.user.role === 12){
-            this.props.history.push('/hr/dashboard');
-            }
-            
-        }
-      
-        if (nextProps.errors) {
-          this.setState({ errors: nextProps.errors });
-        }
-    }
-
     async onLogin(e) {
         e.preventDefault();
-        const userDate = {
-            username: this.state.username,
-            password: this.state.password,
-        };
-    
-        this.props.loginUser(userDate);
+
+        var status = await CommonController.common_sign(this.state.username, this.state.password);
         
+        console.log("status", status);
+        if(status.status == 200){
+            this.props.setCurrentUser(status.data.data );
+            if(status.data.data.user_details.role === 12 ){
+                  this.props.history.push("/hr/dashboard");
+            }else if(status.data.data.user_details.role == 5 ){
+                this.props.history.push("/backOffice/dashboard");
+            }  
+        }
+
+
+        // CommonController.common_sign(this.state.username, this.state.password).then(response=>{
+            // if(response.code == 200){
+            //     console.log("login eka" ,response );
+            //     this.props.setCurrentUser(response.data.data.user_details);
+            //     if(response.data.data.user_details.role === 12 ){
+            //          this.props.history.push("/hr/dashboard");
+            //     }else if(response.data.data.user_details.role == 5 ){
+            //         this.props.history.push("/backOffice/dashboard");
+            //     }  
+            // }
+        // }).catch(err =>{
+
+        // })
     }
+
+    // async onLogin(e) {
+    //     e.preventDefault();
+    //     const userDate = {
+    //         username: this.state.username,
+    //         password: this.state.password,
+    //     };
+        // const res = await this.props.loginUser(userDate);
+
+        // if(res.code === 200){
+        //     if(res.data.data.user_details.role === 12 ){
+        //          this.props.history.push("/hr/dashboard");
+        //     }else{
+        //         this.props.history.push("/");
+        //     }
+   
+           
+        // }
+    //}
 
     
     render() {
@@ -111,14 +139,18 @@ class SignIn extends Component {
     }
 }
 
-SignIn.PropType = {
-    loginUser: PropType.func.isRequired,
-    auth: PropType.object.isRequired,
-  };
+
+export default connect(null, { setCurrentUser })(
+    withRouter(SignIn)
+  );
+// SignIn.PropType = {
+//     loginUser: PropType.func.isRequired,
+//     auth: PropType.object.isRequired,
+//   };
   
-  const mapStateToProps = state => ({
-    auth: state.auth,
-  });
+//   const mapStateToProps = state => ({
+//     auth: state.auth,
+//   });
   
-  export default connect(mapStateToProps, { loginUser })(SignIn);
+//   export default connect(mapStateToProps, { loginUser })(SignIn);
       

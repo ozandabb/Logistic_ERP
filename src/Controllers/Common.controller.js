@@ -10,29 +10,86 @@ class Common {
             signin: "/api/users/signin",
         };
     }
-    // sign in
-    common_sign = (username, password) =>{
+
+    async common_sign(username, password) {
         var requestData = {
             username: username,
             password: password
         }
-        // console.log(username,password )
-        return new Promise((resolve, reject) => {
-            return Axios.post(`${Config.host}${Config.port}${this.api.signin}`, requestData)
-                .then(result => {
-                    resolve({ code: 200, data: result.data })
-                    console.log("login ewa: ",result.data.data.token );
-                    setAuthToken(result.data.data.token);
-                    //decode
-                    const decoded = jwt_decode(result.data.data.token);
-                    //set current user
-                    setCurrentUser(decoded);
-                })
-                .catch(err => {
-                    reject({ code: 0, error: err })
-                })
-        })
+        var userData = {};
+        var resp = 600;
+        await Axios.post(
+            `${Config.host}${Config.port}${this.api.signin}`,
+            requestData
+        )
+            .then(Response => {
+                resp = Response.status;
+                userData = Response;
+            })
+            .catch(err => {
+                console.error(err);
+                try {
+                    console.error(err);
+                    resp = err.response.status;
+                } catch (error) {
+                    console.log(error);
+
+                    resp = 600;
+                }
+            });
+
+        if (resp === 200) {
+            return userData;
+        }
+        return resp;
+
     }
+
+    // sign in
+    // common_sign = (username, password) =>{
+    //     var requestData = {
+    //         username: username,
+    //         password: password
+    //     }
+    //     var userData = {};
+    //     var resp = 600;
+    //     await Axios.post(
+    //         `${Config.host}${Config.port}${this.api.signin}`,
+    //         requestData
+    //     )
+    //         .then(Response => {
+    //             resp = Response.status;
+    //             userData = Response.data.userData;
+    //             console.log("menna result eka" , resp);
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //             try {
+    //                 console.error(err);
+    //                 resp = err.response.status;
+    //             } catch (error) {
+    //                 console.log(error);
+
+    //                 resp = 600;
+    //             }
+    //         });
+
+    //     if (resp === 200) {
+    //         return userData;
+    //     }
+    //     return resp;
+ 
+        // return new Promise((resolve, reject) => {
+        //     return Axios.post(`${Config.host}${Config.port}${this.api.signin}`, requestData)
+        //         .then(result => {
+        //             resolve({ code: 200, data: result.data })
+        //             console.log("log in eka success" , result);
+        //         })
+        //         .catch(err => {
+        //             reject({ code: 0, error: err })
+        //         })
+        // })
+    //}
 }
 
 var obj = new Common();

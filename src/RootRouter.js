@@ -12,8 +12,8 @@ class App extends React.Component {
 
    
     let checkSignedIn =  this.props.auth.isAuthenticated;
-    let role = (checkSignedIn) ? this.props.auth.user.role : "";
-
+    let role = (checkSignedIn) ? this.props.auth.user.user_details.role : "";
+     
     if(checkSignedIn === true ){
       routes = [ ...routes ];
     }else if(checkSignedIn === false){

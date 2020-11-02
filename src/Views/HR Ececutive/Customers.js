@@ -4,7 +4,10 @@ import HRSidebar from "./HRSidebar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {FormInput , FormSelect , MultiFormSelect} from '../../Components/Form'
-import { Tab , Row , Col, Nav , Button, Card , InputGroup , FormControl, Form } from 'react-bootstrap';
+import { Tab , Row , Col, Nav , Button, Card , InputGroup , FormControl, Form, Image } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import CONFIG from '../../Controllers/Config.controller';
+import moment from 'moment';
 
 import CUST_CONTROLLER from '../../Controllers/HR.controller';
 
@@ -19,7 +22,7 @@ class Customers extends Component {
             email:'',
             nic:'',
             phone:'',
-            role: 4,
+            role: 2,
             image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
             credit_limit:'',
             city:'',
@@ -31,10 +34,26 @@ class Customers extends Component {
             dob:"1997-03-25",
             postal_code:'',
 
+            customerList: [],
+            search: '',
+            oneCusID: '',
+
 
         };
     }
 
+    async componentDidMount() {
+        const res = await CUST_CONTROLLER.getAllCustomer(this.props.auth.token);
+        this.setState({
+            customerList: res.data.rows,
+        });
+    }
+
+    onChange = e =>{
+        this.setState({search : e.target.value });
+      }
+
+    
     change_toggle = () => {
         if (this.state.addCustomerState) {
             this.setState({ addCustomerState: false })
@@ -78,16 +97,45 @@ class Customers extends Component {
             dob: this.state.dob,
             postal_code : this.state.postal_code,
         }
-        console.log(data)
 
-        const result = await CUST_CONTROLLER.addCustomer(data);
-        console.log("menna result eka" ,result);
+        const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
+
+        if(result.status == 201){
+            CONFIG.setToast("Successfully Added");
+            this.clear();
+        }
       
-    
     }
 
+    clear = ()=>{
+        this.setState({
+            username:'' ,
+            email:'' ,
+            nic:'' ,
+            phone: '',
+            //image : this.state.image,
+            credit_limit: '',
+            city: '',
+            address: '',
+            name: '',
+            lat: '',
+            long : '',
+            //signature: this.state.signature,
+            //dob: this.state.dob,
+            postal_code : '',
+        })
+
+        if (this.state.addCustomerState) {
+            this.setState({ addCustomerState: false })
+        } else {
+            this.setState({ addCustomerState: true })
+        }
+    }
 
     render() {
+
+        const {customerList} = this.state;
+
     return (
         <div className="bg-light wd-wrapper">
             <HRSidebar activemenu={'CUSTOMERS'} />
@@ -113,7 +161,7 @@ class Customers extends Component {
                                         <div className="col-12 bg-white mt-1 pb-1" >
                                             <form onSubmit={(e) => this.onFormSubmit(e)}>
                                            
-                                                <div className="row mt-1 pb-1" >
+                                                <div className="row" >
                                                     <div class="col-sm-8">
                                                         <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Customer Details<br></br>
                                                         <span className="text-muted small">You can add a new customer by filling relavant Information</span></h6>
@@ -241,18 +289,11 @@ class Customers extends Component {
 
                                                             </div>
                                                         </div>
-                                                        <div className="row"> 
-                                                            <div class="col-sm">
-                                                                <div className="col-6 mt-3 mb-1" >
-                                                                <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                                <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        
 
                                                         
                                                     </div>
-                                                    <div class="col-6 col-sm-4">
+                                                    <div class="col-sm-4">
                                                         <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1" style={{color:"#ffffff"}}>Other Details<br></br>
                                                         <span className="text-color-light hide small" style={{color:"#ffffff"}}>Geopoint and the Credit Limit</span></h6>
                                                         <div className="row">
@@ -296,25 +337,35 @@ class Customers extends Component {
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-12 mt-3 " >
-                                                                {/* <Form>
+                                                                <Form>
                                                                 <Form.Group>
                                                                     <Form.File id="exampleFormControlFile1" label="Customer Profile Picture" />
                                                                 </Form.Group>
-                                                                </Form> */}
+                                                                </Form>
                                                             </div>
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-12 mb-1" >
-                                                                {/* <Form>
+                                                                <Form>
                                                                 <Form.Group>
                                                                     <Form.File id="exampleFormControlFile1" label="Customer Signature" />
                                                                 </Form.Group>
-                                                                </Form> */}
+                                                                </Form>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
+
+                                                <div className="row"> 
+                                                    <div class="col-sm">
+                                                        <div className="col-6 mt-3 mb-1" >
+                                                        <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
+                                                        <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
                                             </form>
                                         </div>
 
@@ -326,11 +377,47 @@ class Customers extends Component {
                     {/* Customer details display here with the tab view */}
                     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                         <Row>
-                            <Col sm={9}>
+                            <Col sm={9} style={{height:"100hv"}}>
                                 {this.showEachCustomerDetails()}
+                                {/* {this.oneCustomerId()} */}
                             </Col>
                             <Col sm={3}>
-                                {this.renderAllCustomers()}
+
+                                <Nav variant="pills" className="flex-column bg-white">
+                                    <Card>
+                                    <Nav.Item>
+                                        <Row>
+                                            <Col xs={12} md={8}>
+                                                <h6 style={{display: this.state.searchState == false ? 'block' : 'none' ,paddingBottom:"15px", paddingTop:"19px", paddingLeft:"15px", paddingRight:"15px", color:"#475466", fontFamily:"Roboto, sans-serif"}}>Customers</h6>
+                                                <div className="col" style={{ display: this.state.searchState == true ? 'block' : 'none' , paddingTop:"15px"}}>
+                                                    <InputGroup className="mb-3" >
+                                                        <FormControl
+                                                        style={{height:"30px"}}
+                                                        aria-label="Username"
+                                                        placeholder="Search"
+                                                        onChange={ this.onChange}
+                                                        aria-describedby="basic-addon1"
+                                                        />
+                                                    </InputGroup>
+                                                </div>
+                                            </Col>
+                                            {/* <Col xs={6} md={4}> */}
+                                            <Col md="auto"  style={{paddingTop:"15px"}}>
+                                                <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', alignContent:"flex-end", alignItems:"flex-end"}} />
+                                            </Col>
+                                        </Row>
+                                    </Nav.Item>
+                                    
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            {customerList && customerList.map((name) => this.renderOneCustomer(name))}
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    {/* <Nav.Item>
+                                        <Nav.Link eventKey="second">Tab 2</Nav.Link>
+                                    </Nav.Item> */}
+                                    </Card>
+                                </Nav>
                             </Col>
                         </Row>
                     </Tab.Container>
@@ -342,91 +429,49 @@ class Customers extends Component {
     );
   }
 
-    showEachCustomerDetails = () =>{
+    showEachCustomerDetails = (id) => {
         return(
             <Tab.Content>
                 <Card>
                     <Tab.Pane eventKey="first" >
-                            g
+                            {id}
                     </Tab.Pane>
-
-                    <Tab.Pane eventKey="second">
+                {/* <Tab.Pane eventKey="second">
                     f
-                    </Tab.Pane>
+                    </Tab.Pane> */}
                 </Card>
             </Tab.Content>
         );
     }
 
-    renderAllCustomers = () =>{
-      return(
-        
-        <Nav variant="pills" className="flex-column bg-white">
-            <Card>
-            <Nav.Item>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h6 style={{display: this.state.searchState == false ? 'block' : 'none' ,paddingBottom:"15px", paddingTop:"19px", paddingLeft:"15px", paddingRight:"15px", color:"#475466", fontFamily:"Roboto, sans-serif"}}>Customers</h6>
-                        <div className="col" style={{ display: this.state.searchState == true ? 'block' : 'none' , paddingTop:"15px"}}>
-                            <InputGroup className="mb-3" >
-                                <FormControl
-                                 style={{height:"30px"}}
-                                aria-label="Username"
-                                aria-describedby="basic-addon1"
-                                />
-                            </InputGroup>
-                        </div>
-                    </Col>
-                    {/* <Col xs={6} md={4}> */}
-                    <Col md="auto"  style={{paddingTop:"15px"}}>
-                        <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', alignContent:"flex-end", alignItems:"flex-end"}} />
-                    </Col>
-                </Row>
-                {/* <div className="row">
-                    <div className="col">
-                    
-                        <h6 style={{display: this.state.searchState == false ? 'block' : 'none' ,paddingBottom:"0px", paddingTop:"15px", paddingLeft:"15px", paddingRight:"15px", color:"#475466", fontFamily:"Roboto, sans-serif"}}>Customers</h6>
-                        <div className="col" style={{ display: this.state.searchState == true ? 'block' : 'none'}}>
-                            <InputGroup className="mb-3" >
-                                <FormControl
-                                placeholder="Search by Name"
-                                aria-label="Username"
-                                aria-describedby="basic-addon1"
-                                />
-                            </InputGroup>
-                        </div>
-                    </div>
-                    <div className="col" style={{paddingTop:"10px", paddingBottom:"0px"}}>
-                        <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer'}} />
-                    </div>
-                </div> */}
-            </Nav.Item>
-
-            {/* <Nav.Item>
-                <div className="row" style={{ display: this.state.searchState == true ? 'block' : 'none', padding:"10px"}}>
-                <div className="col">
-                    <InputGroup className="mb-3">
-                        <FormControl
-                        placeholder="Search by Name"
-                        aria-label="Username"
-                        aria-describedby="basic-addon1"
-                        />
-                    </InputGroup>
-                </div>
-                </div>
-            </Nav.Item> */}
-
-            <Nav.Item>
-                <Nav.Link eventKey="first">Tab 1</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link eventKey="second">Tab 2</Nav.Link>
-            </Nav.Item>
-            </Card>
-            </Nav>
-
-        );
+    oneCustomerId = (id) => {
+        this.state.oneCusID = {id};
     }
+
+
+    renderOneCustomer = (item, i) => {
+        const { search } = this.state;
+        if( search !== "" && item.name.toLowerCase().indexOf(search.toLowerCase()) === -1 && item.t_code.indexOf(search.toLowerCase()) === -1){
+        return null;
+        }
+
+        return(
+            <div className="row" key={item.id}>
+                <div className="col-sm-4">
+                    <Image src="/images/isaiah_1.jpg" className="d-none d-lg-block" style={{width:"50px", marginLeft:"10px"}} roundedCircle />
+                </div>
+                <div className="col-sm-8">
+                    <div className="row">
+                        <div className="col-sm"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>{item.city}</p></div>
+                        <div className="col-sm"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> {moment(new Date(item.createdAt)).format("YYYY MMM DD")}</p></div>
+                    </div>
+                    <h6 onClick={() => this.showEachCustomerDetails(item.id)}>{item.name}</h6>
+                    {/* {this.oneCustomerId(item.id)} */}
+                    <hr></hr>
+                </div>
+            </div>
+        );
+    }  
 
 
 
@@ -448,5 +493,9 @@ class Customers extends Component {
 }
 
 const cardstyle = "card border-0 shadow-sm rounded mt-3 bg-white py-3 d-flex flex-row"
-
-export default withRouter(Customers);
+const mapStateToProps = state => ({
+    auth: state.auth || {},
+  });
+ 
+  
+export default connect(mapStateToProps, null)(withRouter(Customers));
