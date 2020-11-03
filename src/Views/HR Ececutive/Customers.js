@@ -4,7 +4,7 @@ import HRSidebar from "./HRSidebar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {FormInput , FormSelect , MultiFormSelect} from '../../Components/Form'
-import { Tab , Row , Col, Nav , Button, Card , InputGroup , FormControl, Form, Image } from 'react-bootstrap';
+import { Tab , Row , Col, Nav , Button, Card , InputGroup , FormControl, Form, Image, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../Controllers/Config.controller';
 import moment from 'moment';
@@ -37,6 +37,7 @@ class Customers extends Component {
             customerList: [],
             search: '',
             oneCusID: '',
+            CustByTCODE : [],
 
 
         };
@@ -72,6 +73,17 @@ class Customers extends Component {
 
     formValueChange = (e) => {
         this.setState({[e.target.name] : e.target.value  });
+    }
+
+    loadData = async (t_code) => {
+        const res = await CUST_CONTROLLER.getOneCustByTCODE(t_code,this.props.auth.token);
+        if(res.status == 200 ){
+            this.setState({
+                CustByTCODE: res.data.data,
+                oneCusID: res.data.name,
+            });
+        }
+
     }
 
     onFormSubmit = async (e) => {
@@ -134,7 +146,7 @@ class Customers extends Component {
 
     render() {
 
-        const {customerList} = this.state;
+        const {customerList , CustByTCODE , oneCusID} = this.state;
 
     return (
         <div className="bg-light wd-wrapper">
@@ -375,12 +387,46 @@ class Customers extends Component {
                     </div>
 
                     {/* Customer details display here with the tab view */}
-                    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+                    <Tab.Container id="left-tabs-example">
                         <Row>
-                            <Col sm={9} style={{height:"100hv"}}>
-                                {this.showEachCustomerDetails()}
-                                {/* {this.oneCustomerId()} */}
+                            <Col sm={9}>
+                                <Card >
+                                  
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
+                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
+                                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content" id="nav-tabContent">
+                                        {/* basic information tab start here */}
+                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                            <div className="row ml-3 mt-1">
+                                                <div className="col-sm-8">
+                                                    <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Customer Details<br></br>
+                                                    <span className="text-muted small">You can add a new customer by filling relavant Information</span></h6>
+                                                </div>
+                                                <div className="col-sm-4">
+                                                    <Image src="/images/isaiah_1.jpg" className="img-fluid" style={{ padding:"20px"}} roundedCircle />
+                                                </div>
+                                            </div>
+            
+                                            {CustByTCODE.name}
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
+                                        
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                                        </div>
+                                    </div>
+                                
+                                    
+
+                                </Card>
                             </Col>
+
                             <Col sm={3}>
 
                                 <Nav variant="pills" className="flex-column bg-white">
@@ -413,9 +459,6 @@ class Customers extends Component {
                                             {customerList && customerList.map((name) => this.renderOneCustomer(name))}
                                         </Nav.Link>
                                     </Nav.Item>
-                                    {/* <Nav.Item>
-                                        <Nav.Link eventKey="second">Tab 2</Nav.Link>
-                                    </Nav.Item> */}
                                     </Card>
                                 </Nav>
                             </Col>
@@ -429,25 +472,14 @@ class Customers extends Component {
     );
   }
 
-    showEachCustomerDetails = (id) => {
+    showEachCustomerDetails = (itemM) => {
         return(
-            <Tab.Content>
-                <Card>
-                    <Tab.Pane eventKey="first" >
-                            {id}
-                    </Tab.Pane>
-                {/* <Tab.Pane eventKey="second">
-                    f
-                    </Tab.Pane> */}
-                </Card>
-            </Tab.Content>
+            <div className="row" key={itemM.id}>
+                <h1>{itemM.name}</h1>
+            </div> 
+              
         );
     }
-
-    oneCustomerId = (id) => {
-        this.state.oneCusID = {id};
-    }
-
 
     renderOneCustomer = (item, i) => {
         const { search } = this.state;
@@ -456,22 +488,23 @@ class Customers extends Component {
         }
 
         return(
-            <div className="row" key={item.id}>
+            <div className="row" key={item.id} onClick={() => this.loadData(item.t_code)}>
                 <div className="col-sm-4">
-                    <Image src="/images/isaiah_1.jpg" className="d-none d-lg-block" style={{width:"50px", marginLeft:"10px"}} roundedCircle />
+                    <Image src="/images/isaiah_1.jpg" className="d-none d-lg-block" style={{width:"50px", marginLeft:"10px"}} rounded />
                 </div>
                 <div className="col-sm-8">
                     <div className="row">
                         <div className="col-sm"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>{item.city}</p></div>
                         <div className="col-sm"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> {moment(new Date(item.createdAt)).format("YYYY MMM DD")}</p></div>
                     </div>
-                    <h6 onClick={() => this.showEachCustomerDetails(item.id)}>{item.name}</h6>
-                    {/* {this.oneCustomerId(item.id)} */}
+                    <h6>{item.name}</h6>
                     <hr></hr>
                 </div>
             </div>
         );
-    }  
+    } 
+    
+   
 
 
 

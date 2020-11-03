@@ -6,7 +6,7 @@ class HRcontroller{
         this.api = {
             addCustomer: "/api/customer/create",
             getAllCustomer: "/api/customer/all",
-            // getOne: "/api/parallel/getOne",
+            getOneCustByTCODE: "/api/customer/tcode",
             // deleteGenerate : "/api/parallel/delete",
         };
     }
@@ -32,15 +32,36 @@ class HRcontroller{
             .then(Response => {
                 resp = Response.status;
                 userData = Response.data;
-                console.log("all customers", userData);
             })
             .catch(err => {
-                console.error(err);
                 try {
-                    console.error(err);
                     resp = err.response.status;
                 } catch (error) {
-                    console.log(error);
+                    resp = 600;
+                }
+            });
+
+        if (resp === 200) {
+            return userData;
+        }
+        return resp;
+    }
+
+
+    getOneCustByTCODE = async (id, token) => {
+        var resp = 600;
+        var userData = {}
+        const data = await Axios.get(
+            `${Config.host}${Config.port}${this.api.getOneCustByTCODE}/${id}`,
+            { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }})      
+            .then(Response => {
+                resp = Response.status;
+                userData = Response;
+            })
+            .catch(err => {
+                try {
+                    resp = err.response.status;
+                } catch (error) {
                     resp = 600;
                 }
             });
