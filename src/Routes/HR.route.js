@@ -1,6 +1,7 @@
 import HD_dashboard from '../Views/HR Ececutive/Dashboard.HR';
 import Customers from '../Views/HR Ececutive/Customers';
-import basic from '../Views/HR Ececutive/HR Components/basicInfor';
+import Supplier from '../Views/HR Ececutive/Supplier';
+import Employee from '../Views/HR Ececutive/Employee';
 
 let HRRoutes = [
 
@@ -17,9 +18,15 @@ let HRRoutes = [
     exact: true,
   },
   {
-    path: "/hr/basic",
-    name: "basic",
-    component: basic,
+    path: "/hr/supplier",
+    name: "Supplier",
+    component: Supplier,
+    exact: true,
+  },
+  {
+    path: "/hr/employees",
+    name: "Employee",
+    component: Employee,
     exact: true,
   },
 ];

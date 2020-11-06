@@ -55,8 +55,8 @@ class HRSidebar extends React.Component {
             <Menu iconShape="circle">
               <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/hr/dashboard"/></MenuItem>
               <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/hr/customers"/></MenuItem>
-              <MenuItem active={activemenu === 'jj'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/hr/dashboard"/></MenuItem>
-              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/hr/customers"/></MenuItem>
+              <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/hr/supplier"/></MenuItem>
+              <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/hr/employees"/></MenuItem>
               <MenuItem active={activemenu === 'jj'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/hr/dashboard"/></MenuItem>
               <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/hr/customers"/></MenuItem>
               <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout<Link to="/hr/customers"/></MenuItem>

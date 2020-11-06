@@ -1,18 +1,18 @@
 import Axios from "axios";
-import Config from "./Config.controller";
+import Config from "../Config.controller";
 
-class HRcontroller{
+class Suppliercontroller{
     constructor(){
         this.api = {
-            addCustomer: "/api/customer/create",
-            getAllCustomer: "/api/customer/all",
-            getOneCustByTCODE: "/api/customer/tcode",
-            // deleteGenerate : "/api/parallel/delete",
+            addSupplier: "/api/suppliers/create",
+            getAllSuppliers: "/api/suppliers/getall",
+            getSupplierByID: "/api/suppliers/getone",
+            // getOneUserByUSERNAME: "/api/users/username",
         };
     }
 
-    addCustomer = async (data, token) => {
-        return await Axios.post( `${Config.host}${Config.port}${this.api.addCustomer}`, data,
+    addSupplier = async (data, token) => {
+        return await Axios.post( `${Config.host}${Config.port}${this.api.addSupplier}`, data,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 return { ...Response.data , status : 200 }
@@ -24,10 +24,10 @@ class HRcontroller{
     }
 
  
-    getAllCustomer = async (token) => {
+    getAllSuppliers = async (token) => {
         var resp = 600;
         var userData = {}
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllCustomer}`,
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllSuppliers}`,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 resp = Response.status;
@@ -48,11 +48,11 @@ class HRcontroller{
     }
 
 
-    getOneCustByTCODE = async (id, token) => {
+    getSupplierByID = async (id, token) => {
         var resp = 600;
         var userData = {}
         const data = await Axios.get(
-            `${Config.host}${Config.port}${this.api.getOneCustByTCODE}/${id}`,
+            `${Config.host}${Config.port}${this.api.getSupplierByID}/${id}`,
             { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }})      
             .then(Response => {
                 resp = Response.status;
@@ -72,6 +72,30 @@ class HRcontroller{
         return resp;
     }
 
+    // getOneUserByUSERNAME = async (username, token) => {
+    //     var resp = 600;
+    //     var userData = {}
+    //     const data = await Axios.get(
+    //         `${Config.host}${Config.port}${this.api.getOneUserByUSERNAME}/${username}`,
+    //         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }})      
+    //         .then(Response => {
+    //             resp = Response.status;
+    //             userData = Response;
+    //         })
+    //         .catch(err => {
+    //             try {
+    //                 resp = err.response.status;
+    //             } catch (error) {
+    //                 resp = 600;
+    //             }
+    //         });
+
+    //     if (resp === 200) {
+    //         return userData;
+    //     }
+    //     return resp;
+    // }
+
 
 
 
@@ -82,5 +106,5 @@ class HRcontroller{
 
 
 }
-var UserObject = new HRcontroller();
+var UserObject = new Suppliercontroller();
 export default UserObject;

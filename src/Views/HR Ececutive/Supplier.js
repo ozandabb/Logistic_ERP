@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import HRSidebar from "./HRSidebar";
 import { connect } from 'react-redux';
-import AddCustomerSection from "./HR Components/Customer Com/addCustomer.Com";
-import DisplayCustomerSection from "./HR Components/Customer Com/DisplayCustomer.Com";
+import AddSupplierSection from "./HR Components/Supplier.Com/addSupplier.Com";
+import DisplaySupplierSection from "./HR Components/Supplier.Com/DisplaySupplier.Com";
 
-class Customers extends Component {   
+class Suppliers extends Component {   
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <HRSidebar activemenu={'CUSTOMERS'} />
+                <HRSidebar activemenu={'SUPPLIERS'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
 
@@ -18,14 +18,14 @@ class Customers extends Component {
                             Component
                             addCustomer.Com.js
                         */}
-                        <AddCustomerSection/>
+                        <AddSupplierSection/>
 
                         {/* 
                             Display All Customers and Each Customer Details section
                             Component
                             DisplayCustomer.Com.js
                         */}
-                        <DisplayCustomerSection/>
+                        <DisplaySupplierSection/>
 
                     </div>
                 </div>
@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
 });
  
   
-export default connect(mapStateToProps, null)(withRouter(Customers));
+export default connect(mapStateToProps, null)(withRouter(Suppliers));

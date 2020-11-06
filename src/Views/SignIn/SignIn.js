@@ -5,7 +5,6 @@ import '../../Asserts/signin/css/util.css'
 import img_1 from '../../Asserts/signin/img/img-03.jpg'
 import PropType from 'prop-types';
 import { connect } from 'react-redux';
-import { loginUser } from '../../Redux/Action/authAction';
 import CommonController from '../../Controllers/Common.controller';
 import { setCurrentUser } from "../../Redux/Action/authAction";
 import { withRouter } from "react-router-dom";
@@ -89,10 +88,10 @@ class SignIn extends Component {
     render() {
         const { username, password } = this.state
         return (
-            <div className="container-fluid bg-light" >
+            <div className="container-fluid" style={{backgroundColor:"#ffffff"}} >
                 <div className="limiter">
                     <div className="container-login100">
-                        <div className="wrap-login100 bg-light"> 
+                        <div className="wrap-login100"> 
                             <form className="login100-form validate-form" onSubmit={e => {this.onLogin(e);}}>
                                 <span className="login100-form-title font-weight-bold">
                                     Welcome!<br></br>

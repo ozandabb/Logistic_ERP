@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import AddCustomerSection from "./HR Components/Customer Com/addCustomer.Com";
 import DisplayCustomerSection from "./HR Components/Customer Com/DisplayCustomer.Com";
 
-class Customers extends Component {   
+class Vehicles extends Component {   
     render() {
         return (
             <div className="bg-light wd-wrapper">
@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
 });
  
   
-export default connect(mapStateToProps, null)(withRouter(Customers));
+export default connect(mapStateToProps, null)(withRouter(Vehicles));
