@@ -6,12 +6,59 @@ import {FormInput  } from '../../../../Components/Form'
 import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
-import moment from 'moment';
-// import CUST_CONTROLLER from '../../../../Controllers/Supplier.controller';
+import CONFIG from '../../../../Controllers/Config.controller';
+import Supplier_CONTROLLER from '../../../../Controllers/HR Staff/Supplier.controller';
 
 class DetailsEachSupplierCom extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          
+            name:'',
+            address:'',
+            phoneNo:'',
+            email:'',
+
+        };
+
+    }
+
+    async componentDidMount() {
+        const res = await Supplier_CONTROLLER.getSupplierByID(this.props.SUP_ID, this.props.auth.token);
+        // this.setState({
+        //     supplierList: res.data.rows,
+        // });
+    }
+
+    formValueChange = (e) => {
+        this.setState({
+            name : e.target.name,
+            address : e.target.address
+          });
+    }
+
+    onFormSubmit = async (e) => {
+        e.preventDefault();
+        
+
+        var data = {
+            name: this.state.name,
+            address: this.state.address,
+            phoneNo: this.state.phoneNo,
+            email: this.state.email,
+        }
+
+        // const result = await Supplier_CONTROLLER.UpdateSupplier(data, this.props.auth.token);
+
+        // if(result.status == 200){
+        //     CONFIG.setToast("Successfully Added");
+        //     this.clear();
+        // }
+    }
 
     render() {
+        const {id } = this.state;
+
         return (
             <div>
 
@@ -25,11 +72,12 @@ class DetailsEachSupplierCom extends React.Component {
                 <div class="tab-content" id="nav-tabContent">
                     {/* basic information tab start here */}
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    {/* <form onSubmit={(e) => this.onFormSubmit(e)}> */}
                         <div className="row ml-3 mt-1">
                         <div className="col-sm" style={{paddingRight:"50px"}}>
                             <div className="row">
                                 <div className="col-sm">
-                                    <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update {this.props.CusName} Details<br></br>
+                                    <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update {this.props.name} Details<br></br>
                                     <span className="text-muted small">You can Update or Delete each Supplier</span></h6>
                                 </div>
                             </div>
@@ -41,9 +89,9 @@ class DetailsEachSupplierCom extends React.Component {
                                             label={'Customer Name *'}
                                             placeholder={"Select one Supplier"}
                                             //error={ errors.group_mo}
-                                            value={this.props.CusName}
+                                            value={this.props.SUP_ID}
                                             name="name"
-                                            //onChange={this.formValueChange}
+                                            onChange={(e) => this.formValueChange(e)}
                                             //error_meesage={'*Group Number required'}
                                         />
                                     </div>
@@ -52,9 +100,9 @@ class DetailsEachSupplierCom extends React.Component {
                                             label={"Contact Number *"}
                                             placeholder={"Select one Supplier"}
                                             //error={ errors.group_mo}
-                                            value={this.props.Cus_phone}
+                                            value={this.props.phoneNo}
                                             name="phoneNo"
-                                            //onChange={this.formValueChange}
+                                            onChange={this.formValueChange}
                                             //error_meesage={'*Group Number required'}
                                         />
                                     </div>
@@ -67,9 +115,9 @@ class DetailsEachSupplierCom extends React.Component {
                                             label={'Address *'}
                                             placeholder={"Select one Supplier"}
                                             //error={ errors.group_mo}
-                                            value={this.props.cus_address}
+                                            value={this.props.address}
                                             name="address"
-                                            //onChange={this.formValueChange}
+                                            onChange={this.formValueChange}
                                             //error_meesage={'*Group Number required'}
                                         />
                                     </div>
@@ -81,25 +129,28 @@ class DetailsEachSupplierCom extends React.Component {
                                             label={"Email *"}
                                             placeholder={"Select one Supplier"}
                                             //error={ errors.group_mo}
-                                            value={this.props.cus_email}
+                                            value={this.props.email}
                                             name="email"
-                                            //onChange={this.formValueChange}
+                                            onChange={this.formValueChange}
                                             //error_meesage={'*Group Number required'}
                                         />
                                     </div>
                                 </div>
 
-</div>
                         </div>
+                        </div>
+                        
 
                         <div className="row ml-3 mt-1">
                             <div className="col-6 mt-3 mb-5" >
                                 <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Update</button>
-                                <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 btn btn-sm px-5">Delete</button>
+                                <button  style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 btn btn-sm px-5">Delete</button>
                             </div>
                         </div>
 
+                     {/* </form> */}
                     </div>
+                   
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                         fff
                     </div>

@@ -46,8 +46,12 @@ class addSupplierCom extends React.Component {
 
         const result = await Supplier_CONTROLLER.addSupplier(data, this.props.auth.token);
 
-        if(result.status == 200){
+        if(result.status == 201){
             CONFIG.setToast("Successfully Added");
+            this.props.history.push("/hr/supplier");
+            // this.clear();
+        }else{
+            CONFIG.setErrorToast(" Somthing Went Wrong!");
             this.clear();
         }
     }

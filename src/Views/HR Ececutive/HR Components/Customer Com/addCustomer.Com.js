@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {FormInput  } from '../../../../Components/Form'
-import {  Button, Card , Form } from 'react-bootstrap';
+import {  Button, Card, FormFile } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
 
@@ -286,20 +286,14 @@ class addCustomerCom extends React.Component {
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-12 mt-3 " >
-                                                                <Form>
-                                                                <Form.Group>
-                                                                    <Form.File id="exampleFormControlFile1" label="Customer Profile Picture" />
-                                                                </Form.Group>
-                                                                </Form>
+                                                                <FormFile
+                                                                    label={'files'}/>
                                                             </div>
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-12 mb-1" >
-                                                                <Form>
-                                                                <Form.Group>
-                                                                    <Form.File id="exampleFormControlFile1" label="Customer Signature" />
-                                                                </Form.Group>
-                                                                </Form>
+                                                                    <FormFile
+                                                                    label={'files'}/>
                                                             </div>
                                                         </div>
                                                     </div>

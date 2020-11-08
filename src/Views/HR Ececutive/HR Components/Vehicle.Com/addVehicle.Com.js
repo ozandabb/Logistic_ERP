@@ -1,43 +1,41 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {FormInput  } from '../../../../Components/Form'
-import {  Button, Card , Form } from 'react-bootstrap';
+import {  Button, Card , FormFile } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
 
 
-import CUST_CONTROLLER from '../../../../Controllers/HR Staff/Customer.controller';
+import Vehicle_CONTROLLER from '../../../../Controllers/HR Staff/Vehicle.controller';
 
 class addVehicleCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            addCustomerState: false,
+            addVehicleState: false,
 
-            username:'',
-            email:'',
-            nic:'',
-            phone:'',
-            role: 2,
-            image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
-            credit_limit:'',
-            city:'',
-            address:'',
-            name:'',
-            lat:'',
-            long:'',
-            signature: "https://www.docsketch.com/assets/vip-signatures/muhammad-ali-signature-6a40cd5a6c27559411db066f62d64886c42bbeb03b347237ffae98b0b15e0005.svg",
-            dob:'',
-            postal_code:'',
+            vehicle_name:'',
+            vehicle_year:'',
+            vehicle_type:'',
+            vehicle_number:'',
+            weight: '',
+            licen_number: '',
+            licen_renew_date:'',
+            mileage:'',
+            service_due:'',
+            insurance_number:'',
+            insurance_renew_date:'',
+            description:'',
+            image: "https://cdn.vox-cdn.com/thumbor/-lBwP_zdIxKxEfwUb1NSwS3UqOk=/0x0:4243x3079/920x613/filters:focal(1783x1201:2461x1879):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/65022936/TuSimple_Self_Drving_Truck_4_copy.0.jpg",
 
         };
     }
 
     change_toggle = () => {
-        if (this.state.addCustomerState) {
-            this.setState({ addCustomerState: false })
+        if (this.state.addVehicleState) {
+            this.setState({ addVehicleState: false })
         } else {
-            this.setState({ addCustomerState: true })
+            this.setState({ addVehicleState: true })
         }
     }
 
@@ -49,27 +47,23 @@ class addVehicleCom extends React.Component {
         e.preventDefault();
 
         var data = {
-            username: this.state.username,
-            email: this.state.email,
-            nic: this.state.nic,
-            phone: this.state.phone,
 
-            role: this.state.role,
-            image : this.state.image,
-            credit_limit: this.state.credit_limit,
-            city: this.state.city,
-
-            address: this.state.address,
-            name: this.state.name,
-            lat: this.state.lat,
-            long : this.state.long,
-
-            signature: this.state.signature,
-            dob: this.state.dob,
-            postal_code : this.state.postal_code,
+            vehicle_name: this.state.vehicle_name,
+            vehicle_year: this.state.vehicle_year,
+            vehicle_type: this.state.vehicle_type,
+            vehicle_number: this.state.vehicle_number,
+            weight:  this.state.weight,
+            licen_number:  this.state.licen_number,
+            licen_renew_date:this.state.licen_renew_date,
+            mileage:this.state.mileage,
+            service_due: this.state.service_due,
+            insurance_number:this.state.insurance_number,
+            insurance_renew_date:this.state.insurance_renew_date,
+            description:this.state.description,
+            image:this.state.image
         }
 
-        const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
+        const result = await Vehicle_CONTROLLER.addVehicle(data, this.props.auth.token);
 
         if(result.status == 201){
             CONFIG.setToast("Successfully Added");
@@ -95,10 +89,10 @@ class addVehicleCom extends React.Component {
             postal_code : '',
         })
 
-        if (this.state.addCustomerState) {
-            this.setState({ addCustomerState: false })
+        if (this.state.addVehicleState) {
+            this.setState({ addVehicleState: false })
         } else {
-            this.setState({ addCustomerState: true })
+            this.setState({ addVehicleState: true })
         }
     }
 
@@ -108,24 +102,24 @@ class addVehicleCom extends React.Component {
                 {/* Title and the add new customer button */}
                 <div className="row" style={{marginTop:"5px", fontFamily:"sans-serif", marginBottom:"15px"}}>
                         <div className="col-sm-9">
-                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Customer Details<br></br>
-                            <span className="text-muted small">Dashboard / Customers</span></h6>
+                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Vehicle Details<br></br>
+                            <span className="text-muted small">Dashboard / Vehicle</span></h6>
                         </div>
                         <div className="col-sm-3">
-                            <Button variant="" style={{backgroundColor:"#475466" , color:"#FFFFFF", width:"100%",  cursor: 'pointer'}} onClick={() => this.change_toggle()}>Add new Customer</Button>
+                            <Button variant="" style={{backgroundColor:"#475466" , color:"#FFFFFF", width:"100%",  cursor: 'pointer'}} onClick={() => this.change_toggle()}>Add new Vehicle</Button>
                         </div>
                     </div>
 
                     {/* Add customer form toggle */}
-                    <div className="row" style={{ display: this.state.addCustomerState == true ? 'block' : 'none', marginBottom:"15px" }}>
+                    <div className="row" style={{ display: this.state.addVehicleState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
                             <Card className="col-12">
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
                                             <form onSubmit={(e) => this.onFormSubmit(e)}>
-                                                <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Customer Details<br></br>
-                                                <span className="text-muted small">You can add a new customer by filling relavant Information</span></h6>
+                                                <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Vehicle Details<br></br>
+                                                <span className="text-muted small">You can add a new vehicle by filling relavant Information</span></h6>
                                            
                                                 <div className="row" >
                                                     <div className="col-sm-8">
@@ -133,22 +127,22 @@ class addVehicleCom extends React.Component {
                                                         <div className="row">
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
-                                                                        label={'Customer Name *'}
-                                                                        placeholder={"Enter Customer's Name"}
+                                                                        label={'Vehicle Name *'}
+                                                                        placeholder={"Enter Vehicle Name"}
                                                                         //error={ errors.group_mo}
-                                                                        value={this.state.name}
-                                                                        name="name"
+                                                                        value={this.state.vehicle_name}
+                                                                        name="vehicle_name"
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
-                                                                        label={"Username *"}
-                                                                        placeholder={"Enter Customer's username"}
+                                                                        label={"Year *"}
+                                                                        placeholder={"Enter year"}
                                                                         //error={ errors.group_mo}
-                                                                        value={this.state.username}
-                                                                        name="username"
+                                                                        value={this.state.vehicle_year}
+                                                                        name="vehicle_year"
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
@@ -157,22 +151,22 @@ class addVehicleCom extends React.Component {
                                                         <div className="row">
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
-                                                                        label={'Email *'}
-                                                                        placeholder={"Enter Customer's Email"}
+                                                                        label={'Vehicle Type *'}
+                                                                        placeholder={"Enter vehicle Type"}
                                                                         //error={ errors.group_mo}
-                                                                        value={this.state.email}
-                                                                        name="email"
+                                                                        value={this.state.vehicle_type}
+                                                                        name="vehicle_type"
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
-                                                                        label={"NIC *"}
-                                                                        placeholder={"Enter Customer's NIC"}
+                                                                        label={"Vehicle Number *"}
+                                                                        placeholder={"Enter Vehicle Number"}
                                                                         //error={ errors.group_mo}
-                                                                        value={this.state.nic}
-                                                                        name="nic"
+                                                                        value={this.state.vehicle_number}
+                                                                        name="vehicle_number"
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
@@ -180,128 +174,125 @@ class addVehicleCom extends React.Component {
                                                         </div>
 
                                                         <div className="row">
-                                                                <div className="col-sm-12 mt-1 mb-1" >
+                                                            <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
-                                                                        label={"Address *"}
-                                                                        placeholder={"Enter Customer's Addres"}
+                                                                        label={'Weight *'}
+                                                                        placeholder={"Enter weight"}
                                                                         //error={ errors.group_mo}
-                                                                        value={this.state.address}
-                                                                        name="address"
+                                                                        value={this.state.weight}
+                                                                        name="weight"
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
+                                                                <div className="col-sm-6 mt-1 mb-1" >
+                                                                    <FormInput 
+                                                                        label={"Mileage  *"}
+                                                                        placeholder={"Enter Mileage"}
+                                                                        //error={ errors.group_mo}
+                                                                        value={this.state.mileage}
+                                                                        name="mileage"
+                                                                        onChange={this.formValueChange}
+                                                                        //error_meesage={'*Group Number required'}
+                                                                    />
+                                                            </div>
                                                         </div>
                                                         <div className="row">
-                                                                <div className="col-sm-6 mt-1 mb-1" >
-                                                                    <FormInput 
-                                                                        label={'City *'}
-                                                                        placeholder={"Enter Customer's City"}
-                                                                        //error={ errors.group_mo}
-                                                                        value={this.state.city}
-                                                                        name="city"
-                                                                        onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
-                                                                    />
-                                                                </div>
-                                                                <div className="col-sm-6 mt-1 mb-1" >
-                                                                    <FormInput 
-                                                                        label={"Contact Number *"}
-                                                                        placeholder={"Enter Customer's Contact Number"}
-                                                                        //error={ errors.group_mo}
-                                                                        value={this.state.phone}
-                                                                        name="phone"
-                                                                        onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
-                                                                    />
-                                                                </div>
+                                                            <div className="col-sm-12 mt-1 mb-1" >
+                                                                <FormInput 
+                                                                    label={'Description *'}
+                                                                    placeholder={"Description about the Vehicle"}
+                                                                    //error={ errors.group_mo}
+                                                                    value={this.state.description}
+                                                                    name="description"
+                                                                    onChange={this.formValueChange}
+                                                                    //error_meesage={'*Group Number required'}
+                                                                />
+                                                            </div>
                                                         </div>
+   
                                                         <div className="row">
-                                                                <div className="col-sm-6 mt-1 mb-1" >
-                                                                    <FormInput 
-                                                                        label={"Postal Code *"}
-                                                                        placeholder={"Enter Customer's Postal Code"}
-                                                                        //error={ errors.group_mo}
-                                                                        value={this.state.postal_code}
-                                                                        name="postal_code"
-                                                                        onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
-                                                                    />
-                                                                </div>
-                                                                <div className="col-sm-6 mt-1 mb-1" >
-                                                                    <FormInput 
-                                                                        label={"Date of Birth *"}
-                                                                        //error={ errors.group_mo}
-                                                                        value={this.state.dob}
-                                                                        type="Date"
-                                                                        name="dob"
-                                                                        onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
-                                                                    />
-                                                                </div>
+                                                            <div className="col-sm-6 mt-1 mb-1" >
+                                                                <FormInput 
+                                                                    label={'Service Due Date *'}
+                                                                    //error={ errors.group_mo}
+                                                                    type="date"
+                                                                    value={this.state.service_due}
+                                                                    name="service_due"
+                                                                    onChange={this.formValueChange}
+                                                                    //error_meesage={'*Group Number required'}
+                                                                />
+                                                                    
+                                                            </div>
                                                         </div>
-                                                        
 
-                                                        
+                                                        <div className="row">
+                                                            <div className="col-12 mb-1" >
+                                                                <FormFile
+                                                                    label={'Image'}/>
+                                                            </div>
+                                                        </div>
+                                                      
+
                                                     </div>
                                                     <div className="col-sm-4">
                                                         <div className="row">
                                                             <div className="col-12 mt-1 mb-1" >
                                                                 <FormInput 
-                                                                    label={"Credit Limit *"}
-                                                                    placeholder={"Enter Customer's Credit Limit"}
+                                                                    label={'License Number*'}
+                                                                    placeholder={"Enter License Number"}
                                                                     //error={ errors.group_mo}
-                                                                    value={this.state.credit_limit}
-                                                                    name="credit_limit"
+                                                                    value={this.state.licen_number}
+                                                                    name="licen_number"
                                                                     onChange={this.formValueChange}
                                                                     //error_meesage={'*Group Number required'}
                                                                 />
+                                                                    
                                                             </div>
                                                         </div>
                                                         <div className="row">
-                                                            <div className="col-sm">
+                                                            <div className="col-12 mt-1 mb-1" >
                                                                 <FormInput 
-                                                                    label={'Latitude *'}
-                                                                    placeholder={"Enter Latitude"}
+                                                                    label={'License Renew Date *'}
                                                                     //error={ errors.group_mo}
-                                                                    value={this.state.lat}
-                                                                    name="lat"
+                                                                    type="date"
+                                                                    value={this.state.licen_renew_date}
+                                                                    name="licen_renew_date"
                                                                     onChange={this.formValueChange}
                                                                     //error_meesage={'*Group Number required'}
                                                                 />
-
+                                                                    
                                                             </div>
-                                                            <div className="col-sm">
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-12 mt-1 mb-1" >
                                                                 <FormInput 
-                                                                    label={"Longitude *"}
-                                                                    placeholder={"Enter Longitude"}
+                                                                    label={'Insurance Number  *'}
+                                                                    placeholder={"Enter Insurance Number"}
                                                                     //error={ errors.group_mo}
-                                                                    value={this.state.long}
-                                                                    name="long"
+                                                                    value={this.state.insurance_number}
+                                                                    name="insurance_number"
                                                                     onChange={this.formValueChange}
                                                                     //error_meesage={'*Group Number required'}
                                                                 />
-
+                                                                    
                                                             </div>
                                                         </div>
                                                         <div className="row">
-                                                            <div className="col-12 mt-3 " >
-                                                                <Form>
-                                                                <Form.Group>
-                                                                    <Form.File id="exampleFormControlFile1" label="Customer Profile Picture" />
-                                                                </Form.Group>
-                                                                </Form>
+                                                            <div className="col-12 mt-1 mb-1" >
+                                                                <FormInput 
+                                                                    label={'Insurance Renew Date  *'}
+                                                                    //error={ errors.group_mo}
+                                                                    type="date"
+                                                                    value={this.state.insurance_renew_date}
+                                                                    name="insurance_renew_date"
+                                                                    onChange={this.formValueChange}
+                                                                    //error_meesage={'*Group Number required'}
+                                                                />
+                                                                    
                                                             </div>
                                                         </div>
-                                                        <div className="row">
-                                                            <div className="col-12 mb-1" >
-                                                                <Form>
-                                                                <Form.Group>
-                                                                    <Form.File id="exampleFormControlFile1" label="Customer Signature" />
-                                                                </Form.Group>
-                                                                </Form>
-                                                            </div>
-                                                        </div>
+                                                       
                                                     </div>
                                                 </div>
 

@@ -1,11 +1,10 @@
-/*  eslint-disable */
 import React from "react";
-// import PropType from 'prop-types';
-// import { connect } from 'react-redux';
-// import { logoutUser } from '../../actions/authAction';
+import PropType from 'prop-types';
+import { connect } from 'react-redux';
 import { ProSidebar, Menu, MenuItem, SubMenu , SidebarHeader , SidebarContent , SidebarFooter } from 'react-pro-sidebar';
 import { faTable, faBars , faPlusSquare, faColumns  , faAddressBook,faSnowman,faObjectGroup,faTruck, faAtom,faSignOutAlt, faTachometerAlt,faPeopleArrows, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import "../../Asserts/commoncss/sidebar.css";
+import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -18,21 +17,25 @@ class HRSidebar extends React.Component {
     };
   }
 
-  onLogoutClick(e){
-    e.preventDefault();
-    this.props.logoutUser();
-  }
+  signoutuser = () => {
+
+    const role = this.props.auth.user.user_details.role;
+    // const isadmin = (role && (role == 3 || role == 1 || role == 2 || role == 0)) ? true : false
+    this.props.SignOut && this.props.SignOut();
+    this.props.history.push( "/");
+  };
 
   render() {
     const { side_bar_toggle } = this.state;
     const { activemenu, submenu } = this.props;
     return (
       <div>
-        <nav className="navbar  py-0 shadow-sm  fixed-top" style={{ background: "#ffffff", height:"50px" }} >
+        <nav className="navbar  py-0 shadow-sm  fixed-top" style={{ background: "#475466", height:"50px" }} >
           <span className="navbar-brand mb-0 h6 text-dark ml-2">
           
             <FontAwesomeIcon onClick={() => this.setState({ side_bar_toggle: !this.state.side_bar_toggle, }) }
               icon={faBars}
+              style={{color:"#FFFFFF"}}
               className="ml-4 click show-icon"
             ></FontAwesomeIcon>
           </span>
@@ -52,14 +55,16 @@ class HRSidebar extends React.Component {
           </div> */}
 
           <ProSidebar>
+          <SidebarContent>
             <Menu iconShape="circle">
               <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/hr/dashboard"/></MenuItem>
               <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/hr/customers"/></MenuItem>
               <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/hr/supplier"/></MenuItem>
               <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/hr/employees"/></MenuItem>
-              <MenuItem active={activemenu === 'jj'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/hr/dashboard"/></MenuItem>
-              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/hr/customers"/></MenuItem>
-              <MenuItem active={activemenu === 'gg'} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout<Link to="/hr/customers"/></MenuItem>
+              <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/hr/vehicles"/></MenuItem>
+              <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/hr/driver"/></MenuItem>
+              <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt}  />}>Logout<Link to="/hr/customers"/></MenuItem>
+           
               {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
                 <MenuItem active={submenu === 'CUSTOMER_REG'}>Customer Registration<Link to="/hrstaff/customer_registration"/></MenuItem>
                 <MenuItem active={submenu === 'SUPPLIER_REG'}>Supplier Registration<Link to="/hrstaff/supplier_registration"></Link></MenuItem>
@@ -67,33 +72,15 @@ class HRSidebar extends React.Component {
                 <MenuItem active={submenu === 'DRIVER_REG'}>Driver Registration<Link to="/hrstaff/driver_registration"/></MenuItem>
                 <MenuItem active={submenu === 'VEHICLE_REG'}>Vehicle Registration<Link to="/hrstaff/vehicle_Registration"/></MenuItem>
               </SubMenu>
-              <SubMenu defaultOpen={activemenu === 'PROFILES'} title="Profiles" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
-                <MenuItem active={submenu === 'CUSTOMER_PRO'}>Customer Profile<Link to="/hrstaff/customerProfile"/></MenuItem>
-                <MenuItem active={submenu === 'SUPPLIER_PRO'}>Supplier Profile<Link to="/hrstaff/supplierProfile"></Link></MenuItem>
-                <MenuItem active={submenu === 'EMPLOYEE_PRO'}>Employee Profile<Link to="/hrstaff/employeeProfile"/></MenuItem>
-                <MenuItem active={submenu === 'DRIVER_PRO'}>Driver Profile<Link to="/hrstaff/driverProfile"/></MenuItem>
-                <MenuItem active={submenu === 'VEHICLE_PRO'}>Vehicle Profile<Link to="/hrstaff/vehicleProfile"/></MenuItem>
-              </SubMenu> */}
-
-              {/* <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faBars} />}>AccDashboard<Link to="/finance/AccDashboard"/></MenuItem>
-              <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faBars} />}>AccExDashboard<Link to="/finance/AccExDashboard"/></MenuItem>
-              <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faBars} />}>AssAccDashboard<Link to="/finance/AssAccDashboard"/></MenuItem> */}
-
+         */}
             </Menu>
+            </SidebarContent>
+            {/* <SidebarFooter style={{backgroundColor:"#475466",height:"50px",color:"#FFFFFF", padding:"15px"}}>
+            Contact Admin
+            </SidebarFooter> */}
           </ProSidebar>
 
           <ul className="sidebar">
-
-     
-      
-           
-            {/* <li onClick={this.onLogoutClick.bind(this)} className={`listitem ${  active == "products" && "active_category"}`}>
-            <Link to="/">
-                <h6 className={`categorylink px-2 ${ active == "products" && "active_category" }`} >
-                  Logout
-                </h6>
-                </Link>
-              </li> */}
 
           </ul>
         </div>
@@ -101,6 +88,19 @@ class HRSidebar extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.auth || {},
+});
+
+const mapDispatchToProps = {
+  SignOut,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HRSidebar));
+
+
+
+
 
 // HRSidebar.PropType = {
 //   logoutUser: PropType.func.isRequired,
@@ -113,4 +113,4 @@ class HRSidebar extends React.Component {
 
 // export default connect(mapStateToProps, { logoutUser }) (HRSidebar);
 
-export default HRSidebar;
+// export default HRSidebar;

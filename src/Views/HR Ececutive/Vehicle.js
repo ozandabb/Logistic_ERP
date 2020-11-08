@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import HRSidebar from "./HRSidebar";
 import { connect } from 'react-redux';
-import AddCustomerSection from "./HR Components/Customer Com/addCustomer.Com";
-import DisplayCustomerSection from "./HR Components/Customer Com/DisplayCustomer.Com";
+import AddVehicleSection from "./HR Components/Vehicle.Com/addVehicle.Com";
+import DisplayVehiclesSection from "./HR Components/Vehicle.Com/DisplayVehicles.Com";
 
 class Vehicles extends Component {   
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <HRSidebar activemenu={'CUSTOMERS'} />
+                <HRSidebar activemenu={'VEHICLES'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
 
@@ -18,14 +18,14 @@ class Vehicles extends Component {
                             Component
                             addCustomer.Com.js
                         */}
-                        <AddCustomerSection/>
+                        <AddVehicleSection/>
 
                         {/* 
                             Display All Customers and Each Customer Details section
                             Component
                             DisplayCustomer.Com.js
                         */}
-                        <DisplayCustomerSection/>
+                        <DisplayVehiclesSection/>
 
                     </div>
                 </div>
