@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import Cashier_sidebar from "./Sidebar.Cashier";
+import Sidebar_Assi_Acc from "./Sidebar.Assi.Acc";
 
-class cashierDash extends Component {
+class Accoun_Assi_Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,10 +14,10 @@ class cashierDash extends Component {
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <Cashier_sidebar activemenu={'DASHBOARD'} />
+                <Sidebar_Assi_Acc activemenu={'DASHBOARD'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
-                        <h4>Accountant Dashboard</h4>
+                        <h4>Assistant Accountant</h4>
                     </div>
                 </div>
             </div>
@@ -25,4 +25,4 @@ class cashierDash extends Component {
     }
 }
 
-export default withRouter(cashierDash);
+export default withRouter(Accoun_Assi_Dashboard);

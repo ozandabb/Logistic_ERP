@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import Cashier_sidebar from "./Sidebar.Cashier";
+import Account_Sidebar from "./Sidebar.Accountant";
 
-class cashierDash extends Component {
+class AccountantDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,7 +14,7 @@ class cashierDash extends Component {
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <Cashier_sidebar activemenu={'DASHBOARD'} />
+                <Account_Sidebar activemenu={'DASHBOARD'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
                         <h4>Accountant Dashboard</h4>
@@ -25,4 +25,4 @@ class cashierDash extends Component {
     }
 }
 
-export default withRouter(cashierDash);
+export default withRouter(AccountantDashboard);

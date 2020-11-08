@@ -5,7 +5,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
-import moment from 'moment';
 import Vehicle_CONTROLLER from '../../../../Controllers/HR Staff/Vehicle.controller';
 
 import DetailsEachVehicleCom from './DetailsEachVehicle.Com'
@@ -65,7 +64,7 @@ class DisplayVehiclesCom extends React.Component {
         const res = await Vehicle_CONTROLLER.getOneVehicleByID(id,this.props.auth.token);
 
         console.log("vehicle eke ewa",res );
-        if(res.status == 200 ){
+        if(res.status === 200 ){
             this.setState({
                 VehicleByID: res.data.data,
             });
@@ -131,8 +130,8 @@ class DisplayVehiclesCom extends React.Component {
                                 <Nav.Item>
                                     <Row>
                                         <Col xs={12} md={8}>
-                                            <h6 style={{display: this.state.searchState == false ? 'block' : 'none' ,paddingBottom:"15px", paddingTop:"19px", paddingLeft:"15px", paddingRight:"15px", color:"#475466", fontFamily:"Roboto, sans-serif"}}>Vehicles</h6>
-                                            <div className="col" style={{ display: this.state.searchState == true ? 'block' : 'none' , paddingTop:"15px"}}>
+                                            <h6 style={{display: this.state.searchState === false ? 'block' : 'none' ,paddingBottom:"15px", paddingTop:"19px", paddingLeft:"15px", paddingRight:"15px", color:"#475466", fontFamily:"Roboto, sans-serif"}}>Vehicles</h6>
+                                            <div className="col" style={{ display: this.state.searchState === true ? 'block' : 'none' , paddingTop:"15px"}}>
                                                 <InputGroup className="mb-3" >
                                                     <FormControl
                                                     style={{height:"30px"}}

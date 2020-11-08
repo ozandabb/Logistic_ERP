@@ -48,8 +48,7 @@ class addSupplierCom extends React.Component {
 
         if(result.status == 201){
             CONFIG.setToast("Successfully Added");
-            this.props.history.push("/hr/supplier");
-            // this.clear();
+            this.clear();
         }else{
             CONFIG.setErrorToast(" Somthing Went Wrong!");
             this.clear();

@@ -1,14 +1,28 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import Warehouse_Sidebar from "./sidebar.warehouse";
 
-class warehouseDash extends Component {
+class WarehouseDashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        
+        };
+    }
+
 
     render() {
         return (
-            <h1>warehouse  Dashboard </h1>
+            <div className="bg-light wd-wrapper">
+                <Warehouse_Sidebar activemenu={'DASHBOARD'} />
+                <div className="wrapper-wx" style={{height:"100hv"}}>
+                    <div className="container-fluid">
+                        <h4>Accountant Dashboard</h4>
+                    </div>
+                </div>
+            </div>
         );
     }
-
 }
 
-export default withRouter(warehouseDash);
+export default withRouter(WarehouseDashboard);

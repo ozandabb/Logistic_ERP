@@ -1,14 +1,28 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import ManageTeam_Sidebar from "./Sidebar.Mangement";
 
-class ManagementDash extends Component {
+class ManageTeamDashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        
+        };
+    }
+
 
     render() {
         return (
-            <h1>Management Dashboard </h1>
+            <div className="bg-light wd-wrapper">
+                <ManageTeam_Sidebar activemenu={'DASHBOARD'} />
+                <div className="wrapper-wx" style={{height:"100hv"}}>
+                    <div className="container-fluid">
+                        <h4>Accountant Dashboard</h4>
+                    </div>
+                </div>
+            </div>
         );
     }
-
 }
 
-export default withRouter(ManagementDash);
+export default withRouter(ManageTeamDashboard);

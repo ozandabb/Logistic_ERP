@@ -1,14 +1,28 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import PAYROLL_Sidebar from "./sidebar.payroll";
 
-class payrollDash extends Component {
+class PayrollDashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        
+        };
+    }
+
 
     render() {
         return (
-            <h1>payroll Dashboard </h1>
+            <div className="bg-light wd-wrapper">
+                <PAYROLL_Sidebar activemenu={'DASHBOARD'} />
+                <div className="wrapper-wx" style={{height:"100hv"}}>
+                    <div className="container-fluid">
+                        <h4>Accountant Dashboard</h4>
+                    </div>
+                </div>
+            </div>
         );
     }
-
 }
 
-export default withRouter(payrollDash);
+export default withRouter(PayrollDashboard);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import RootRouter from "./RootRouter";
 import { Provider } from 'react-redux';

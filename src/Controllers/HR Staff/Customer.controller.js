@@ -15,6 +15,7 @@ class Customercontroller{
         return await Axios.post( `${Config.host}${Config.port}${this.api.addCustomer}`, data,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
+                console.log("customer res",Response );
                 return { ...Response.data , status : 200 }
             })
             .catch(err => {

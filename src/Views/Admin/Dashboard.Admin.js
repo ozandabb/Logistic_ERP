@@ -1,14 +1,28 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import Admin_Sidebar from "./Sidebar.Admin";
 
 class AdminDashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        
+        };
+    }
+
 
     render() {
         return (
-            <h1>Admin DaSHBOARD</h1>
+            <div className="bg-light wd-wrapper">
+                <Admin_Sidebar activemenu={'DASHBOARD'} />
+                <div className="wrapper-wx" style={{height:"100hv"}}>
+                    <div className="container-fluid">
+                        <h4>Admin Dashboard</h4>
+                    </div>
+                </div>
+            </div>
         );
     }
-
 }
 
 export default withRouter(AdminDashboard);

@@ -5,7 +5,6 @@ import {  Button, Card, FormFile } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
 
-
 import CUST_CONTROLLER from '../../../../Controllers/HR Staff/Customer.controller';
 
 class addCustomerCom extends React.Component {
@@ -72,9 +71,13 @@ class addCustomerCom extends React.Component {
         const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
 
         if(result.status == 201){
-            CONFIG.setToast("Successfully Added");
+            CONFIG.setToast(result.data.message);
             this.clear();
         }
+        // else{
+        //     CONFIG.setErrorToast(" Somthing Went Wrong!");
+        //     this.clear();
+        // }
     }
 
     clear = ()=>{

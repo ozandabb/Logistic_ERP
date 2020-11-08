@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import '../../Asserts/signin/css/main.css'
 import '../../Asserts/signin/css/util.css'
 import img_1 from '../../Asserts/signin/img/img-03.jpg'
-import PropType from 'prop-types';
 import { connect } from 'react-redux';
 import CommonController from '../../Controllers/Common.controller';
 import { setCurrentUser } from "../../Redux/Action/authAction";
@@ -17,76 +16,63 @@ class SignIn extends Component {
             username: '',
             password: ''
         };
-
     }
 
-    // email start
+    // Email
     onChangeuEmail(e) {
         this.setState({
         username: e.target.value,
         });
     }
 
-    // password  start
+    // Password  
     onChangeuPass(e) {
         this.setState({
         password: e.target.value,
         });
     }
 
+    // Login Function
     async onLogin(e) {
         e.preventDefault();
 
         var status = await CommonController.common_sign(this.state.username, this.state.password);
         
-        console.log("status", status);
-        if(status.status == 200){
+        if(status.status === 200){
             this.props.setCurrentUser(status.data.data );
-            if(status.data.data.user_details.role === 12 ){
-                  this.props.history.push("/hr/dashboard");
-            }else if(status.data.data.user_details.role == 5 ){
+            if(status.data.data.user_details.role === 18 ){
+                this.props.history.push("/AdminTeam/dashboard");
+            }else if(status.data.data.user_details.role === 16 ){
+                this.props.history.push("/Accountant/dashboard");
+            }else if(status.data.data.user_details.role === 15 ){
+                this.props.history.push("/AssistantAccountant/dashboard");
+            }else if(status.data.data.user_details.role === 14 ){
+                this.props.history.push("/HeadOfDept/dashboard");
+            } else if(status.data.data.user_details.role === 13 ){
+                this.props.history.push("/PayrollOfficer/dashboard");
+            }else if(status.data.data.user_details.role === 12 ){
+                this.props.history.push("/hr/dashboard");
+            }else if(status.data.data.user_details.role === 10 ){
+                this.props.history.push("/PurchasingManager/dashboard");
+            }else if(status.data.data.user_details.role === 9 ){
+                this.props.history.push("/Cashier/dashboard");
+            }else if(status.data.data.user_details.role === 8 ){
+                this.props.history.push("/SalesPerson/dashboard");
+            }else if(status.data.data.user_details.role === 7 ){
+                this.props.history.push("/Warehouse/dashboard");
+            }else if(status.data.data.user_details.role === 6 ){
+                this.props.history.push("/AccountsExecutives/dashboard");
+            }else if(status.data.data.user_details.role === 4 ){
                 this.props.history.push("/backOffice/dashboard");
-            }  
+            }else if(status.data.data.user_details.role === 3 ){
+                this.props.history.push("/ManagementTeam/dashboard");
+            }else{
+                this.props.history.push("/");
+            }   
         }
-
-
-        // CommonController.common_sign(this.state.username, this.state.password).then(response=>{
-            // if(response.code == 200){
-            //     console.log("login eka" ,response );
-            //     this.props.setCurrentUser(response.data.data.user_details);
-            //     if(response.data.data.user_details.role === 12 ){
-            //          this.props.history.push("/hr/dashboard");
-            //     }else if(response.data.data.user_details.role == 5 ){
-            //         this.props.history.push("/backOffice/dashboard");
-            //     }  
-            // }
-        // }).catch(err =>{
-
-        // })
     }
-
-    // async onLogin(e) {
-    //     e.preventDefault();
-    //     const userDate = {
-    //         username: this.state.username,
-    //         password: this.state.password,
-    //     };
-        // const res = await this.props.loginUser(userDate);
-
-        // if(res.code === 200){
-        //     if(res.data.data.user_details.role === 12 ){
-        //          this.props.history.push("/hr/dashboard");
-        //     }else{
-        //         this.props.history.push("/");
-        //     }
-   
-           
-        // }
-    //}
-
     
     render() {
-        const { username, password } = this.state
         return (
             <div className="container-fluid" style={{backgroundColor:"#ffffff"}} >
                 <div className="limiter">
@@ -141,15 +127,6 @@ class SignIn extends Component {
 
 export default connect(null, { setCurrentUser })(
     withRouter(SignIn)
-  );
-// SignIn.PropType = {
-//     loginUser: PropType.func.isRequired,
-//     auth: PropType.object.isRequired,
-//   };
-  
-//   const mapStateToProps = state => ({
-//     auth: state.auth,
-//   });
-  
-//   export default connect(mapStateToProps, { loginUser })(SignIn);
+);
+
       
