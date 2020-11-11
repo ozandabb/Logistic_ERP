@@ -17,7 +17,7 @@ class Account_Executive_Dashboard extends Component {
                 <Account_execu_Sidebar activemenu={'DASHBOARD'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
-                        <h4>Account Executive</h4>
+                        <h4>Account Executive Executive</h4>
                     </div>
                 </div>
             </div>

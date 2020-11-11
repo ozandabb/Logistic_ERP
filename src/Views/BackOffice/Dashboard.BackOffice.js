@@ -17,7 +17,7 @@ class BacOfficeDashboard extends Component {
                 <Backoffice_Sidebar activemenu={'DASHBOARD'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
-                        <h4>Accountant Dashboard</h4>
+                        <h4>BackOffice Dashboard</h4>
                     </div>
                 </div>
             </div>

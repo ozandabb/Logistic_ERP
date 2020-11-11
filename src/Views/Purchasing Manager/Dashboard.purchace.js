@@ -17,7 +17,7 @@ class PurchaseManagerDashboard extends Component {
                 <Purchase_Sidebar activemenu={'DASHBOARD'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
-                        <h4>Accountant Dashboard</h4>
+                        <h4>Purchasing Manager Dashboard</h4>
                     </div>
                 </div>
             </div>
