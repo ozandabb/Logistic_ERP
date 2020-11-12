@@ -168,7 +168,7 @@ class DisplayEmployeeCom extends React.Component {
                                         <ScrollArea
                                         speed={1}
                                         className="area"
-                                        style={{height:"500px"}}
+                                        style={{height:"600px"}}
                                         contentClassName="content"
                                         horizontal={false}
                                         >

@@ -5,6 +5,10 @@ import Employee from '../Views/HR Ececutive/Employee';
 import Vehicles from '../Views/HR Ececutive/Vehicle';
 import Driver from '../Views/HR Ececutive/DriverProfile';
 
+import Loans from '../Views/HR Ececutive/HR Components/Requests/LoanRequest';
+import Leave from '../Views/HR Ececutive/HR Components/Requests/LeaveRequest';
+import SalaryAdavanced from '../Views/HR Ececutive/HR Components/Requests/SalaryAdvancedReq';
+
 let HRRoutes = [
 
   {
@@ -41,6 +45,26 @@ let HRRoutes = [
     path: "/hr/driver",
     name: "Driver",
     component: Driver,
+    exact: true,
+  },
+
+  //Requests
+  {
+    path: "/hr/Requests/Loans",
+    name: "Loans",
+    component: Loans,
+    exact: true,
+  },
+  {
+    path: "/hr/Requests/Leave",
+    name: "Leave",
+    component: Leave,
+    exact: true,
+  },
+  {
+    path: "/hr/Requests/SalaryAdavanced",
+    name: "SalaryAdavanced",
+    component: SalaryAdavanced,
     exact: true,
   },
 ];

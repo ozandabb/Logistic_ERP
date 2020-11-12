@@ -57,6 +57,7 @@ class Suppliercontroller{
             `${Config.host}${Config.port}${this.api.getSupplierByID}/${id}`,
             { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }})      
             .then(Response => {
+                console.log("sup res", Response);
                 resp = Response.status;
                 userData = Response;
             })

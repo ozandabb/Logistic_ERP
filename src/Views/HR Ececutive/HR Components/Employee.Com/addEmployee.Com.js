@@ -102,11 +102,7 @@ class addEmployeeCom extends React.Component {
             postal_code : '',
         })
 
-        if (this.state.addEmployeeState) {
-            this.setState({ addEmployeeState: false })
-        } else {
-            this.setState({ addEmployeeState: true })
-        }
+       this.change_toggle();
     }
 
     render() {

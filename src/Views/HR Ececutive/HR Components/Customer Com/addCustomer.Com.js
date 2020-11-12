@@ -98,11 +98,7 @@ class addCustomerCom extends React.Component {
             postal_code : '',
         })
 
-        if (this.state.addCustomerState) {
-            this.setState({ addCustomerState: false })
-        } else {
-            this.setState({ addCustomerState: true })
-        }
+      this.change_toggle();
     }
 
     render() {

@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch , faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons'
 import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
@@ -71,12 +71,16 @@ class DisplatSupplierCom extends React.Component {
 
     //DELETE Fucntion
     onClickDelete = (id) => {
-        CONFIG.setDeleteConfirmAlert(
-            "",
-            "Are you sure you want to delete this Supplier ?",
-            () => this.clickDeleteSupplier(id),
-            () => {}
-        );
+        if(id == ''){
+            CONFIG.setErrorToast("Please Select a Supplier to Delete!");
+        }else{
+            CONFIG.setDeleteConfirmAlert(
+                "",
+                "Are you sure you want to delete this Supplier ?",
+                () => this.clickDeleteSupplier(id),
+                () => {}
+            );
+        }
     };
     clickDeleteSupplier = async (id) => {
         const result = await SUPPLIER_CONTROLLER.DeleteSupplier( id , this.props.auth.token );
@@ -157,7 +161,7 @@ class DisplatSupplierCom extends React.Component {
                                         <div className="col-sm" style={{paddingRight:"50px"}}>
                                             <div className="row">
                                                 <div className="col-sm">
-                                                    <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update {this.props.name} Details<br></br>
+                                                    <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update {name} Details<br></br>
                                                     <span className="text-muted small">You can Update or Delete each Supplier</span></h6>
                                                 </div>
                                             </div>
@@ -244,12 +248,12 @@ class DisplatSupplierCom extends React.Component {
                         <Col sm={3}>
                             <Nav variant="pills" className="flex-column bg-white">
                                 <Card>
-                                <Nav.Item>
+                                <Nav.Item style={{backgroundColor:"#475466", height:"65px"}}>
                                     <Row>
                                         <Col xs={12} md={8}>
-                                            <h6 style={{display: this.state.searchState == false ? 'block' : 'none' ,paddingBottom:"15px", paddingTop:"19px", paddingLeft:"15px", paddingRight:"15px", color:"#475466", fontFamily:"Roboto, sans-serif"}}>Suppliers</h6>
+                                            <h6 style={{display: this.state.searchState == false ? 'block' : 'none' , paddingTop:"22px", paddingLeft:"15px", paddingRight:"15px", color:"#FFFFFF", fontFamily:"Roboto, sans-serif", fontStyle:"initial"}}>All Suppliers</h6>
                                             <div className="col" style={{ display: this.state.searchState == true ? 'block' : 'none' , paddingTop:"15px"}}>
-                                                <InputGroup className="mb-3" >
+                                                <InputGroup className="" >
                                                     <FormControl
                                                     style={{height:"30px"}}
                                                     aria-label="Username"
@@ -261,8 +265,8 @@ class DisplatSupplierCom extends React.Component {
                                             </div>
                                         </Col>
                                         {/* <Col xs={6} md={4}> */}
-                                        <Col md="auto"  style={{paddingTop:"15px"}}>
-                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', alignContent:"flex-end", alignItems:"flex-end"}} />
+                                        <Col md="auto"  style={{paddingTop:"16px", paddingBottom:"8px"}}>
+                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"20px", alignContent:"flex-end", alignItems:"flex-end"}} />
                                         </Col>
                                     </Row>
                                 </Nav.Item>
@@ -272,7 +276,7 @@ class DisplatSupplierCom extends React.Component {
                                         <ScrollArea
                                         speed={1}
                                         className="area"
-                                        style={{height:"500px"}}
+                                        style={{height:"600px"}}
                                         contentClassName="content"
                                         horizontal={false}
                                         >

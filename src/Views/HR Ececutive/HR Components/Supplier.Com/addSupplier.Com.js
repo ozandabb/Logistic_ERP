@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {FormInput  } from '../../../../Components/Form'
-import {  Button, Card , Form } from 'react-bootstrap';
+import {  Button, Card , Form , Image , OverlayTrigger , Tooltip  } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
 
@@ -63,11 +63,7 @@ class addSupplierCom extends React.Component {
             phoneNo: '',
         })
 
-        if (this.state.addSupplierState) {
-            this.setState({ addSupplierState: false })
-        } else {
-            this.setState({ addSupplierState: true })
-        }
+        this.change_toggle();
     }
 
     render() {
@@ -76,8 +72,27 @@ class addSupplierCom extends React.Component {
                 {/* Title and the add new customer button */}
                 <div className="row" style={{marginTop:"5px", fontFamily:"sans-serif", marginBottom:"15px"}}>
                         <div className="col-sm-9">
-                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Supplier Details<br></br>
-                            <span className="text-muted small">Dashboard / Suppliers</span></h6>
+                            <div className="row">
+                                <div className="col-sm">
+                                    <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Supplier Details<br></br>
+                                    <span className="text-muted small">Dashboard / Suppliers</span></h6>
+                                </div>
+                                <div className="col-sm">
+                                    {['bottom'].map((placement) => (
+                                        <OverlayTrigger
+                                        key={placement}
+                                        placement={placement}
+                                        overlay={
+                                            <Tooltip id={`tooltip-${placement}`}>
+                                             Print All Suppliers
+                                            </Tooltip>
+                                        }
+                                        >
+                                    <Image src="/images/printer.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px"}} rounded />
+                                        </OverlayTrigger>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                         <div className="col-sm-3">
                             <Button variant="" style={{backgroundColor:"#475466" , color:"#FFFFFF", width:"100%",  cursor: 'pointer'}} onClick={() => this.change_toggle()}>Add new Supplier</Button>
@@ -92,9 +107,8 @@ class addSupplierCom extends React.Component {
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
                                             <form onSubmit={(e) => this.onFormSubmit(e)}>
-                                                <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Supplier Details<br></br>
-                                                <span className="text-muted small">You can add a new Supplier by filling relavant Information</span></h6>
-                                           
+                                                    <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Supplier Details<br></br>
+                                                    <span className="text-muted small">You can add a new Supplier by filling relavant Information</span></h6>
                                                 <div className="row" >
                                                     <div className="col-sm-8">
                                                         
@@ -181,7 +195,7 @@ class addSupplierCom extends React.Component {
 
 const mapStateToProps = state => ({
     auth: state.auth || {},
-  });
+});
  
   
 export default connect(mapStateToProps, null)(withRouter(addSupplierCom));

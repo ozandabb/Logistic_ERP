@@ -60,40 +60,38 @@ class addVehicleCom extends React.Component {
             insurance_number:this.state.insurance_number,
             insurance_renew_date:this.state.insurance_renew_date,
             description:this.state.description,
-            image:this.state.image
+            image: this.state.image
         }
 
         const result = await Vehicle_CONTROLLER.addVehicle(data, this.props.auth.token);
 
         if(result.status == 201){
-            CONFIG.setToast("Successfully Added");
+            CONFIG.setToast("Vehicle Successfully Added!");
+            this.clear();
+        }else{
+            CONFIG.setErrorToast("Somthing Went Wrong!");
             this.clear();
         }
     }
 
     clear = ()=>{
         this.setState({
-            username:'' ,
-            email:'' ,
-            nic:'' ,
-            phone: '',
-            //image : this.state.image,
-            credit_limit: '',
-            city: '',
-            address: '',
-            name: '',
-            lat: '',
-            long : '',
-            //signature: this.state.signature,
-            //dob: this.state.dob,
-            postal_code : '',
+            vehicle_name:'',
+            vehicle_year:'',
+            vehicle_type:'',
+            vehicle_number:'',
+            weight: '',
+            licen_number: '',
+            licen_renew_date:'',
+            mileage:'',
+            service_due:'',
+            insurance_number:'',
+            insurance_renew_date:'',
+            description:'',
+            image: ''
         })
 
-        if (this.state.addVehicleState) {
-            this.setState({ addVehicleState: false })
-        } else {
-            this.setState({ addVehicleState: true })
-        }
+       this.change_toggle();
     }
 
     render() {
@@ -117,7 +115,7 @@ class addVehicleCom extends React.Component {
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
-                                            <form onSubmit={(e) => this.onFormSubmit(e)}>
+                                            <form onSubmit={(e) => this.onFormSubmit(e)} >
                                                 <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Vehicle Details<br></br>
                                                 <span className="text-muted small">You can add a new vehicle by filling relavant Information</span></h6>
                                            
@@ -299,7 +297,7 @@ class addVehicleCom extends React.Component {
                                                 <div className="row"> 
                                                         <div className="col-6 mt-3 mb-1" >
                                                         <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                        <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                        <Button  style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</Button>
                                                         </div>
                                                 </div>
 
