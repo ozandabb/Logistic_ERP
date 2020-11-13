@@ -9,8 +9,6 @@ import {FormInput  } from '../../../../Components/Form'
 import CONFIG from '../../../../Controllers/Config.controller';
 import Vehicle_CONTROLLER from '../../../../Controllers/HR Staff/Vehicle.controller';
 
-import DetailsEachVehicleCom from './DetailsEachVehicle.Com'
-
 class DisplayVehiclesCom extends React.Component {
     constructor(props) {
         super(props);
@@ -38,6 +36,7 @@ class DisplayVehiclesCom extends React.Component {
             search: '',
             VehicleByID : [],
 
+            errors : {},
         };
     }
 
@@ -75,9 +74,9 @@ class DisplayVehiclesCom extends React.Component {
     loadVehicleData = async (id) => {
         const res = await Vehicle_CONTROLLER.getOneVehicleByID(id,this.props.auth.token);
 
-        console.log("vehicle eke ewa",res );
         if(res.status === 200 ){
             this.setState({
+                errors : {},
                 id: res.data.data.id,
                 vehicle_name: res.data.data.vehicle_name,
                 vehicle_year:  res.data.data.vehicle_year,
@@ -127,33 +126,35 @@ class DisplayVehiclesCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        var data = {
-            id: this.state.id,
-            vehicle_name: this.state.vehicle_name,
-            vehicle_year:  this.state.vehicle_year,
-            vehicle_type: this.state.vehicle_type,
-            vehicle_number: this.state.vehicle_number,
-            weight:  this.state.weight,
-            licen_number:  this.state.licen_number,
-            licen_renew_date: this.state.licen_renew_date,
-            mileage: this.state.mileage,
-            service_due: this.state.service_due,
-            insurance_number: this.state.insurance_number,
-            insurance_renew_date: this.state.insurance_renew_date,
-            description:  this.state.description,
-        }
+        if (this.validate()) {
+            var data = {
+                id: this.state.id,
+                vehicle_name: this.state.vehicle_name,
+                vehicle_year:  this.state.vehicle_year,
+                vehicle_type: this.state.vehicle_type,
+                vehicle_number: this.state.vehicle_number,
+                weight:  this.state.weight,
+                licen_number:  this.state.licen_number,
+                licen_renew_date: this.state.licen_renew_date,
+                mileage: this.state.mileage,
+                service_due: this.state.service_due,
+                insurance_number: this.state.insurance_number,
+                insurance_renew_date: this.state.insurance_renew_date,
+                description:  this.state.description,
+            }
 
-        const result = await Vehicle_CONTROLLER.UpdateVehicle( data , this.props.auth.token );
+            const result = await Vehicle_CONTROLLER.UpdateVehicle( data , this.props.auth.token );
 
-        if(result.status == 200){
-            CONFIG.setToast("Successfully Updated!");
-            this.clear();
-            this.loadAllVehicles();
-        }
-        else{
-            CONFIG.setErrorToast("Somthing Went Wrong!");
-            this.clear();
-            this.loadAllVehicles();
+            if(result.status == 200){
+                CONFIG.setToast("Successfully Updated!");
+                this.clear();
+                this.loadAllVehicles();
+            }
+            else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.clear();
+                this.loadAllVehicles();
+            }
         }
     }
 
@@ -178,7 +179,7 @@ class DisplayVehiclesCom extends React.Component {
 
     render() {
         const {vehicleList , vehicle_name, vehicle_type, vehicle_number, vehicle_year, weight , id, 
-            licen_number, licen_renew_date, insurance_number, insurance_renew_date, mileage, service_due, description, image } = this.state;
+            licen_number, licen_renew_date, insurance_number, insurance_renew_date, mileage, service_due, description, image , errors } = this.state;
         return (
             <div>
 
@@ -188,33 +189,16 @@ class DisplayVehiclesCom extends React.Component {
 
                         <Col sm={9}>
                             <Card >
-                                {/* Each customer tab section DetailsEachCus.Com.js  */}
-                                {/* <DetailsEachVehicleCom
-                                    Cusid={VehicleByID.id}
-                                    VEHICLE_NAME={VehicleByID.vehicle_name}
-                                    VEHICLE_YEAR={VehicleByID.vehicle_year}
-                                    VEHICLE_TYPE={VehicleByID.vehicle_type}
-                                    VEHICLE_NUMBER={VehicleByID.vehicle_number}
-                                    VEHICLE_WEIGHT={VehicleByID.weight}
-                                    VEHICLE_LI_NUM={VehicleByID.licen_number}
-                                    VEHICLE_LI_RENEW_DATE={VehicleByID.licen_renew_date}
-                                    VEHICLE_MILEAGE={VehicleByID.mileage}
-                                    VEHICLE_SERVICE_DUE={VehicleByID.service_due}
-                                    VEHICLE_INSUARANCE_NUMBER={VehicleByID.insurance_number}
-                                    VEHICLE_INSU_RENEW_DATE={VehicleByID.insurance_renew_date}
-                                    VEHICLE_DESCRIPTION={VehicleByID.description}
-                                /> */}
-
                                     <nav>
-                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
-                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
-                                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+                                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
+                                            <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
+                                            <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
                                         </div>
                                     </nav>
                                     <div class="tab-content" id="nav-tabContent">
                                         {/* basic information tab start here */}
-                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                        <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                         <form onSubmit={(e) => this.onFormSubmit(e)} >
                                             <div className="row ml-3 mt-1">
                                                 <div className="col-sm-8">
@@ -233,23 +217,23 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Vehicle Name *'}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={vehicle_name}
                                                                 name="vehicle_name"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                         <div className="col-md-6 mt-1 mb-1" >
                                                             <FormInput 
                                                                 label={"Year *"}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={vehicle_year}
                                                                 name="vehicle_year"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                     </div>
                                                     <div className="row">
@@ -257,23 +241,23 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Vehicle Type *'}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={vehicle_type}
                                                                 name="vehicle_type"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                         <div className="col-md-6 mt-1 mb-1" >
                                                             <FormInput 
                                                                 label={"Vehicle Number *"}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={vehicle_number}
                                                                 name="vehicle_number"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                     </div>
                                                     <div className="row">
@@ -281,23 +265,23 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={"Weight *"}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={weight}
                                                                 name="weight"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                         <div className="col-md-6  mt-1 mb-1" >
                                                             <FormInput 
                                                                 label={"Mileage *"}
-                                                                //error={ errors.group_mo}
                                                                 value={mileage}
                                                                 placeholder={"Select one Vehicle"}
                                                                 name="mileage"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                     </div>
                                                     <div className="row">
@@ -305,12 +289,12 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={"Description *"}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={description}
                                                                 name="description"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div> 
                                                     </div>
                                                     <div className="row">
@@ -318,23 +302,23 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={"Insurance Number *"}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={insurance_number}
                                                                 name="insurance_number"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                              {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                         <div className="col-md-6 mt-1 mb-1" >
                                                             <FormInput 
                                                                 label={'Insurance Renew Date *'}
                                                                 placeholder={"Select one Vehicle"}
-                                                                //error={ errors.group_mo}
                                                                 value={insurance_renew_date}
                                                                 name="insurance_renew_date"
                                                                 onChange={this.formValueChange}
-                                                                //error_meesage={'*Group Number required'}
                                                             />
+                                                              {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                         </div>
                                                     </div>
                                                     <div className="row">
@@ -342,12 +326,12 @@ class DisplayVehiclesCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Service Due Date *"}
                                                                     placeholder={"Select one Vehicle"}
-                                                                    //error={ errors.group_mo}
                                                                     value={service_due}
                                                                     name="service_due"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                  {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                             </div>
                                                     </div>
                                                     
@@ -361,12 +345,12 @@ class DisplayVehiclesCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"License Number *"}
                                                                     placeholder={"Select one Customer"}
-                                                                    //error={ errors.group_mo}
                                                                     value={licen_number}
                                                                     name="licen_number"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                  {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                             </div>
                                                         </div>
                                                         
@@ -377,12 +361,12 @@ class DisplayVehiclesCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"License Renew Date *"}
                                                                     placeholder={"Select one Customer"}
-                                                                    //error={ errors.group_mo}
                                                                     value={licen_renew_date}
                                                                     name="licen_renew_date"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                  {errors.service_due && errors.service_due.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_due}</h4>}
                                                             </div>
                                                         </div>
                                                         
@@ -398,10 +382,10 @@ class DisplayVehiclesCom extends React.Component {
                                             </div>
                                         </form>
                                         </div>
-                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
+                                        <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                                             fff
                                         </div>
-                                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                        <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                             ff
                                         </div>
                                    
@@ -486,7 +470,21 @@ class DisplayVehiclesCom extends React.Component {
     } 
     
 
+    validate = () => {
+        let { errors, service_due } = this.state;
+        let count = 0;
 
+        if (service_due.length === 0) {
+            errors.service_due =  'Please select a Vehicle'
+            count++
+        } else {
+            errors.service_due = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
+    
 
 
 

@@ -44,7 +44,6 @@ class DisplayEmployeeCom extends React.Component {
 
     async componentDidMount() {
         const res = await Employee_CONTROLLER.getAllEmployee(this.props.auth.token);
-        console.log("methnata ", res.data.rows);
         this.setState({
             employeeList: res.data.rows,
         });
