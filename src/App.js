@@ -8,7 +8,7 @@ import './custom.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "../src/Asserts/commoncss/alerts.css";
+import "../src/assersts/commoncss/alerts.css";
 
 toast.configure(); 
 
