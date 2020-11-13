@@ -14,7 +14,7 @@ class BacOfficeDashboard extends Component {
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <Backoffice_Sidebar activemenu={'DASHBOARD'} />
+                <Backoffice_Sidebar activemenu={'backOffice_dashboard'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
                         <h4>BackOffice Dashboard</h4>

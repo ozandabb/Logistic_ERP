@@ -45,6 +45,7 @@ class DisplatCustomerCom extends React.Component {
 
     async componentDidMount() {
         const res = await CUST_CONTROLLER.getAllCustomer(this.props.auth.token);
+        console.log("alll cus", res);
         this.setState({
             customerList: res.data.rows,
         });

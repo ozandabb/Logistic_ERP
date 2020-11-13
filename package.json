@@ -26,9 +26,12 @@
     "react-scripts": "^3.4.4",
     "react-scrollbar": "^0.5.6",
     "react-select": "^3.1.0",
+    "react-select-search": "^2.2.0",
     "react-tabs": "^3.1.1",
+    "react-to-print": "^2.11.0",
     "react-toastify": "^6.0.9",
     "react-toggle-button": "^2.2.0",
+    "react-validation": "^3.0.7",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0"
