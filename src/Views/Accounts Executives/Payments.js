@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AccSidebar from "./Sidebar.Acc.Exe";
 import { connect } from 'react-redux';
-import AddPaymentSection from "./Components/Payment.Com/addPayment.Com";
 import DisplayPaymentSection from "./Components/Payment.Com/DisplayPayment.Com";
 
 class Payments extends Component {
@@ -14,18 +13,15 @@ class Payments extends Component {
                     <div className="container-fluid">
 
                         {/* 
-                            Add Payment Section with the Header
-                            Component
-                            addPayment.Com.js
-                        */}
-                        <AddPaymentSection />
-
-                        {/* 
                             Display All Payments and Each Payment Details section
                             Component
                             DisplayPayment.Com.js
                         */}
-                        <DisplayPaymentSection />
+                        <div className="row" style={{ marginTop: "20px" }}>
+                            <div className="col-sm">
+                                <DisplayPaymentSection />
+                            </div>
+                        </div>
 
                     </div>
                 </div>
