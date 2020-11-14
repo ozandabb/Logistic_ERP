@@ -1,5 +1,6 @@
 import PurchasingDashboard from '../Views/Purchasing Manager/Dashboard.purchace';
-import AddOrder  from '../Views/Purchasing Manager/Purchasing Manager Components/AddOrder/Addorder';
+import AddSupplierClaim from '../Views/Purchasing Manager/Purchasing Manager Components/Supplier/Add Claims/AddSupplierDiscounts';
+import Supplier  from '../Views/Purchasing Manager/Purchasing Manager Components/Supplier/Supplier';
 
 let PurchasingManagerRoutes = [
 
@@ -10,11 +11,17 @@ let PurchasingManagerRoutes = [
         exact: true,
       },
       {
-        path: "/PurchasingManager/addOrder",
+        path: "/PurchasingManager/supplier",
         name: "CreatePurchasingOrder",
-        component: AddOrder,
+        component: Supplier,
         exact: true,
       },
+      // {
+      //   path: "/PurchasingManager/addClaim",
+      //   name: "AddSupplierClaim",
+      //   component: AddSupplierClaim,
+      //   exact: true,
+      // },
     
     ];
     

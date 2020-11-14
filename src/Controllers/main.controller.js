@@ -3,7 +3,7 @@ import Config from "./Config.controller";
 
 class MainController{
     
-    apiCallFn=(method="get",url="",headers={},data={})=>{
+    apiCallFn=(method="get",url="",headers={},data={},cb)=>{
         return Axios({
             method,
             data,
