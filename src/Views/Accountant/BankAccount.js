@@ -18,6 +18,9 @@ import Col from "react-bootstrap/Col";
 import Dropdown from "react-bootstrap/Dropdown";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import _findIndex from "lodash.findindex";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit, faEllipsisV, faTrash} from "@fortawesome/free-solid-svg-icons";
+import Spinner from "react-bootstrap/Spinner";
 
 let active = 2;
 let items = [];
@@ -28,6 +31,7 @@ class BankAccount extends Component {
         this.state = {
             addBankAccountState: false,
             updateBankAccountState: false,
+            id: '',
             bank_name:'',
             account_type:'',
             account_number:'',
@@ -36,7 +40,10 @@ class BankAccount extends Component {
             added_by:'',
 
             bank_accounts: [],
-            no_of_pages : ''
+            no_of_pages : '',
+
+            error_message:'',
+            errors : {},
         };
     }
 
@@ -48,10 +55,11 @@ class BankAccount extends Component {
         }
     };
 
-    update_toggle = () => {
+    update_toggle = (id) => {
         if (this.state.updateBankAccountState) {
             this.setState({ updateBankAccountState: false })
         } else {
+            this.getBankAccountById(id);
             this.setState({ updateBankAccountState: true })
         }
     };
@@ -62,7 +70,7 @@ class BankAccount extends Component {
         this.setState({[e.target.name] : e.target.value  });
     };
 
-    onFormSubmit = async (e) => {
+    addBankAccount = async (e) => {
         e.preventDefault();
         console.log(this.props.auth.user.user_details.username);
         var data = {
@@ -88,8 +96,12 @@ class BankAccount extends Component {
             console.log("new " + this.state.bank_accounts);
 
         }else{
+            this.setState({
+                error_message : result.response.statusText
+            });
             CONFIG.setErrorToast(" Somthing Went Wrong!");
-            this.clear();
+            console.log(result.response.statusText);
+            //this.clear();
         }
     };
 
@@ -104,6 +116,19 @@ class BankAccount extends Component {
         });
 
         this.change_toggle();
+    };
+
+    updateClear = ()=>{
+        this.setState({
+            bank_name:'',
+            account_type:'',
+            account_number:'',
+            holder_name:'',
+            branch_name:'',
+            added_by: ''
+        });
+
+        this.update_toggle();
     };
 
     onChange = e =>{
@@ -163,23 +188,68 @@ class BankAccount extends Component {
 
     deleteBankAccount = async (id) => {
         const res = await Accountant_CONTROLLER.deleteBankAccount(id,this.props.auth.token);
-        let bank_account = this.state.bank_accounts;
-        let record_index  = _findIndex (bank_account, {id: id});
-        //this.loadAllBankAccounts();
-        bank_account.splice(record_index,1);
-        this.setState({
-            bank_accounts: bank_account
-        });
-        console.log(res);
+
+        if(res.status == 200){
+            CONFIG.setToast("Successfully Deleted!");
+            let bank_account = this.state.bank_accounts;
+            let record_index  = _findIndex (bank_account, {id: id});
+            //this.loadAllBankAccounts();
+            bank_account.splice(record_index,1);
+            this.setState({
+                bank_accounts: bank_account
+            });
+
+        }else{
+            CONFIG.setErrorToast("Somthing Went Wrong!");
+
+        }
     };
 
     //get a bank account by id
     getBankAccountById = async (id) => {
         const res = await Accountant_CONTROLLER.getBankAccountByID(id,this.props.auth.token);
+        console.log(res.data.data.holder_name);
+        this.setState({
+                id: res.data.data.id,
+                bank_name:res.data.data.bank_name,
+                account_type:res.data.data.account_type,
+                account_number:res.data.data.account_number,
+                holder_name:res.data.data.holder_name,
+                branch_name:res.data.data.branch_name,
+                added_by: ''
+            })
+        console.log(this.state.bank_name);
+    };
 
+    //update a bank acccount
+    updateBankAccount = async (e) => {
+        e.preventDefault();
+        var data = {
+            id : this.state.id,
+            bank_name: this.state.bank_name,
+            account_type: this.state.account_type,
+            account_number: this.state.account_number,
+            holder_name: this.state.holder_name,
+            branch_name: this.state.branch_name,
+            added_by: this.props.auth.user.user_details.id,
+
+
+        };
+        console.log(data);
+        const result = await Accountant_CONTROLLER.updateBankAccount(data, this.props.auth.token);
+
+        if(result.status == 200){
+            CONFIG.setToast("Successfully Updated!");
+            this.updateClear();
+            this.loadAllBankAccounts();
+
+
+        }else{
+            CONFIG.setErrorToast(" Somthing Went Wrong!");
+            this.updateClear();
+        }
 
     }
-
 
     render() {
         return (
@@ -231,15 +301,16 @@ class BankAccount extends Component {
                                         <Card.Body>
 
                                             <div className="col-12 bg-white mt-1 pb-1" >
-                                                <form onSubmit={(e) => this.onFormSubmit(e)}>
+                                                <form onSubmit={(e) => this.addBankAccount(e)}>
                                                     <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Bank Account Details<br></br>
                                                         <span className="text-muted small">You can add a new Bank Account by filling relavant Information</span></h6>
                                                     <div className="row" >
-                                                        <div className="col-sm-8">
+                                                        <div className="col-sm-12">
 
                                                             <div className="row">
-                                                                <div className="col-sm-6 mt-1 mb-1" >
+                                                                <div className="col-sm-4 mt-1 mb-1" >
                                                                     <FormInput
+                                                                        required={true}
                                                                         label={'Bank Name *'}
                                                                         placeholder={"Enter Bank Name"}
                                                                         //error={ errors.group_mo}
@@ -249,8 +320,9 @@ class BankAccount extends Component {
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
-                                                                <div className="col-sm-6 mt-1 mb-1" >
+                                                                <div className="col-sm-4 mt-1 mb-1" >
                                                                     <FormInput
+                                                                        required={true}
                                                                         label={'Account Type *'}
                                                                         placeholder={"Enter Account Type "}
                                                                         //error={ errors.group_mo}
@@ -259,12 +331,12 @@ class BankAccount extends Component {
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
-                                                                </div>
-                                                            </div>
 
-                                                            <div className="row">
-                                                                <div className="col-12 mt-1 mb-1" >
+
+                                                                </div>
+                                                                <div className="col-sm-4 mt-1 mb-1" >
                                                                     <FormInput
+                                                                        required={true}
                                                                         label={'Account Number *'}
                                                                         placeholder={"Enter Account Number"}
                                                                         //error={ errors.group_mo}
@@ -273,16 +345,17 @@ class BankAccount extends Component {
                                                                         onChange={this.formValueChange}
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{this.state.error_message}</h4>
                                                                 </div>
                                                             </div>
-
                                                         </div>
 
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-8">
 
                                                             <div className="row">
-                                                                <div className="col-12 mt-1 mb-1" >
+                                                                <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput
+                                                                        required={true}
                                                                         label={"Holder Name *"}
                                                                         placeholder={"Enter Holder Name"}
                                                                         //error={ errors.group_mo}
@@ -292,15 +365,9 @@ class BankAccount extends Component {
                                                                         //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div className="col-sm-4">
-
-                                                            <div className="row">
-                                                                <div className="col-12 mt-1 mb-1" >
+                                                                <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput
+                                                                        required={true}
                                                                         label={"Branch Name *"}
                                                                         placeholder={"Enter Branch Name"}
                                                                         //error={ errors.group_mo}
@@ -313,12 +380,32 @@ class BankAccount extends Component {
                                                             </div>
 
                                                         </div>
+
+                                                        {/*<div className="col-sm-4">*/}
+
+                                                        {/*    <div className="row">*/}
+                                                        {/*        <div className="col-sm-6 mt-1 mb-1" >*/}
+                                                        {/*            <FormInput*/}
+                                                        {/*                required={true}*/}
+                                                        {/*                label={"Branch Name *"}*/}
+                                                        {/*                placeholder={"Enter Branch Name"}*/}
+                                                        {/*                //error={ errors.group_mo}*/}
+                                                        {/*                value={this.state.branch_name}*/}
+                                                        {/*                name="branch_name"*/}
+                                                        {/*                onChange={this.formValueChange}*/}
+                                                        {/*                //error_meesage={'*Group Number required'}*/}
+                                                        {/*            />*/}
+                                                        {/*        </div>*/}
+                                                        {/*    </div>*/}
+
+                                                        {/*</div>*/}
                                                     </div>
 
                                                     <div className="row">
                                                         <div className="col-6 mt-3 mb-1" >
                                                             <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
                                                             <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+
                                                         </div>
                                                     </div>
 
@@ -338,7 +425,7 @@ class BankAccount extends Component {
                                         <Card.Body>
 
                                             <div className="col-12 bg-white mt-1 pb-1" >
-                                                <form onSubmit={(e) => this.onFormSubmit(e)}>
+                                                <form onSubmit={(e) => this.updateBankAccount(e)}>
                                                     <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update Bank Account Details<br></br>
                                                         <span className="text-muted small">You can add a new Bank Account by filling relavant Information</span></h6>
                                                     <div className="row" >
@@ -424,8 +511,8 @@ class BankAccount extends Component {
 
                                                     <div className="row">
                                                         <div className="col-6 mt-3 mb-1" >
-                                                            <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                            <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                            <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5" >Update</button>
+                                                            <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.updateClear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
                                                         </div>
                                                     </div>
 
@@ -473,14 +560,16 @@ class BankAccount extends Component {
                                                             <td><Dropdown as={ButtonGroup}>
 
 
-                                                                <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+                                                                <Dropdown.Toggle  variant="" id="dropdown-split-basic" >
+                                                                    <FontAwesomeIcon icon={faEllipsisV} />
+                                                                </Dropdown.Toggle>
 
                                                                 <Dropdown.Menu>
-                                                                    <Dropdown.Item href="#/action-1" onClick={() => this.update_toggle()}>
-                                                                        Edit
+                                                                    <Dropdown.Item href="#/action-1" onClick={() => this.update_toggle(value.id)}>
+                                                                        <FontAwesomeIcon className="text-warning" icon={faEdit} />&nbsp;&nbsp;Edit
                                                                     </Dropdown.Item>
                                                                     <Dropdown.Item href="#/action-2" onClick = {(() => this.onClickDelete(value.id))}>
-                                                                        Delete
+                                                                        <FontAwesomeIcon className="text-danger" icon={faTrash} />&nbsp;&nbsp;Delete
                                                                     </Dropdown.Item>
 
                                                                 </Dropdown.Menu>
