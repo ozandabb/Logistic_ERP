@@ -26,6 +26,8 @@ class DisplayPaymentCom extends React.Component {
 
             paymentList: [],
             search: '',
+
+            errors: {},
         };
     }
 
@@ -96,23 +98,25 @@ class DisplayPaymentCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        var data = {
-            icon_id: "DE123",
-            name: this.state.name,
-            type: this.state.type,
-            description: this.state.description,
-            added_by: this.props.auth.user.user_details.id,
-        }
+        if (this.validate()) {
+            var data = {
+                icon_id: "DE123",
+                name: this.state.name,
+                type: this.state.type,
+                description: this.state.description,
+                added_by: this.props.auth.user.user_details.id,
+            }
 
-        const result = await Payment_CONTROLLER.addPayment(data, this.props.auth.token);
+            const result = await Payment_CONTROLLER.addPayment(data, this.props.auth.token);
 
-        if (result.status == 201) {
-            CONFIG.setToast("Successfully Added");
-            this.clear();
-            this.loadAllPayments();
-        } else {
-            CONFIG.setErrorToast(" Somthing Went Wrong!");
-            this.clear();
+            if (result.status == 201) {
+                CONFIG.setToast("Successfully Added");
+                this.clear();
+                this.loadAllPayments();
+            } else {
+                CONFIG.setErrorToast(" Somthing Went Wrong!");
+                this.clear();
+            }
         }
     }
 
@@ -130,7 +134,7 @@ class DisplayPaymentCom extends React.Component {
     }
 
     render() {
-        const { paymentList, name, type, description, added_by, icon_id } = this.state;
+        const { paymentList, name, type, description, added_by, icon_id, errors } = this.state;
         return (
             <div>
                 <div>
@@ -182,23 +186,23 @@ class DisplayPaymentCom extends React.Component {
                                                             <FormInput
                                                                 label={'Payment Name *'}
                                                                 placeholder={"Enter Payment Name"}
-                                                                //error={ errors.group_mo}
                                                                 value={this.state.name}
                                                                 name="name"
                                                                 onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.name && errors.name.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                         </div>
                                                         <div className="col-sm-6 mt-1 mb-1" >
                                                             <FormInput
                                                                 label={'Type *'}
                                                                 placeholder={"Enter Type"}
-                                                                //error={ errors.group_mo}
                                                                 value={this.state.type}
                                                                 name="type"
                                                                 onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                             />
+                                                            {errors.type && errors.type.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.type}</h4>}
                                                         </div>
                                                     </div>
 
@@ -208,6 +212,8 @@ class DisplayPaymentCom extends React.Component {
                                                                 <Form.Label>Description *</Form.Label>
                                                                 <Form.Control as="textarea" placeholder={"Enter Description"} value={this.state.description} name="description" onChange={this.formValueChange} rows={3} />
                                                             </Form.Group>
+                                                            {errors.description && errors.description.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.description}</h4>}
                                                         </div>
                                                     </div>
 
@@ -283,7 +289,36 @@ class DisplayPaymentCom extends React.Component {
         );
     }
 
+    validate = () => {
+        let { errors, name, type, description } = this.state;
+        let count = 0;
+
+        if (name.length === 0) {
+            errors.name = 'Payment Name can not be empty !';
+            count++;
+        } else {
+            errors.name = ''
+        }
+
+        if (type.length === 0) {
+            errors.type = 'Payment Type can not be empty !';
+            count++;
+        } else {
+            errors.type = ''
+        }
+
+        if (description.length === 0) {
+            errors.description = 'Description can not be empty !';
+            count++;
+        } else {
+            errors.description = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
 }
+
 
 const mapStateToProps = state => ({
     auth: state.auth || {},
