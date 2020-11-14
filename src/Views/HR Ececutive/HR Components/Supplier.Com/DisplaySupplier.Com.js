@@ -25,6 +25,7 @@ class DisplatSupplierCom extends React.Component {
             supplierList: [],
             search: '',
 
+            errors : {},
         };
     }
 
@@ -60,6 +61,7 @@ class DisplatSupplierCom extends React.Component {
 
         if( resSup.status == 200 ){
             this.setState({
+                errors : {},
                 id: resSup.data.data.id,
                 name: resSup.data.data.name,
                 address: resSup.data.data.address,
@@ -99,26 +101,27 @@ class DisplatSupplierCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        var data = {
-            id: this.state.id,
-            name: this.state.name,
-            address: this.state.address,
-            phoneNo: this.state.phoneNo,
-            email: this.state.email,
-        }
+        if (this.validate()) {
+            var data = {
+                id: this.state.id,
+                name: this.state.name,
+                address: this.state.address,
+                phoneNo: this.state.phoneNo,
+                email: this.state.email,
+            }
 
-        const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data , this.props.auth.token );
+            const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data , this.props.token );
 
-        if(result.status == 200){
-            CONFIG.setToast("Successfully Updated!");
-            this.clear();
-            this.loadAllSuppliers();
+            if(result.status == 200){
+                CONFIG.setToast("Successfully Updated!");
+                this.clear();
+                this.loadAllSuppliers();
+            }
+            else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.clear();
+            }
         }
-        else{
-            CONFIG.setErrorToast("Somthing Went Wrong!");
-            this.clear();
-        }
-
     }
 
     formValueChange = (e) => {
@@ -136,7 +139,7 @@ class DisplatSupplierCom extends React.Component {
     }
 
     render() {
-        const {supplierList , name,address,phoneNo, email, id } = this.state;
+        const {supplierList , name,address,phoneNo, email, id , errors} = this.state;
         return (
             <div>
 
@@ -147,15 +150,15 @@ class DisplatSupplierCom extends React.Component {
                         <Col sm={9}>
                             <Card >
                                  <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
-                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
-                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+                                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
+                                        <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
+                                        <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
                                     </div>
                                 </nav>
-                                <div class="tab-content" id="nav-tabContent">
+                                <div className="tab-content" id="nav-tabContent">
                                     {/* basic information tab start here */}
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                     <form onSubmit={(e) => this.onFormSubmit(e)} >
                                         <div className="row ml-3 mt-1">
                                         <div className="col-sm" style={{paddingRight:"50px"}}>
@@ -172,23 +175,23 @@ class DisplatSupplierCom extends React.Component {
                                                         <FormInput 
                                                             label={'Customer Name *'}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={name}
                                                             name="name"
                                                             onChange={(e) => this.formValueChange(e)}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                     <div className="col-md-6 mt-1 mb-1" >
                                                         <FormInput 
                                                             label={"Contact Number *"}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={phoneNo}
                                                             name="phoneNo"
                                                             onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                 </div>
 
@@ -198,12 +201,12 @@ class DisplatSupplierCom extends React.Component {
                                                         <FormInput 
                                                             label={'Address *'}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={address}
                                                             name="address"
                                                             onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                 </div>
 
@@ -212,12 +215,12 @@ class DisplatSupplierCom extends React.Component {
                                                         <FormInput 
                                                             label={"Email *"}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={email}
                                                             name="email"
                                                             onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                 </div>
 
@@ -235,10 +238,10 @@ class DisplatSupplierCom extends React.Component {
                                     </form>
                                     </div>
                                 
-                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
+                                    <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                                         fff
                                     </div>
-                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         ff
                                     </div>
                                 </div>
@@ -316,6 +319,21 @@ class DisplatSupplierCom extends React.Component {
     } 
 
 
+
+    validate = () => {
+        let { errors, name } = this.state;
+        let count = 0;
+
+        if (name.length === 0) {
+            errors.name =  'Please select a Supplier'
+            count++
+        } else {
+            errors.name = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
     
     
   
@@ -344,7 +362,7 @@ class DisplatSupplierCom extends React.Component {
 
 const mapStateToProps = state => ({
     auth: state.auth || {},
-  });
+});
  
   
 export default connect(mapStateToProps, null)(withRouter(DisplatSupplierCom));

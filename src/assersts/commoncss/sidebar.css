@@ -1,5 +1,5 @@
 .sidebar_wrap {
-  background: #1d1d1d;
+  background: #DEDEDE;
   position: fixed;
   top: 0;
   left: 0;
@@ -10,11 +10,12 @@
   -moz-transition: width 0.8s ease-in-out;
   -o-transition: width 0.8s ease-in-out;
   transition: width 0.8s ease-in-out;
-  width: 260px;
+  width: 200px;
+
 }
 
 .sidebar-top {
-  padding-top: 3.5rem !important;
+  padding-top: 50px !important;
 }
 
 ul.sidebar {
@@ -57,7 +58,7 @@ ul.sidebar {
 }
 
 .wrapper-wx {
-  padding-left: 260px;
+  padding-left: 200px;
   -webkit-transition: padding 0.8s ease-in-out;
   -moz-transition: padding 0.8s ease-in-out;
   -o-transition: padding 0.8s ease-in-out;
@@ -114,7 +115,7 @@ ul.sidebar {
   color: #00BFFF !important;
 }
 .wd-wrapper {
-  padding-top: 2.5rem !important;
+  padding-top: 60px !important;
   width: 100% !important;
   height: 100% !important;
 }
@@ -130,7 +131,7 @@ ul.sidebar {
 }
 
 .sidebar_active {
-  width: 260px !important;
+  width: 200px !important;
 }
 
 .react-confirm-alert-overlay {

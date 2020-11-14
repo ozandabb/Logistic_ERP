@@ -1,9 +1,8 @@
 import React from "react";
-import PropType from 'prop-types';
 import { connect } from 'react-redux';
-import { ProSidebar, Menu, MenuItem, SubMenu , SidebarHeader , SidebarContent , SidebarFooter } from 'react-pro-sidebar';
-import { faTable, faBars , faPlusSquare, faColumns  , faAddressBook,faSnowman,faObjectGroup,faTruck, faAtom,faSignOutAlt, faTachometerAlt,faPeopleArrows, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
-import "../../Asserts/commoncss/sidebar.css";
+import { ProSidebar, Menu, MenuItem,SidebarContent  } from 'react-pro-sidebar';
+import {  faBars , faSignOutAlt, faHome ,faHandshake} from '@fortawesome/free-solid-svg-icons'
+import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -56,12 +55,14 @@ class Purchase_Sidebar extends React.Component {
             <ProSidebar>
             <SidebarContent>
                 <Menu iconShape="circle">
-                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/PurchasingManager/dashboard"/></MenuItem>
-                <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/"/></MenuItem>
+                <MenuItem active={activemenu === 'PurchasingDashboard'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/PurchasingManager/dashboard"/></MenuItem>
+                <MenuItem active={activemenu === 'CreatePurchasingOrder'} icon={<FontAwesomeIcon icon={faHandshake} />}>Suppliers<Link to="/PurchasingManager/supplier"/></MenuItem>
+                {/* <MenuItem active={activemenu === 'AddSupplierClaim'} icon={<FontAwesomeIcon icon={faHome} />}>Add Claim<Link to="/PurchasingManager/addClaim"/></MenuItem> */}
+                {/* <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
-                <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/"/></MenuItem>
+                <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/"/></MenuItem> */}
                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt}  />}>Logout</MenuItem>
             
                 {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
