@@ -1,8 +1,8 @@
 import React from "react";
 import PropType from 'prop-types';
 import { connect } from 'react-redux';
-import { ProSidebar, Menu, MenuItem, SubMenu , SidebarHeader , SidebarContent , SidebarFooter } from 'react-pro-sidebar';
-import { faTable, faBars , faPlusSquare, faColumns  , faAddressBook,faSnowman,faObjectGroup,faTruck, faAtom,faSignOutAlt, faTachometerAlt,faPeopleArrows, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
+import { ProSidebar, Menu, MenuItem, SubMenu  , SidebarContent  } from 'react-pro-sidebar';
+import { faTable, faBars , faHandshake  , faAddressBook,faObjectGroup,faTruck,faSignOutAlt,faPeopleArrows, faHome } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -41,7 +41,7 @@ class HRSidebar extends React.Component {
           </span>
         </nav>
 
-        <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }`} >
+        <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" } shadow`} >
 
           {/* <div className="sidebar-header pb-4 pt-2">
             <div className="d-flex px-4">
@@ -64,7 +64,7 @@ class HRSidebar extends React.Component {
               <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/hr/vehicles"/></MenuItem>
               <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/hr/driver"/></MenuItem>
               <MenuItem active={activemenu === 'RECRUITMENT'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Recruitment<Link to="/hr/driver"/></MenuItem>
-              <SubMenu defaultOpen={activemenu === 'REQUEST'} title="Requests" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
+              <SubMenu defaultOpen={activemenu === 'REQUEST'} title="Requests" icon={<FontAwesomeIcon icon={faHandshake} />}>
                 <MenuItem active={submenu === 'LOAN'}>Loan<Link to="/hr/Requests/Loans"/></MenuItem>
                 <MenuItem active={submenu === 'LEAVE'}>Leave<Link to="/hr/Requests/Leave"></Link></MenuItem>
                 <MenuItem active={submenu === 'SALARY'}>Salary<Link to="/hr/Requests/SalaryAdavanced"/></MenuItem>

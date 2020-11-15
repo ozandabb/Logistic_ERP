@@ -164,7 +164,7 @@ class addCustomerCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addCustomerState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow">
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >

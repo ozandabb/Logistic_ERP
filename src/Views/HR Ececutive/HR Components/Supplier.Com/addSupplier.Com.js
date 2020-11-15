@@ -135,7 +135,7 @@ class addSupplierCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addSupplierState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow" style={{paddingBottom:"15px"}}>
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >

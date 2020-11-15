@@ -148,7 +148,7 @@ class DisplatSupplierCom extends React.Component {
                     <Row>
 
                         <Col sm={9}>
-                            <Card >
+                            <Card className="shadow" >
                                  <nav>
                                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
@@ -249,7 +249,7 @@ class DisplatSupplierCom extends React.Component {
                         </Col>
 
                         <Col sm={3}>
-                            <Nav variant="pills" className="flex-column bg-white">
+                            <Nav variant="pills" className="flex-column bg-white shadow">
                                 <Card>
                                 <Nav.Item style={{backgroundColor:"#475466", height:"65px"}}>
                                     <Row>
@@ -308,7 +308,7 @@ class DisplatSupplierCom extends React.Component {
         return(
             <div style={{paddingLeft:"20px"}} key={item.id} onClick={() => this.loadSupplierData(item.id)}>
                  <div className="row">
-                        <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>{item.id}</p></div>
+                        <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>Sup No : {item.id}</p></div>
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> {moment(new Date(item.createdAt)).format("YYYY MMM DD")}</p></div>
                 </div>
                 <p style={{fontSize:"18px", color:"#18A0FB",fontFamily:"sans-serif", marginBottom:"0px"}}>{item.name}</p>

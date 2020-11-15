@@ -137,7 +137,7 @@ class DisplatCustomerCom extends React.Component {
                         </Col>
 
                         <Col sm={3}>
-                            <Nav variant="pills" className="flex-column bg-white">
+                            <Nav variant="pills" className="flex-column bg-white shadow">
                                 <Card>
                                 <Nav.Item>
                                     <Row>

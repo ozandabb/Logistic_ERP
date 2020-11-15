@@ -4,7 +4,7 @@ import {FormInput , FormSelect  } from '../../../../Components/Form'
 import {  Button, Card , Form , Image , OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
-import ToggleButton from 'react-toggle-button'
+import Employee_CONTROLLER from '../../../../Controllers/HR Staff/Employee.controller';
 import { ComponentToPrint } from './PrintAllEmployee';
 import { ComponentToPrint2 } from './PrintBankAccounts';
 import ReactToPrint from 'react-to-print';
@@ -18,22 +18,29 @@ class addEmployeeCom extends React.Component {
             addEmployeeState: false,
             printSupplierState: false,
             printSupplierState2: false,
+            curTime : new Date().toLocaleString(),
 
-            username:'',
-            email:'',
-            nic:'',
-            phone:'',
-            role: 2,
-            image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
-            credit_limit:'',
+            emp_no:'',
+            full_name:'',
+            date_of_birth:'',
+            gender:"NONE",
+            address: '',
+            marital_status: 'NONE',
+            spouse_name:'',
             city:'',
-            address:'',
-            name:'',
-            lat:'',
-            long:'',
-            signature: "https://www.docsketch.com/assets/vip-signatures/muhammad-ali-signature-6a40cd5a6c27559411db066f62d64886c42bbeb03b347237ffae98b0b15e0005.svg",
-            dob:"1997-03-25",
-            postal_code:'',
+            zip_code:'',
+            home_phone:'',
+            phone:'',
+            department:'NONE',
+            designation: 'NONE',
+            service_location:'',
+            bank_name:'',
+            bank_branch:'',
+            bank_account_holder_name:'',
+            bank_account_number:'',
+            basic_salary:'',
+            system_access:'NONE',
+            joined_date:'',
 
         };
     }
@@ -52,36 +59,40 @@ class addEmployeeCom extends React.Component {
 
     onFormSubmit = async (e) => {
         e.preventDefault();
-        if(this.state.marital_status == "Yes"){
-            console.log("yes bn");
-        }
-        else{
-            console.log("no");
-        }
-       
-
-        // var data = {
-        //     username: this.state.username,
-        //     email: this.state.email,
-        //     nic: this.state.nic,
-        //     phone: this.state.phone,
-
-        //     role: this.state.role,
-        //     image : this.state.image,
-        //     credit_limit: this.state.credit_limit,
-        //     city: this.state.city,
-
-        //     address: this.state.address,
-        //     name: this.state.name,
-        //     lat: this.state.lat,
-        //     long : this.state.long,
-
-        //     signature: this.state.signature,
-        //     dob: this.state.dob,
-        //     postal_code : this.state.postal_code,
+        // if(this.state.marital_status == "Yes"){
+        //     console.log("yes bn");
         // }
+        // else{
+        //     console.log("no");
+        // } 
 
-        // const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
+        var data = {
+            emp_no:this.state.emp_no,
+            full_name:this.state.full_name,
+            date_of_birth:this.state.date_of_birth,
+            gender:this.state.gender,
+            address: this.state.address,
+            marital_status: this.state.marital_status,
+            spouse_name:this.state.spouse_name,
+            city:this.state.city,
+            zip_code:this.state.zip_code,
+            home_phone:this.state.home_phone,
+            phone:this.state.phone,
+            department:this.state.department,
+            designation: this.state.designation,
+            service_location:this.state.service_location,
+            bank_name:this.state.bank_name,
+            bank_branch:this.state.bank_branch,
+            bank_account_holder_name:this.state.bank_account_holder_name,
+            bank_account_number:this.state.bank_account_number,
+            basic_salary:this.state.basic_salary,
+            system_access:this.state.system_access,
+            joined_date:this.state.curTime,
+        }
+
+        console.log("emploooooooo", data);
+
+        const result = await Employee_CONTROLLER.addEmployee(data, this.props.auth.token);
 
         // if(result.status == 201){
         //     CONFIG.setToast("Successfully Added");
@@ -89,22 +100,29 @@ class addEmployeeCom extends React.Component {
         // }
     }
 
-    clear = ()=>{
+    clear = () =>{
         this.setState({
-            username:'' ,
-            email:'' ,
-            nic:'' ,
-            phone: '',
-            //image : this.state.image,
-            credit_limit: '',
-            city: '',
+            emp_no:'',
+            full_name:'',
+            date_of_birth:'',
+            gender:"NONE",
             address: '',
-            name: '',
-            lat: '',
-            long : '',
-            //signature: this.state.signature,
-            //dob: this.state.dob,
-            postal_code : '',
+            marital_status: 'NONE',
+            spouse_name:'',
+            city:'',
+            zip_code:'',
+            home_phone:'',
+            phone:'',
+            department:'NONE',
+            designation: 'NONE',
+            service_location:'',
+            bank_name:'',
+            bank_branch:'',
+            bank_account_holder_name:'',
+            bank_account_number:'',
+            basic_salary:'',
+            system_access:'NONE',
+            joined_date:'',
         })
 
        this.change_toggle();
@@ -118,8 +136,8 @@ class addEmployeeCom extends React.Component {
                         <div className="col-sm-9">
                             <div className="row">
                                 <div className="col-sm">
-                                    <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Supplier Details<br></br>
-                                    <span className="text-muted small">Dashboard / Suppliers</span></h6>
+                                    <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Employee Details<br></br>
+                                    <span className="text-muted small">Dashboard / Employees</span></h6>
                                 </div>
                                 <div className="col-sm">
                                     <div className="row">
@@ -177,7 +195,7 @@ class addEmployeeCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addEmployeeState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow">
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
@@ -193,21 +211,19 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'Full Name *'}
                                                                         placeholder={"Enter Employee's Name"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.full_name}
                                                                         name="full_name"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Employee No"}
-                                                                        //error={ errors.group_mo}
+                                                                        placeholder={"Enter Employee's Number"}
                                                                         value={this.state.emp_no}
                                                                         name="emp_no"
-                                                                        readOnly 
-                                                                        //error_meesage={'*Group Number required'}
+                                                                        // readOnly
+                                                                        onChange={this.formValueChange} 
                                                                     />
                                                                 </div>
                                                         </div>
@@ -215,23 +231,19 @@ class addEmployeeCom extends React.Component {
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormSelect 
                                                                         label={'Gender *'}
-                                                                        //error={ errors.group_mo}
                                                                         options={GENDER}
                                                                         value={this.state.gender}
                                                                         name="gender"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Date of Birth *"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.date_of_birth}
                                                                         type="Date"
                                                                         name="date_of_birth"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -240,23 +252,19 @@ class addEmployeeCom extends React.Component {
                                                                     <FormSelect 
                                                                         label={'Marital Status *'}
                                                                         placeholder={"Enter Employee's Marital Status"}
-                                                                        //error={ errors.group_mo}
                                                                         options={marital_status}
                                                                         value={this.state.marital_status}
                                                                         name="marital_status"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={'Spouse Name *'}
                                                                         placeholder={"Enter Employee's Spouse Name"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.spouse_name}
                                                                         name="spouse_name"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -266,11 +274,9 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Address *"}
                                                                         placeholder={"Enter Employee's Addres"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.address}
                                                                         name="address"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -279,22 +285,18 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'City *'}
                                                                         placeholder={"Enter Employee's City"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.city}
                                                                         name="city"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Zip Code *"}
                                                                         placeholder={"Enter Employee's Zip code"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.zip_code}
                                                                         name="zip_code"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -303,22 +305,18 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Mobile Number *"}
                                                                         placeholder={"Enter Employee's Mobile No"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.phone}
                                                                         name="phone"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Land Number *"}
                                                                         placeholder={"Enter Employee's Land No"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.home_phone}
                                                                         name="home_phone"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -331,12 +329,10 @@ class addEmployeeCom extends React.Component {
                                                                     <FormSelect 
                                                                         label={"Department *"}
                                                                         placeholder={"Enter Department"}
-                                                                        //error={ errors.group_mo}
                                                                         options={DEPARTMENTS}
                                                                         value={this.state.department}
                                                                         name="department"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
@@ -344,11 +340,9 @@ class addEmployeeCom extends React.Component {
                                                                         label={"Designation *"}
                                                                         placeholder={"Enter Designation"}
                                                                         options={DESIGNATIONS}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.designation}
                                                                         name="designation"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -357,11 +351,9 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Service Location *"}
                                                                         placeholder={"Enter Service Location"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.service_location}
                                                                         name="service_location"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
@@ -369,11 +361,9 @@ class addEmployeeCom extends React.Component {
                                                                         label={"System Access *"}
                                                                         placeholder={"Enter Service Location"}
                                                                         options={SYSTEM_ACCESS}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.system_access}
                                                                         name="system_access"
-                                                                        //onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
+                                                                        onChange={this.formValueChange}
                                                                     />
                                                                 </div>
                                                         </div>
@@ -395,11 +385,9 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Basic Salary *"}
                                                                     placeholder={"Enter Basic Salary"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.basic_salary}
                                                                     name="basic_salary"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
                                                             </div>
                                                         </div>
@@ -408,11 +396,9 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Name *"}
                                                                     placeholder={"Enter Employee's Bank Name"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_name}
                                                                     name="bank_name"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
                                                             </div>
                                                         </div>
@@ -421,11 +407,9 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Branch *"}
                                                                     placeholder={"Enter Employee's Bank Branch"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_branch}
                                                                     name="bank_branch"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
                                                             </div>
                                                         </div>
@@ -434,11 +418,9 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Account Holder *"}
                                                                     placeholder={"Enter Bank Account Holder Name"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_account_holder_name}
                                                                     name="bank_account_holder_name"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
                                                             </div>
                                                         </div>
@@ -447,11 +429,9 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Account Number *"}
                                                                     placeholder={"Enter Bank Account Number"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_account_number}
                                                                     name="bank_account_number"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
                                                             </div>
                                                         </div>

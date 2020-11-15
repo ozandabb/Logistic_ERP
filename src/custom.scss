@@ -43,12 +43,12 @@ $font-family-sans-serif:'Poppins' ;
         > .pro-sub-menu {
           > .pro-inner-list-item {
             position: relative;
-            background-color: $submenu-bg-color;
+            background-color: #F8F8F8;
   
-            > div > ul {
-              padding-top: 15px;
-              padding-bottom: 15px;
-            }
+            // > div > ul {
+            //   padding-top: 15px;
+            //   padding-bottom: 15px;
+            // }
           }
         }
       }
