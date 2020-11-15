@@ -193,14 +193,15 @@ class DisplayPaymentCom extends React.Component {
                                                             {errors.name && errors.name.length > 0 &&
                                                                 <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                         </div>
-                                                        <div className="col-sm-6 mt-1 mb-1" >
-                                                            <FormInput
-                                                                label={'Type *'}
-                                                                placeholder={"Enter Type"}
-                                                                value={this.state.type}
-                                                                name="type"
-                                                                onChange={this.formValueChange}
-                                                            />
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Type</Form.Label>
+                                                                <Form.Control as="select" name="type" value={this.state.type} onChange={this.formValueChange}>
+                                                                    <option value="">Select Type</option>
+                                                                    <option value="CASH">Cash</option>
+                                                                    <option value="CHEQUE">Cheque</option>
+                                                                </Form.Control>
+                                                            </Form.Group>
                                                             {errors.type && errors.type.length > 0 &&
                                                                 <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.type}</h4>}
                                                         </div>
