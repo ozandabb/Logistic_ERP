@@ -56,7 +56,7 @@ class Account_Sidebar extends React.Component {
             <SidebarContent>
                 <Menu iconShape="circle">
                 <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/Accountant/dashboard"/></MenuItem>
-                <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/"/></MenuItem>
+                <MenuItem active={activemenu === 'BANK_ACCOUNTS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Bank Accounts<Link to="/Accountant/BankAccount"/></MenuItem>
                 <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
