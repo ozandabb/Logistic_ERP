@@ -42,6 +42,8 @@ class addEmployeeCom extends React.Component {
             system_access:'NONE',
             joined_date:'',
 
+            errors : {},
+
         };
     }
 
@@ -59,45 +61,42 @@ class addEmployeeCom extends React.Component {
 
     onFormSubmit = async (e) => {
         e.preventDefault();
-        // if(this.state.marital_status == "Yes"){
-        //     console.log("yes bn");
-        // }
-        // else{
-        //     console.log("no");
-        // } 
 
-        var data = {
-            emp_no:this.state.emp_no,
-            full_name:this.state.full_name,
-            date_of_birth:this.state.date_of_birth,
-            gender:this.state.gender,
-            address: this.state.address,
-            marital_status: this.state.marital_status,
-            spouse_name:this.state.spouse_name,
-            city:this.state.city,
-            zip_code:this.state.zip_code,
-            home_phone:this.state.home_phone,
-            phone:this.state.phone,
-            department:this.state.department,
-            designation: this.state.designation,
-            service_location:this.state.service_location,
-            bank_name:this.state.bank_name,
-            bank_branch:this.state.bank_branch,
-            bank_account_holder_name:this.state.bank_account_holder_name,
-            bank_account_number:this.state.bank_account_number,
-            basic_salary:this.state.basic_salary,
-            system_access:this.state.system_access,
-            joined_date:this.state.curTime,
+        if (this.validate()) {
+            var data = {
+                emp_no:this.state.emp_no,
+                full_name:this.state.full_name,
+                date_of_birth:this.state.date_of_birth,
+                gender:this.state.gender,
+                address: this.state.address,
+                marital_status: this.state.marital_status,
+                spouse_name:this.state.spouse_name,
+                city:this.state.city,
+                zip_code:this.state.zip_code,
+                home_phone:this.state.home_phone,
+                phone:this.state.phone,
+                department:this.state.department,
+                designation: this.state.designation,
+                service_location:this.state.service_location,
+                bank_name:this.state.bank_name,
+                bank_branch:this.state.bank_branch,
+                bank_account_holder_name:this.state.bank_account_holder_name,
+                bank_account_number:this.state.bank_account_number,
+                basic_salary:this.state.basic_salary,
+                system_access:this.state.system_access,
+                joined_date:this.state.curTime,
+            }
+
+            const result = await Employee_CONTROLLER.addEmployee(data, this.props.auth.token);
+
+            if(result.status == 201){
+                CONFIG.setToast("Successfully Added");
+                this.clear();
+            }else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.clear();
+            }
         }
-
-        console.log("emploooooooo", data);
-
-        const result = await Employee_CONTROLLER.addEmployee(data, this.props.auth.token);
-
-        // if(result.status == 201){
-        //     CONFIG.setToast("Successfully Added");
-        //     this.clear();
-        // }
     }
 
     clear = () =>{
@@ -129,6 +128,8 @@ class addEmployeeCom extends React.Component {
     }
 
     render() {
+        const {errors } = this.state;
+
         return (
             <div>
                 {/* Title and the add new customer button */}
@@ -215,6 +216,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="full_name"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.full_name && errors.full_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.full_name}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
@@ -225,6 +228,8 @@ class addEmployeeCom extends React.Component {
                                                                         // readOnly
                                                                         onChange={this.formValueChange} 
                                                                     />
+                                                                    {errors.emp_no && errors.emp_no.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.emp_no}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -236,6 +241,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="gender"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.gender && errors.gender.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.gender}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
@@ -245,6 +252,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="date_of_birth"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.date_of_birth && errors.date_of_birth.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.date_of_birth}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -257,6 +266,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="marital_status"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.marital_status && errors.marital_status.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.marital_status}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
@@ -266,6 +277,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="spouse_name"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.spouse_name && errors.spouse_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.spouse_name}</h4>}
                                                                 </div>
                                                         </div>
 
@@ -278,6 +291,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="address"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.address && errors.address.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.address}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -289,6 +304,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="city"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.city && errors.city.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.city}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
@@ -298,6 +315,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="zip_code"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.zip_code && errors.zip_code.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.zip_code}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -309,6 +328,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="phone"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.phone && errors.phone.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.phone}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
@@ -318,6 +339,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="home_phone"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.home_phone && errors.home_phone.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.home_phone}</h4>}
                                                                 </div>
                                                         </div>
 
@@ -334,6 +357,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="department"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.department && errors.department.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.department}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormSelect 
@@ -344,6 +369,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="designation"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.designation && errors.designation.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.designation}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -355,6 +382,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="service_location"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.service_location && errors.service_location.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_location}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormSelect 
@@ -365,6 +394,8 @@ class addEmployeeCom extends React.Component {
                                                                         name="system_access"
                                                                         onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.system_access && errors.system_access.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.system_access}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row mt-3">
@@ -389,6 +420,8 @@ class addEmployeeCom extends React.Component {
                                                                     name="basic_salary"
                                                                     onChange={this.formValueChange}
                                                                 />
+                                                                {errors.basic_salary && errors.basic_salary.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.basic_salary}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -400,6 +433,8 @@ class addEmployeeCom extends React.Component {
                                                                     name="bank_name"
                                                                     onChange={this.formValueChange}
                                                                 />
+                                                                {errors.bank_name && errors.bank_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_name}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -411,6 +446,8 @@ class addEmployeeCom extends React.Component {
                                                                     name="bank_branch"
                                                                     onChange={this.formValueChange}
                                                                 />
+                                                                {errors.bank_branch && errors.bank_branch.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_branch}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -422,6 +459,8 @@ class addEmployeeCom extends React.Component {
                                                                     name="bank_account_holder_name"
                                                                     onChange={this.formValueChange}
                                                                 />
+                                                                {errors.bank_account_holder_name && errors.bank_account_holder_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_account_holder_name}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -433,6 +472,8 @@ class addEmployeeCom extends React.Component {
                                                                     name="bank_account_number"
                                                                     onChange={this.formValueChange}
                                                                 />
+                                                                {errors.bank_account_number && errors.bank_account_number.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_account_number}</h4>}
                                                             </div>
                                                         </div>
                                                        
@@ -472,6 +513,180 @@ class addEmployeeCom extends React.Component {
             </div>
         );
     }
+
+    validate = () => {
+        let { errors, emp_no, full_name, date_of_birth, gender, department, address, marital_status, spouse_name ,
+             city, zip_code, home_phone, phone , joined_date, designation, service_location, bank_name, bank_branch 
+             , bank_account_holder_name, bank_account_number, basic_salary, system_access  } = this.state;
+        let count = 0;
+
+        if (emp_no.length === 0) {
+            errors.emp_no =  'Employee No can not be empty !'
+            count++
+        } else {
+            errors.emp_no = ''
+        }
+
+        if (full_name.length === 0) {
+            errors.full_name =  'Employee Name can not be empty !'
+            count++
+        } else {
+            errors.full_name = ''
+        }
+
+        if (home_phone.length === 0) {
+            errors.home_phone = "Contact Number can not be empty"
+            count++
+        } else {
+            if(home_phone.length < 10){
+                errors.home_phone = "Need 10 Digits for a number"
+                count++
+            }else{
+                errors.home_phone = ""
+            }
+        }
+
+        if (phone.length === 0) {
+            errors.phone = "Mobile Number can not be empty"
+            count++
+        } else {
+            if(phone.length < 10){
+                errors.phone = "Need 10 Digits for a number"
+                count++
+            }else{
+                errors.phone = ""
+            }
+        }
+
+        if (date_of_birth.length === 0) {
+            errors.date_of_birth =  'Birthday can not be empty !'
+            count++
+        } else {
+            errors.date_of_birth = ''
+        }
+
+        if (gender === 'NONE') {
+            errors.gender =  'Gender can not be empty !'
+            count++
+        } else {
+            errors.gender = ''
+        }
+
+        if (address.length === 0) {
+            errors.address =  'Address can not be empty !'
+            count++
+        } else {
+            errors.address = ''
+        }
+
+        if (marital_status === 'NONE') {
+            errors.marital_status =  'Marital Status can not be empty !'
+            count++
+        } else {
+            errors.marital_status = ''
+        }
+
+        if (spouse_name.length === 0) {
+            errors.spouse_name =  'Spouse Name can not be empty !'
+            count++
+        } else {
+            errors.spouse_name = ''
+        }
+
+        if (city.length === 0) {
+            errors.city =  'City can not be empty !'
+            count++
+        } else {
+            errors.city = ''
+        }
+
+        if (zip_code.length === 0) {
+            errors.zip_code =  'Zip Code can not be empty !'
+            count++
+        } else {
+            errors.zip_code = ''
+        }
+
+        if (department === 'NONE') {
+            errors.department =  'Department can not be empty !'
+            count++
+        } else {
+            errors.department = ''
+        }
+
+        if (designation === 'NONE') {
+            errors.designation =  'Designation can not be empty !'
+            count++
+        } else {
+            errors.designation = ''
+        }
+
+        if (service_location.length === 0) {
+            errors.service_location =  'Service Location can not be empty !'
+            count++
+        } else {
+            errors.service_location = ''
+        }
+
+        if (bank_name.length === 0) {
+            errors.bank_name =  'Bank Name can not be empty !'
+            count++
+        } else {
+            errors.bank_name = ''
+        }
+
+        if (bank_branch.length === 0) {
+            errors.bank_branch =  'Branch can not be empty !'
+            count++
+        } else {
+            errors.bank_branch = ''
+        }
+
+        if (bank_account_holder_name.length === 0) {
+            errors.bank_account_holder_name =  'Account Holder can not be empty !'
+            count++
+        } else {
+            errors.bank_account_holder_name = ''
+        }
+
+        if (bank_account_number.length === 0) {
+            errors.bank_account_number =  'Account Number can not be empty !'
+            count++
+        } else {
+            errors.bank_account_number = ''
+        }
+
+        if (basic_salary.length === 0) {
+            errors.basic_salary =  'Basic Salary can not be empty !'
+            count++
+        } else {
+            errors.basic_salary = ''
+        }
+
+        if (system_access === 'NONE') {
+            errors.system_access =  'System Access can not be empty !'
+            count++
+        } else {
+            errors.system_access = ''
+        }
+
+        if (joined_date.length === 0) {
+            errors.joined_date =  'Joined Date can not be empty !'
+            count++
+        } else {
+            errors.joined_date = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
+
+
+
+
+
+
+
 }
 
 const GENDER = [{ label : 'Select the Gender' ,value : 'NONE' } , 

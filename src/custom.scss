@@ -5,11 +5,31 @@ $submenu-bg-color: #ffffff;
 $sidebar-width: 199px;
 $info : #18A0FB;
 $font-family-sans-serif:'Poppins' ;
-@import '~react-pro-sidebar/dist/scss/styles.scss';
+// @import '~react-pro-sidebar/dist/scss/styles.scss';
 // @import '~bootstrap/scss/bootstrap.scss';
 
 
 
+//============================================= @import './variables.scss';===========================================================
+$sidebar-bg-color: #1d1d1d !default;
+$sidebar-color: #adadad !default;
+$sidebar-width: 270px !default;
+$sidebar-collapsed-width: 80px !default;
+$highlight-color: #475466 !default;
+$submenu-bg-color: #2b2b2b !default;
+$submenu-bg-color-collapsed: #2b2b2b !default;
+$icon-bg-color: #2b2b2b !default;
+$icon-size: 35px !default;
+
+$breakpoint-xs: 480px !default;
+$breakpoint-sm: 576px !default;
+$breakpoint-md: 768px !default;
+$breakpoint-lg: 992px !default;
+$breakpoint-xl: 1200px !default;
+//========================================================================================================================================
+
+
+//============================================= @import './partials/menu';==================================================================
 %pro-item-prefix {
     &:before {
       content: '';
@@ -396,5 +416,219 @@ $font-family-sans-serif:'Poppins' ;
     }
   }
   
+//=======================================================================================================================
+
+
+//================================================@import './partials/animation';=========================================================
+@keyframes swing {
+  0%,
+  30%,
+  50%,
+  70%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  10% {
+    transform: rotate(10deg);
+  }
+
+  40% {
+    transform: rotate(-10deg);
+  }
+
+  60% {
+    transform: rotate(5deg);
+  }
+
+  80% {
+    transform: rotate(-5deg);
+  }
+}
+
+//========================================================================================================================================
+
+
+//================================================@import './partials/sidebar';=========================================================
+
+@mixin break-point {
+  position: fixed;
+  left: -$sidebar-width;
+  &.collapsed {
+    left: -$sidebar-collapsed-width;
+  }
+  &.toggled {
+    left: 0;
+    .overlay {
+      display: block;
+    }
+  }
+  &.rtl {
+    left: auto;
+    right: -$sidebar-width;
+    &.collapsed {
+      left: auto;
+      right: -$sidebar-collapsed-width;
+    }
+    &.toggled {
+      left: auto;
+      right: 0;
+    }
+  }
+}
+
+.pro-sidebar {
+  color: $sidebar-color;
+  height: 100%;
+  width: $sidebar-width;
+  min-width: $sidebar-width;
+  text-align: left;
+  transition: width, left, right, 0.3s;
+  position: relative;
+  z-index: 1009;
+  > .pro-sidebar-inner {
+    background: $sidebar-bg-color;
+    height: 100%;
+    position: relative;
+    z-index: 101;
+
+    > img.sidebar-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      position: absolute;
+      opacity: 0.3;
+      left: 0;
+      top: 0;
+      z-index: 100;
+    }
+
+    > .pro-sidebar-layout {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      z-index: 101;
+
+      .pro-sidebar-header {
+        border-bottom: 1px solid rgba($sidebar-color, 0.2);
+      }
+      .pro-sidebar-content {
+        flex-grow: 1;
+      }
+      .pro-sidebar-footer {
+        border-top: 1px solid rgba($sidebar-color, 0.2);
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(#000, 0.3);
+    z-index: 100;
+    display: none;
+  }
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+    min-width: $sidebar-collapsed-width;
+  }
+
+  &.rtl {
+    text-align: right;
+    direction: rtl;
+  }
+
+  &.xs {
+    @media (max-width: $breakpoint-xs) {
+      @include break-point;
+    }
+  }
+  &.sm {
+    @media (max-width: $breakpoint-sm) {
+      @include break-point;
+    }
+  }
+  &.md {
+    @media (max-width: $breakpoint-md) {
+      @include break-point;
+    }
+  }
+  &.lg {
+    @media (max-width: $breakpoint-lg) {
+      @include break-point;
+    }
+  }
+  &.xl {
+    @media (max-width: $breakpoint-xl) {
+      @include break-point;
+    }
+  }
+}
+//========================================================================================================================================
+
+
+//================================================@import './partials/popperArrow';========================================================================================
+.popper-arrow {
+  position: absolute;
+  z-index: -1;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+.popper-element[data-popper-placement^='left'] > .popper-arrow {
+  right: 0;
+  border-right: 7px solid $submenu-bg-color-collapsed;
+}
+
+.popper-element[data-popper-placement^='right'] > .popper-arrow {
+  left: 0;
+  border-left: 7px solid $submenu-bg-color-collapsed;
+}
+
+
+
+//==========================================@import './partials/reactSlidedown';==========================================================
+
+.react-slidedown {
+  height: 0;
+  transition-property: none;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+.react-slidedown.transitioning {
+  overflow-y: hidden;
+}
+
+.react-slidedown.closed {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 

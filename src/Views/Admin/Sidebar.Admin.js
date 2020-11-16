@@ -55,7 +55,7 @@ class Admin_Sidebar extends React.Component {
             <ProSidebar>
             <SidebarContent>
                 <Menu iconShape="circle">
-                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/Accountant/dashboard"/></MenuItem>
+                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/AdminTeam/dashboard"/></MenuItem>
                 <MenuItem active={activemenu === 'USERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Users<Link to="/AdminTeam/Users"/></MenuItem>
                 {/* <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
