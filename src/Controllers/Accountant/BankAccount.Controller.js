@@ -5,7 +5,7 @@ class BankAccountController {
     constructor(){
         this.api = {
             addBankAccount: "/api/bank_accounts/create",
-            getAllBankAccounts: "/api/bank_accounts/get?size=5&page=0",
+            getAllBankAccounts: "/api/bank_accounts/get?",
             getBankAccountByID: "/api/bank_accounts/get",
             updateBankAccount: "/api/bank_accounts/update",
             deleteBankAccount: "/api/bank_accounts/delete",
@@ -26,10 +26,10 @@ class BankAccountController {
     };
 
     //Get all bankaccounts
-    getAllBankAccounts = async (token) => {
+    getAllBankAccounts = async (postSize,pageNumber,token) => {
         var resp = 600;
         var userData = {};
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllBankAccounts}`,
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllBankAccounts}size=${postSize}&page=${pageNumber}`,
             { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 resp = Response.status;
