@@ -1,5 +1,6 @@
 import AccountantDashboard from '../Views/Accountant/Dashboard.Accountant';
 import BankAccount from "../Views/Accountant/BankAccount";
+import ExchangeRates from "../Views/Accountant/ExchangeRates";
 
 let AccountantRoutes = [
 
@@ -13,6 +14,12 @@ let AccountantRoutes = [
     path: "/Accountant/BankAccount",
     name: "BankAccount",
     component: BankAccount,
+    exact: true,
+  },
+  {
+    path: "/Accountant/ExchangeRates",
+    name: "ExchangeRates",
+    component: ExchangeRates,
     exact: true,
   },
 ];

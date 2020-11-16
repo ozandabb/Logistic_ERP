@@ -267,19 +267,7 @@ class BankAccount extends Component {
     render() {
         const { current_page, no_of_pages } = this.state;
 
-        // const paginate = async pageNum => {
-        //     this.setState({ current_page: pageNum });
-        //     this.loadAllBankAccounts();
-        // };
-        // const nextPage = async () => {
-        //     this.setState({ current_page: current_page + 1 });
-        //     this.loadAllBankAccounts();
-        // };
-        //
-        // const prevPage = async () =>{
-        //     this.setState({ currentPage: current_page - 1 });
-        //     this.loadAllBankAccounts();
-        // };
+
 
         const pageNumbers = [];
 
@@ -582,15 +570,15 @@ class BankAccount extends Component {
                         <nav style={{marginTop:"15px" }}>
                             <ul className="pagination justify-content-center">
                                 <li className="page-item">
-                                    <a className="page-link" href="#" onClick={() => this.prevPage()}>Previous</a>
+                                    <button className="page-link" href="#" onClick={() => this.prevPage()}>Previous</button>
                                 </li>
                                 {pageNumbers.map(num => (
                                     <li className="page-item" key={num}>
-                                        <a onClick={() => this.paginate(num)} href="#" className="page-link" style={{ color: current_page == num ? "blue" : "black" }}>{num}</a>
+                                        <button onClick={() => this.paginate(num)} href="#" className="page-link" style={{ color: current_page == num ? "blue" : "black" }}>{num}</button>
                                     </li>
                                 ))}
                                 <li className="page-item">
-                                    <a className="page-link" href="#" onClick={() => this.nextPage()}>Next</a>
+                                    <button className="page-link" href="#" onClick={() => this.nextPage()}>Next</button>
                                 </li>
                             </ul>
                         </nav>
