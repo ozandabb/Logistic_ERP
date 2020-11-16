@@ -8,6 +8,7 @@ class Customercontroller{
             getAllCustomer: "/api/customer/all",
             getOneCustByTCODE: "/api/customer/tcode",
             getOneUserByUSERNAME: "/api/users/username",
+            UpdateCustomer: "/api/customer/customer",
         };
     }
 
@@ -16,10 +17,9 @@ class Customercontroller{
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 console.log("customer res",Response );
-                return { ...Response.data , status : 200 }
+                return { ...Response.data , status : 201 }
             })
             .catch(err => {
-                console.error(err);
                 return { ...err , status : 400 }
             });
     }
@@ -95,6 +95,19 @@ class Customercontroller{
             return userData;
         }
         return resp;
+    }
+
+    //UPDATE a Customer
+    UpdateCustomer = async ( data , token ) => {
+        return await Axios.patch( `${Config.host}${Config.port}${this.api.UpdateCustomer}/${data.id}`, data,
+        { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
+            .then(Response => {
+                return { ...Response.data , status : 200 }
+            })
+            .catch(err => {
+                console.error(err);
+                return { ...err , status : 400 }
+            });
     }
 
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch , faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons'
-import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button } from 'react-bootstrap';
+import { faSearch , faRedo } from '@fortawesome/free-solid-svg-icons'
+import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
 import moment from 'moment';
@@ -30,6 +30,12 @@ class DisplatSupplierCom extends React.Component {
     }
 
     async componentDidMount() {
+        this.loadAllSuppliers();
+        this.refreshList();
+    }
+
+    //REFRESH all Suppliers
+    refreshList = () => {
         this.loadAllSuppliers();
     }
 
@@ -101,7 +107,9 @@ class DisplatSupplierCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        if (this.validate()) {
+        if(this.state.id == ''){
+            CONFIG.setErrorToast("Please Select a Supplier to Update!");
+        }else{
             var data = {
                 id: this.state.id,
                 name: this.state.name,
@@ -110,7 +118,7 @@ class DisplatSupplierCom extends React.Component {
                 email: this.state.email,
             }
 
-            const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data , this.props.token );
+            const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data ,this.props.auth.token );
 
             if(result.status == 200){
                 CONFIG.setToast("Successfully Updated!");
@@ -122,6 +130,7 @@ class DisplatSupplierCom extends React.Component {
                 this.clear();
             }
         }
+
     }
 
     formValueChange = (e) => {
@@ -131,6 +140,7 @@ class DisplatSupplierCom extends React.Component {
     //Clear all input details
     clear = ()=>{
         this.setState({
+            id:'',
             name:'' ,
             address:'' ,
             phoneNo:'' ,
@@ -173,7 +183,7 @@ class DisplatSupplierCom extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6 mt-1 mb-1" >
                                                         <FormInput 
-                                                            label={'Customer Name *'}
+                                                            label={'Supplier Name *'}
                                                             placeholder={"Select one Supplier"}
                                                             value={name}
                                                             name="name"
@@ -268,8 +278,23 @@ class DisplatSupplierCom extends React.Component {
                                             </div>
                                         </Col>
                                         {/* <Col xs={6} md={4}> */}
-                                        <Col md="auto"  style={{paddingTop:"16px", paddingBottom:"8px"}}>
-                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"20px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                        <Col md="auto"  style={{paddingTop:"20px", paddingBottom:"8px"}}>
+                                            <div className="row">
+                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"5px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                                {['bottom'].map((placement) => (
+                                                    <OverlayTrigger
+                                                        key={placement}
+                                                        placement={placement}
+                                                        overlay={
+                                                            <Tooltip id={`tooltip-${placement}`}>
+                                                                Refresh List
+                                                        </Tooltip>
+                                                        }
+                                                    >
+                                                    <FontAwesomeIcon  onClick={() => this.refreshList()} icon={faRedo} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"15px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                                    </OverlayTrigger>
+                                                ))}
+                                            </div>
                                         </Col>
                                     </Row>
                                 </Nav.Item>

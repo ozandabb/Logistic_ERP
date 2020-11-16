@@ -35,7 +35,7 @@ export class ComponentToPrint extends React.PureComponent {
                 <div className="col-sm" style={{marginTop:"50px"}}>
                     <div className="row">
                         <div className="col">
-                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>All Suppliers<br></br>
+                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>All Customers<br></br>
                             <span className="text-muted small">Printed by : {this.props.HRname} </span></h6>
                         </div>
                         <div className="col" style={{justifyContent:"right"}}>
