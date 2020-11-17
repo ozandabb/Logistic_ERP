@@ -175,7 +175,7 @@ class DisplayFixedAssetsClass extends React.Component {
         });
     };
     nextPage = async () => {
-        if (this.state.current_page <= this.state.no_of_pages) {
+        if (this.state.current_page < this.state.no_of_pages) {
             this.setState({
                 current_page: this.state.current_page + 1
             }, () => {
