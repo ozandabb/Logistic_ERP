@@ -36,7 +36,35 @@ class FixedAssetsLocation {
     }
 
     //GET all FixedAssetsLocations
-    getAllFixedAssetsLocations = async (token) => {
+    getAllFixedAssetsLocations = async (postSize, pageNumber, token) => {
+        var resp = 600;
+        var userData = {}
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllFixedAssetsLocations}?size=${postSize}&page=${pageNumber}`, {
+            headers: {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(Response => {
+                resp = Response.status;
+                userData = Response.data;
+            })
+            .catch(err => {
+                try {
+                    resp = err.response.status;
+                } catch (error) {
+                    resp = 600;
+                }
+            });
+
+        if (resp === 200) {
+            return userData;
+        }
+        return resp;
+    }
+
+    //GET all FixedAssetsLocations Without Pagination
+    getAllFixedAssetsLocationsWithoutPagination = async (token) => {
         var resp = 600;
         var userData = {}
         await Axios.get(`${Config.host}${Config.port}${this.api.getAllFixedAssetsLocations}`, {

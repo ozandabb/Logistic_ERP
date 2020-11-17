@@ -25,6 +25,9 @@ class DisplayFixedAssetsClass extends React.Component {
             fixedAssetsClassList: [],
             search: '',
 
+            no_of_pages: 0,
+            current_page: 1,
+
             errors: {},
         };
     }
@@ -57,9 +60,10 @@ class DisplayFixedAssetsClass extends React.Component {
 
     //GET all FixedAssetsClasses
     loadAllFixedAssetsClasses = async () => {
-        const res = await FixedAssetsClass_CONTROLLER.getAllFixedAssetsClasses(this.props.auth.token);
+        const res = await FixedAssetsClass_CONTROLLER.getAllFixedAssetsClasses(5, this.state.current_page - 1, this.props.auth.token);
         this.setState({
             fixedAssetsClassList: res.data.rows,
+            no_of_pages: res.data.pages
         });
     }
 
@@ -163,8 +167,41 @@ class DisplayFixedAssetsClass extends React.Component {
         })
     }
 
+    paginate = async pageNum => {
+        this.setState({
+            current_page: pageNum
+        }, () => {
+            this.loadAllFixedAssetsClasses();
+        });
+    };
+    nextPage = async () => {
+        if (this.state.current_page <= this.state.no_of_pages) {
+            this.setState({
+                current_page: this.state.current_page + 1
+            }, () => {
+                this.loadAllFixedAssetsClasses();
+            });
+        }
+
+    };
+
+    prevPage = async () => {
+        if (this.state.current_page >= this.state.no_of_pages) {
+            this.setState({
+                current_page: this.state.current_page - 1
+            }, () => {
+                this.loadAllFixedAssetsClasses();
+            });
+        }
+    };
+
     render() {
-        const { fixedAssetsClassList, code, description, errors } = this.state;
+        const { fixedAssetsClassList, code, description, errors, search, current_page, no_of_pages } = this.state;
+        const pageNumbers = [];
+
+        for (let i = 1; i <= no_of_pages; i++) {
+            pageNumbers.push(i);
+        }
         return (
             <div>
                 <div>
@@ -196,6 +233,28 @@ class DisplayFixedAssetsClass extends React.Component {
                         <div className="col-sm-3">
                             <Button variant="" style={{ backgroundColor: "#475466", color: "#FFFFFF", width: "100%", cursor: 'pointer' }} onClick={() => this.change_toggle()}>Add New Fixed Assets Class</Button>
                         </div>
+                    </div>
+                    <div>
+                        <Row className="mt-5">
+                            {/*search bar*/}
+                            <Col md={3} style={{}}>
+                                <InputGroup className="" >
+                                    <FormControl
+                                        style={{ height: "38px" }}
+                                        aria-label="search"
+                                        placeholder="Search"
+                                        onChange={this.onChange}
+                                        aria-describedby="basic-addon1"
+                                    />
+                                    <InputGroup.Append>
+                                        <Button variant="outline-secondary">
+                                            <i className="fas fa-search"></i>
+                                        </Button>
+                                    </InputGroup.Append>
+                                </InputGroup>
+                            </Col>
+
+                        </Row>
                     </div>
 
                     {/* Add FixedAssetsClass form toggle */}
@@ -325,6 +384,22 @@ class DisplayFixedAssetsClass extends React.Component {
                                 {fixedAssetsClassList && fixedAssetsClassList.map((name) => this.renderOneFixedAssetClass(name))}
                             </tbody>
                         </Table>
+                        {/*//Pagination*/}
+                        <nav style={{ marginTop: "15px" }}>
+                            <ul className="pagination justify-content-center">
+                                <li className="page-item">
+                                    <a className="page-link" href="javascript:void(0)" onClick={() => this.prevPage()} style={{ cursor: current_page == 1 ? "default" : "" }}>Previous</a>
+                                </li>
+                                {pageNumbers.map(num => (
+                                    <li className="page-item" key={num}>
+                                        <a onClick={() => this.paginate(num)} href="javascript:void(0)" className="page-link" style={{ color: current_page == num ? "blue" : "black" }}>{num}</a>
+                                    </li>
+                                ))}
+                                <li className="page-item">
+                                    <a className="page-link" href="javascript:void(0)" onClick={() => this.nextPage()} style={{ cursor: current_page == no_of_pages ? "default" : "" }}>Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </Card>
                 </div>
             </div>
@@ -333,8 +408,12 @@ class DisplayFixedAssetsClass extends React.Component {
 
     renderOneFixedAssetClass = (item, i) => {
         const { search } = this.state;
-        if (search !== "" && item.name.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-            return null;
+        if (search !== "") {
+            if (item.code.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                if (item.description.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                    return null;
+                }
+            }
         }
 
         return (

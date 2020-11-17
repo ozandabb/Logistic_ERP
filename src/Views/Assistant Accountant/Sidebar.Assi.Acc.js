@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { ProSidebar, Menu, MenuItem, SidebarContent } from 'react-pro-sidebar';
-import { faTable, faBars, faAddressBook, faObjectGroup, faTruck, faSignOutAlt, faPeopleArrows, faHome, faLandmark, faLocationArrow, faClipboard } from '@fortawesome/free-solid-svg-icons'
+import { ProSidebar, Menu, MenuItem, SubMenu, SidebarContent } from 'react-pro-sidebar';
+import { faTable, faBars, faAddressBook, faObjectGroup, faTruck, faSignOutAlt, faPeopleArrows, faHome, faLandmark, faLocationArrow, faClipboard, faCashRegister } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -59,8 +59,11 @@ class Sidebar_Assi_Acc extends React.Component {
                         <SidebarContent>
                             <Menu iconShape="circle">
                                 <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/AssistantAccountant/dashboard" /></MenuItem>
-                                <MenuItem active={activemenu === 'FIXED_ASSETS_LOCATION'} icon={<FontAwesomeIcon icon={faLocationArrow} />}>Fixed assets Locations<Link to="/AssistantAccountant/fixedAssetsLocation" /></MenuItem>
-                                <MenuItem active={activemenu === 'FIXED_ASSETS_CLASS'} icon={<FontAwesomeIcon icon={faClipboard} />}>Fixed assets Classes<Link to="/AssistantAccountant/fixedAssetsClass" /></MenuItem>
+                                <SubMenu defaultOpen={activemenu === 'FIXED_ASSETS'} title="Fixed Assets" icon={<FontAwesomeIcon icon={faCashRegister} />}>
+                                    <MenuItem active={submenu === 'FIXED_ASSETS_LOCATION'} >Locations<Link to="/AssistantAccountant/fixedAssetsLocation" /></MenuItem>
+                                    <MenuItem active={submenu === 'FIXED_ASSETS_CLASS'}>Classes<Link to="/AssistantAccountant/fixedAssetsClass" /></MenuItem>
+                                    <MenuItem active={submenu === 'FIXED_ASSETS_SUBCLASS'}>Sub Classes<Link to="/AssistantAccountant/fixedAssetsSubClass" /></MenuItem>
+                                </SubMenu>
                                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout</MenuItem>
 
                                 {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>

@@ -1,20 +1,20 @@
 import Axios from "axios";
 import Config from "../Config.controller";
 
-class FixedAssetsClasses {
+class FixedAssetsSubClasses {
     constructor() {
         this.api = {
-            addFixedAssetsClass: "/api/fix_assets/classes/create",
-            getAllFixedAssetsClasses: "/api/fix_assets/classes/get",
-            getFixedAssetsClassByID: "/api/fix_assets/classes/get",
-            updateFixedAssetsClass: "/api/fix_assets/classes/update",
-            DeleteFixedAssetsClass: "/api/fix_assets/classes/delete",
+            addFixedAssetsSubClass: "/api/fix_assets/sub_classes/create",
+            getAllFixedAssetsSubClasses: "/api/fix_assets/sub_classes/get",
+            getFixedAssetsSubClassByID: "/api/fix_assets/sub_classes/get",
+            updateFixedAssetsSubClass: "/api/fix_assets/sub_classes/update",
+            DeleteFixedAssetsSubClass: "/api/fix_assets/sub_classes/delete",
         };
     }
 
-    //ADD a new FixedAssetsClass
-    addFixedAssetsClass = async (data, token) => {
-        return await Axios.post(`${Config.host}${Config.port}${this.api.addFixedAssetsClass}`, data, {
+    //ADD a new FixedAssetsSubClass
+    addFixedAssetsSubClass = async (data, token) => {
+        return await Axios.post(`${Config.host}${Config.port}${this.api.addFixedAssetsSubClass}`, data, {
             headers: {
                 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -35,11 +35,11 @@ class FixedAssetsClasses {
             });
     }
 
-    //GET all FixedAssetsClasses
-    getAllFixedAssetsClasses = async (postSize, pageNumber, token) => {
+    //GET all FixedAssetsSubClasses
+    getAllFixedAssetsSubClasses = async (postSize, pageNumber, token) => {
         var resp = 600;
         var userData = {}
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllFixedAssetsClasses}?size=${postSize}&page=${pageNumber}`, {
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllFixedAssetsSubClasses}?size=${postSize}&page=${pageNumber}`, {
             headers: {
                 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -63,11 +63,11 @@ class FixedAssetsClasses {
         return resp;
     }
 
-    //GET all FixedAssetsClasses Without Pagination
-    getAllFixedAssetsClassesWithoutPagination = async (token) => {
+    //GET all FixedAssetsSubClasses Without Pagination
+    getAllFixedAssetsSubClassesWithoutPagination = async (token) => {
         var resp = 600;
         var userData = {}
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllFixedAssetsClasses}`, {
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllFixedAssetsSubClasses}`, {
             headers: {
                 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -91,12 +91,12 @@ class FixedAssetsClasses {
         return resp;
     }
 
-    //GET FixedAssetsClass by ID
-    getFixedAssetsClassByID = async (id, token) => {
+    //GET FixedAssetsSubClass by ID
+    getFixedAssetsSubClassByID = async (id, token) => {
         var resp = 600;
         var userData = {}
         const data = await Axios.get(
-            `${Config.host}${Config.port}${this.api.getFixedAssetsClassByID}/${id}`, {
+            `${Config.host}${Config.port}${this.api.getFixedAssetsSubClassByID}/${id}`, {
             headers: {
                 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -121,9 +121,9 @@ class FixedAssetsClasses {
         return resp;
     }
 
-    //UPDATE a FixedAssetsClass
-    updateFixedAssetsClass = async (data, token) => {
-        return await Axios.patch(`${Config.host}${Config.port}${this.api.updateFixedAssetsClass}/${data.id}`, data,
+    //UPDATE a FixedAssetsSubClass
+    updateFixedAssetsSubClass = async (data, token) => {
+        return await Axios.patch(`${Config.host}${Config.port}${this.api.updateFixedAssetsSubClass}/${data.id}`, data,
             { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', } })
             .then(Response => {
                 return { ...Response.data, status: 200 }
@@ -134,9 +134,9 @@ class FixedAssetsClasses {
             });
     }
 
-    //DELETE a FixedAssetsClass
-    DeleteFixedAssetsClass = async (id, token) => {
-        return await Axios.delete(`${Config.host}${Config.port}${this.api.DeleteFixedAssetsClass}/${id}`, {
+    //DELETE a FixedAssetsSubClass
+    DeleteFixedAssetsSubClass = async (id, token) => {
+        return await Axios.delete(`${Config.host}${Config.port}${this.api.DeleteFixedAssetsSubClass}/${id}`, {
             headers: {
                 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -158,5 +158,5 @@ class FixedAssetsClasses {
     }
 
 }
-var UserObject = new FixedAssetsClasses();
+var UserObject = new FixedAssetsSubClasses();
 export default UserObject;
