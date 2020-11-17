@@ -1,10 +1,13 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {FormInput , FormSelect  } from '../../../../Components/Form'
-import {  Button, Card , Form } from 'react-bootstrap';
+import {  Button, Card , Form , Image , OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
 import ToggleButton from 'react-toggle-button'
+import { ComponentToPrint } from './PrintAllEmployee';
+import { ComponentToPrint2 } from './PrintBankAccounts';
+import ReactToPrint from 'react-to-print';
 
 // import CUST_CONTROLLER from '../../../../Controllers/Customer.controller';
 
@@ -13,6 +16,8 @@ class addEmployeeCom extends React.Component {
         super(props);
         this.state = {
             addEmployeeState: false,
+            printSupplierState: false,
+            printSupplierState2: false,
 
             username:'',
             email:'',
@@ -111,8 +116,58 @@ class addEmployeeCom extends React.Component {
                 {/* Title and the add new customer button */}
                 <div className="row" style={{marginTop:"5px", fontFamily:"sans-serif", marginBottom:"15px"}}>
                         <div className="col-sm-9">
-                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Employee Details<br></br>
-                            <span className="text-muted small">Dashboard / Employees</span></h6>
+                            <div className="row">
+                                <div className="col-sm">
+                                    <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Supplier Details<br></br>
+                                    <span className="text-muted small">Dashboard / Suppliers</span></h6>
+                                </div>
+                                <div className="col-sm">
+                                    <div className="row">
+                                        <ReactToPrint
+                                            trigger={() => {
+                                                return <Image src="/images/printer.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px", cursor:"pointer"}} rounded />;
+                                            }}
+                                            content={() => this.componentRef}
+                                        />
+                                        <>
+                                        {['bottom'].map((placement) => (
+                                            <OverlayTrigger
+                                            trigger="click"
+                                            key={placement}
+                                            placement={placement}
+                                            overlay={
+                                                <Popover id={`popover-positioned-${placement}`}>
+                                                <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                                                <Popover.Content>
+                                                    <Form>
+                                                        <Form.Group controlId="exampleForm.ControlInput1">
+                                                            <Form.Label>Email address</Form.Label>
+                                                            <Form.Control type="email" placeholder="name@example.com" />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Message</Form.Label>
+                                                            <Form.Control as="textarea" rows={3} />
+                                                        </Form.Group>
+                                                        <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                                                    </Form>
+                                                </Popover.Content>
+                                                </Popover>
+                                            }
+                                            >
+                                            <Image src="/images/email.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px", cursor:"pointer"}} rounded />
+                                            </OverlayTrigger>
+                                        ))}
+                                        </>
+                                        <ReactToPrint
+                                            trigger={() => {
+                                                return <Image src="/images/bank.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px", cursor:"pointer"}} rounded />;
+                                            }}
+                                            content={() => this.componentRef2}
+                                        />
+                                    </div>
+                                </div>
+                               
+                            </div>
                         </div>
                         <div className="col-sm-3">
                             <Button variant="" style={{backgroundColor:"#475466" , color:"#FFFFFF", width:"100%",  cursor: 'pointer'}} onClick={() => this.change_toggle()}>Add new Employee</Button>
@@ -418,6 +473,21 @@ class addEmployeeCom extends React.Component {
                                 </Card.Body>
                             </Card>
                         </div>
+                    </div>
+
+                    {/* print all suppliers */}
+                    <div className="row" style={{ display: this.state.printSupplierState == true ? 'block' : 'none', marginBottom:"15px" }}>
+                    <ComponentToPrint
+                        proid={this.props.auth.token}
+                        HRname = {this.props.auth.user.user_details.username}
+                        ref={el => (this.componentRef = el)} />
+                    </div>
+                    {/* print all suppliers */}
+                    <div className="row" style={{ display: this.state.printSupplierState2 == true ? 'block' : 'none', marginBottom:"15px" }}>
+                    <ComponentToPrint2
+                        proid={this.props.auth.token}
+                        HRname = {this.props.auth.user.user_details.username}
+                        ref={el => (this.componentRef2 = el)} />
                     </div>
             </div>
         );

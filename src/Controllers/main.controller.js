@@ -3,7 +3,7 @@ import Config from "./Config.controller";
 
 class MainController{
     
-    apiCallFn=(method="get",url="",headers={},data={})=>{
+    apiCallFn=(method="get",url="",headers={},data={},cb)=>{
         return Axios({
             method,
             data,
@@ -15,6 +15,30 @@ class MainController{
     postWithJWT=(url,data,token)=>{
         return this.apiCallFn(
             'post',
+            url,
+            {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json' 
+            },
+            data
+        );
+    }
+
+    putWithJWT=(url,data,token)=>{
+        return this.apiCallFn(
+            'put',
+            url,
+            {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json' 
+            },
+            data
+        );
+    }
+    
+    patchWithJWT=(url,data,token)=>{
+        return this.apiCallFn(
+            'patch',
             url,
             {
                 'Authorization': `bearer ${token}`,

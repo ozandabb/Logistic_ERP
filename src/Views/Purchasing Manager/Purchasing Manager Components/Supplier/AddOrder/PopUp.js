@@ -1,8 +1,8 @@
 import React,{useState} from 'react';
-import { Spinner } from '../../../../Components/smallspinner';
-import { FormInput } from '../../../../Components/Form';
-import { BasicModal } from '../../../BackOffice/BackOffice Components/shared/modal';
-import PurchaseOrderObject from '../../../../Controllers/PurchaseOrder.controller'
+import { Spinner } from '../../../../../Components/smallspinner';
+import { FormInput } from '../../../../../Components/Form';
+import { BasicModal } from '../../../../BackOffice/BackOffice Components/shared/modal';
+import PurchaseOrderObject from '../../../../../Controllers/Purchasing Order/PurchaseOrder.controller'
 
 const AddOrderPopUp=({
     item=null,
@@ -11,7 +11,8 @@ const AddOrderPopUp=({
     cancelBtnTxt="",
     show=false,
     token="",
-    handleClose=()=>undefined
+    handleClose=()=>undefined,
+    
 })=>{
     const [quantity,setQuantity]=useState("");
     const [error,setError]=useState("");
@@ -47,12 +48,10 @@ const AddOrderPopUp=({
                     ]
                 },
             token,
-            ((error,data)=>{
-                if(!error){
-                    setSpinner(false);
+            ((err,data)=>{
+                setSpinner(false);
+                if(!err){
                     handleCloseFn();
-                }else{
-                    console.log(error);
                 }
 
             }));
@@ -73,6 +72,7 @@ const AddOrderPopUp=({
             show={show}
             handleClose={handleCloseFn}
             onSubmitFn={onSubmitHandler}
+            cancelFn={handleChange}
         >
            <div className="row" style={{textAlign:"center"}}>
                <div className="col-md-3"></div>
