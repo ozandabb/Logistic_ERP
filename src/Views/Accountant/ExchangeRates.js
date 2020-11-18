@@ -6,6 +6,7 @@ import ExchangeRates_CONTROLLER from "../../Controllers/Accountant/ExchangeRates
 import {Button, Card, Col, FormControl, InputGroup, Table} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import CONFIG from "../../Controllers/Config.controller";
+import Spinner from 'react-bootstrap/Spinner'
 
 class ExchangeRates extends Component {
     constructor(props) {
@@ -14,17 +15,25 @@ class ExchangeRates extends Component {
             exchange_rates: [],
             date:'',
             search: '',
+            isLoading: '',
 
         }
     }
 
     async componentDidMount() {
         this.getAllExchangeRates();
+
     }
 
     getAllExchangeRates = async () => {
-        const res = await ExchangeRates_CONTROLLER.getAllExchangeRates();
         this.setState({
+            isLoading : true,
+        })
+        
+        const res = await ExchangeRates_CONTROLLER.getAllExchangeRates();
+
+        this.setState({
+            isLoading : false,
             exchange_rates: res.data.rates
         });
         console.log(this.state.exchange_rates);
@@ -42,12 +51,16 @@ class ExchangeRates extends Component {
 
 
     getAllExchangeRatesForDate = async () => {
-
+        this.setState({
+            isLoading : true,
+        })
+        
         const res = await ExchangeRates_CONTROLLER.getAllExchangeRatesForDate(this.state.date);
 
         if(res.success == true){
             this.setState({
-                exchange_rates: res.data.rates
+                exchange_rates: res.data.rates,
+                isLoading : false,
             });
             console.log(this.state.exchange_rates);
         }
@@ -133,9 +146,9 @@ class ExchangeRates extends Component {
 
                             {/*
                             Display All Bank Accounts
-                        */}
+                            */}
                             <div>
-                                <div className="row" style={{marginTop:"20px"}}>
+                                <div className="row" style={{display: this.state.isLoading == false ? 'block' : 'none',marginTop:"20px"}}>
                                     <div className="col-sm">
                                         <Card>
                                             <Table striped bordered hover variant="light">
@@ -162,6 +175,10 @@ class ExchangeRates extends Component {
                                         </Card>
                                     </div>
                                 </div>
+                                
+                                <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto'}}>
+                                    <span className="sr-only">Loading...</span>
+                                </Spinner>
                             </div>
                         </div>
                     </div>
