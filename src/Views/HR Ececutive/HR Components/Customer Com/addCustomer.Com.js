@@ -32,6 +32,8 @@ class addCustomerCom extends React.Component {
             dob:'',
             postal_code:'',
 
+            errors : {},
+
         };
     }
 
@@ -50,61 +52,63 @@ class addCustomerCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        var data = {
-            username: this.state.username,
-            email: this.state.email,
-            nic: this.state.nic,
-            phone: this.state.phone,
+        if (this.validate()) {
+            var data = {
+                username: this.state.username,
+                email: this.state.email,
+                nic: this.state.nic,
+                phone: this.state.phone,
 
-            role: this.state.role,
-            image : this.state.image,
-            credit_limit: this.state.credit_limit,
-            city: this.state.city,
+                role: this.state.role,
+                image : this.state.image,
+                credit_limit: this.state.credit_limit,
+                city: this.state.city,
 
-            address: this.state.address,
-            name: this.state.name,
-            lat: this.state.lat,
-            long : this.state.long,
+                address: this.state.address,
+                name: this.state.name,
+                lat: this.state.lat,
+                long : this.state.long,
 
-            signature: this.state.signature,
-            dob: this.state.dob,
-            postal_code : this.state.postal_code,
+                signature: this.state.signature,
+                dob: this.state.dob,
+                postal_code : this.state.postal_code,
+            }
+
+            const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
+            console.log("cus result",result );
+
+            if(result.status === 201){
+                CONFIG.setToast("Successfully Added!");
+                this.clear();
+            }else{
+                CONFIG.setErrorToast(result.response.data.message);
+            }
         }
-
-        const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
-
-        if(result.status == 201){
-            CONFIG.setToast(result.data.message);
-            this.clear();
-        }
-        // else{
-        //     CONFIG.setErrorToast(" Somthing Went Wrong!");
-        //     this.clear();
-        // }
     }
 
     clear = ()=>{
         this.setState({
-            username:'' ,
-            email:'' ,
-            nic:'' ,
-            phone: '',
-            //image : this.state.image,
-            credit_limit: '',
-            city: '',
-            address: '',
-            name: '',
-            lat: '',
-            long : '',
-            //signature: this.state.signature,
-            //dob: this.state.dob,
-            postal_code : '',
+            username:'',
+            email:'',
+            nic:'',
+            phone:'',
+            role: '',
+            credit_limit:'',
+            city:'',
+            address:'',
+            name:'',
+            lat:'',
+            long:'',
+            dob:'',
+            postal_code:'',
         })
 
       this.change_toggle();
     }
 
     render() {
+        const {errors } = this.state;
+
         return (
             <div>
                 {/* Title and the add new customer button */}
@@ -164,7 +168,7 @@ class addCustomerCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addCustomerState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow">
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
@@ -180,23 +184,23 @@ class addCustomerCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'Customer Name *'}
                                                                         placeholder={"Enter Customer's Name"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.name}
                                                                         name="name"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Username *"}
                                                                         placeholder={"Enter Customer's username"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.username}
                                                                         name="username"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.username && errors.username.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.username}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -204,23 +208,24 @@ class addCustomerCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'Email *'}
                                                                         placeholder={"Enter Customer's Email"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.email}
                                                                         name="email"
+                                                                        type="Email"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.email && errors.email.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.email}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"NIC *"}
                                                                         placeholder={"Enter Customer's NIC"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.nic}
                                                                         name="nic"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.nic && errors.nic.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.nic}</h4>}
                                                                 </div>
                                                         </div>
 
@@ -229,12 +234,12 @@ class addCustomerCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Address *"}
                                                                         placeholder={"Enter Customer's Addres"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.address}
                                                                         name="address"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.address && errors.address.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.address}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -242,23 +247,23 @@ class addCustomerCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'City *'}
                                                                         placeholder={"Enter Customer's City"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.city}
                                                                         name="city"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.city && errors.city.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.city}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Contact Number *"}
                                                                         placeholder={"Enter Customer's Contact Number"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.phone}
                                                                         name="phone"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.phone && errors.phone.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.phone}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -266,23 +271,23 @@ class addCustomerCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Postal Code *"}
                                                                         placeholder={"Enter Customer's Postal Code"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.postal_code}
                                                                         name="postal_code"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.postal_code && errors.postal_code.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.postal_code}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Date of Birth *"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.dob}
                                                                         type="Date"
                                                                         name="dob"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.dob && errors.dob.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.dob}</h4>}
                                                                 </div>
                                                         </div>
                                                         
@@ -295,12 +300,12 @@ class addCustomerCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Credit Limit *"}
                                                                     placeholder={"Enter Customer's Credit Limit"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.credit_limit}
                                                                     name="credit_limit"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.credit_limit && errors.credit_limit.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.credit_limit}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -308,24 +313,24 @@ class addCustomerCom extends React.Component {
                                                                 <FormInput 
                                                                     label={'Latitude *'}
                                                                     placeholder={"Enter Latitude"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.lat}
                                                                     name="lat"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.lat && errors.lat.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.lat}</h4>}
 
                                                             </div>
                                                             <div className="col-sm">
                                                                 <FormInput 
                                                                     label={"Longitude *"}
                                                                     placeholder={"Enter Longitude"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.long}
                                                                     name="long"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.long && errors.long.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.long}</h4>}
 
                                                             </div>
                                                         </div>
@@ -347,7 +352,7 @@ class addCustomerCom extends React.Component {
                                                 <div className="row"> 
                                                         <div className="col-6 mt-3 mb-1" >
                                                         <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                        <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                        <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
                                                         </div>
                                                 </div>
 
@@ -370,6 +375,118 @@ class addCustomerCom extends React.Component {
             </div>
         );
     }
+
+    validate = () => {
+        let { errors, username, email,nic, phone, credit_limit, city, address , name, lat , long, dob, postal_code} = this.state;
+        let count = 0;
+
+        if (username.length === 0) {
+            errors.username =  'Username can not be empty !'
+            count++
+        } else {
+            errors.username = ''
+        }
+
+        if (email.length === 0) {
+            errors.email =  'Email can not be empty !'
+            count++
+        } else {
+            errors.email = ''
+        }
+
+        if (nic.length === 0) {
+            errors.nic =  'NIC can not be empty !'
+            count++
+        } else {
+            if(nic.length === 9){
+                errors.nic = "Need letter V"
+                count++
+            }else if(nic.length < 9){
+                errors.nic = "Need 10 Digits for a NIC"
+            }else{
+                errors.nic = ''
+            }
+        }
+
+        if (phone.length === 0) {
+            errors.phone = "Contact Number can not be empty"
+            count++
+        } else {
+            if(phone.length < 10){
+                errors.phone = "Need 10 Digits for a number"
+                count++
+            }else{
+                errors.phone = ""
+            }
+        }
+
+        if (city.length === 0) {
+            errors.city =  'City can not be empty !'
+            count++
+        } else {
+            errors.city = ''
+        }
+
+        if (address.length === 0) {
+            errors.address =  'Address can not be empty !'
+            count++
+        } else {
+            errors.address = ''
+        }
+
+        if (credit_limit.length === 0) {
+            errors.credit_limit =  'Credit Limit can not be empty !'
+            count++
+        } else {
+            errors.credit_limit = ''
+        }
+
+        if (name.length === 0) {
+            errors.name =  'Customer Name can not be empty !'
+            count++
+        } else {
+            errors.name = ''
+        }
+
+        if (lat.length === 0) {
+            errors.lat =  'Latitude Required !'
+            count++
+        } else {
+            errors.lat = ''
+        }
+
+        if (long.length === 0) {
+            errors.long =  'Longitude Required !'
+            count++
+        } else {
+            errors.long = ''
+        }
+
+        if (dob.length === 0) {
+            errors.dob =  'Birthday can not be empty !'
+            count++
+        } else {
+            errors.dob = ''
+        }
+        if (postal_code.length === 0) {
+            errors.postal_code =  'Postal Code Required !'
+            count++
+        } else {
+            errors.postal_code = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
+
+
+
+
+
+
+
+
+
 }
 
 

@@ -39,7 +39,7 @@ class ManageTeam_Sidebar extends React.Component {
                 </span>
             </nav>
 
-            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }`} >
+            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }shadow`} >
 
             {/* <div className="sidebar-header pb-4 pt-2">
                 <div className="d-flex px-4">

@@ -39,7 +39,7 @@ class Admin_Sidebar extends React.Component {
                 </span>
             </nav>
 
-            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }`} >
+            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }shadow`} >
 
             {/* <div className="sidebar-header pb-4 pt-2">
                 <div className="d-flex px-4">
@@ -55,7 +55,7 @@ class Admin_Sidebar extends React.Component {
             <ProSidebar>
             <SidebarContent>
                 <Menu iconShape="circle">
-                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/Accountant/dashboard"/></MenuItem>
+                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/AdminTeam/dashboard"/></MenuItem>
                 <MenuItem active={activemenu === 'USERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Users<Link to="/AdminTeam/Users"/></MenuItem>
                 {/* <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>

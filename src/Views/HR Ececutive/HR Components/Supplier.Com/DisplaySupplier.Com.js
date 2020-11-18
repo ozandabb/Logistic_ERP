@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch , faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons'
-import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button } from 'react-bootstrap';
+import { faSearch , faRedo } from '@fortawesome/free-solid-svg-icons'
+import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
 import moment from 'moment';
@@ -30,6 +30,12 @@ class DisplatSupplierCom extends React.Component {
     }
 
     async componentDidMount() {
+        this.loadAllSuppliers();
+        this.refreshList();
+    }
+
+    //REFRESH all Suppliers
+    refreshList = () => {
         this.loadAllSuppliers();
     }
 
@@ -101,7 +107,9 @@ class DisplatSupplierCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        if (this.validate()) {
+        if(this.state.id == ''){
+            CONFIG.setErrorToast("Please Select a Supplier to Update!");
+        }else{
             var data = {
                 id: this.state.id,
                 name: this.state.name,
@@ -110,7 +118,7 @@ class DisplatSupplierCom extends React.Component {
                 email: this.state.email,
             }
 
-            const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data , this.props.token );
+            const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data ,this.props.auth.token );
 
             if(result.status == 200){
                 CONFIG.setToast("Successfully Updated!");
@@ -131,6 +139,7 @@ class DisplatSupplierCom extends React.Component {
     //Clear all input details
     clear = ()=>{
         this.setState({
+            id:'',
             name:'' ,
             address:'' ,
             phoneNo:'' ,
@@ -148,7 +157,7 @@ class DisplatSupplierCom extends React.Component {
                     <Row>
 
                         <Col sm={9}>
-                            <Card >
+                            <Card className="shadow" >
                                  <nav>
                                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
@@ -173,7 +182,7 @@ class DisplatSupplierCom extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6 mt-1 mb-1" >
                                                         <FormInput 
-                                                            label={'Customer Name *'}
+                                                            label={'Supplier Name *'}
                                                             placeholder={"Select one Supplier"}
                                                             value={name}
                                                             name="name"
@@ -249,7 +258,7 @@ class DisplatSupplierCom extends React.Component {
                         </Col>
 
                         <Col sm={3}>
-                            <Nav variant="pills" className="flex-column bg-white">
+                            <Nav variant="pills" className="flex-column bg-white shadow">
                                 <Card>
                                 <Nav.Item style={{backgroundColor:"#475466", height:"65px"}}>
                                     <Row>
@@ -268,8 +277,23 @@ class DisplatSupplierCom extends React.Component {
                                             </div>
                                         </Col>
                                         {/* <Col xs={6} md={4}> */}
-                                        <Col md="auto"  style={{paddingTop:"16px", paddingBottom:"8px"}}>
-                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"20px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                        <Col md="auto"  style={{paddingTop:"20px", paddingBottom:"8px"}}>
+                                            <div className="row">
+                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"5px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                                {['bottom'].map((placement) => (
+                                                    <OverlayTrigger
+                                                        key={placement}
+                                                        placement={placement}
+                                                        overlay={
+                                                            <Tooltip id={`tooltip-${placement}`}>
+                                                                Refresh List
+                                                        </Tooltip>
+                                                        }
+                                                    >
+                                                    <FontAwesomeIcon  onClick={() => this.refreshList()} icon={faRedo} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"15px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                                    </OverlayTrigger>
+                                                ))}
+                                            </div>
                                         </Col>
                                     </Row>
                                 </Nav.Item>
@@ -308,7 +332,7 @@ class DisplatSupplierCom extends React.Component {
         return(
             <div style={{paddingLeft:"20px"}} key={item.id} onClick={() => this.loadSupplierData(item.id)}>
                  <div className="row">
-                        <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>{item.id}</p></div>
+                        <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>Sup No : {item.id}</p></div>
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> {moment(new Date(item.createdAt)).format("YYYY MMM DD")}</p></div>
                 </div>
                 <p style={{fontSize:"18px", color:"#18A0FB",fontFamily:"sans-serif", marginBottom:"0px"}}>{item.name}</p>

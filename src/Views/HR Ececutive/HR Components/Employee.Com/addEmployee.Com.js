@@ -4,7 +4,7 @@ import {FormInput , FormSelect  } from '../../../../Components/Form'
 import {  Button, Card , Form , Image , OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
-import ToggleButton from 'react-toggle-button'
+import Employee_CONTROLLER from '../../../../Controllers/HR Staff/Employee.controller';
 import { ComponentToPrint } from './PrintAllEmployee';
 import { ComponentToPrint2 } from './PrintBankAccounts';
 import ReactToPrint from 'react-to-print';
@@ -18,22 +18,31 @@ class addEmployeeCom extends React.Component {
             addEmployeeState: false,
             printSupplierState: false,
             printSupplierState2: false,
+            curTime : new Date().toLocaleString(),
 
-            username:'',
-            email:'',
-            nic:'',
-            phone:'',
-            role: 2,
-            image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
-            credit_limit:'',
+            emp_no:'',
+            full_name:'',
+            date_of_birth:'',
+            gender:"NONE",
+            address: '',
+            marital_status: 'NONE',
+            spouse_name:'',
             city:'',
-            address:'',
-            name:'',
-            lat:'',
-            long:'',
-            signature: "https://www.docsketch.com/assets/vip-signatures/muhammad-ali-signature-6a40cd5a6c27559411db066f62d64886c42bbeb03b347237ffae98b0b15e0005.svg",
-            dob:"1997-03-25",
-            postal_code:'',
+            zip_code:'',
+            home_phone:'',
+            phone:'',
+            department:'NONE',
+            designation: 'NONE',
+            service_location:'',
+            bank_name:'',
+            bank_branch:'',
+            bank_account_holder_name:'',
+            bank_account_number:'',
+            basic_salary:'',
+            system_access:'NONE',
+            joined_date:'',
+
+            errors : {},
 
         };
     }
@@ -52,65 +61,75 @@ class addEmployeeCom extends React.Component {
 
     onFormSubmit = async (e) => {
         e.preventDefault();
-        if(this.state.marital_status == "Yes"){
-            console.log("yes bn");
+
+        if (this.validate()) {
+            var data = {
+                emp_no:this.state.emp_no,
+                full_name:this.state.full_name,
+                date_of_birth:this.state.date_of_birth,
+                gender:this.state.gender,
+                address: this.state.address,
+                marital_status: this.state.marital_status,
+                spouse_name:this.state.spouse_name,
+                city:this.state.city,
+                zip_code:this.state.zip_code,
+                home_phone:this.state.home_phone,
+                phone:this.state.phone,
+                department:this.state.department,
+                designation: this.state.designation,
+                service_location:this.state.service_location,
+                bank_name:this.state.bank_name,
+                bank_branch:this.state.bank_branch,
+                bank_account_holder_name:this.state.bank_account_holder_name,
+                bank_account_number:this.state.bank_account_number,
+                basic_salary:this.state.basic_salary,
+                system_access:this.state.system_access,
+                joined_date:this.state.curTime,
+            }
+
+            const result = await Employee_CONTROLLER.addEmployee(data, this.props.auth.token);
+
+            if(result.status == 201){
+                CONFIG.setToast("Successfully Added");
+                this.clear();
+            }else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.clear();
+            }
         }
-        else{
-            console.log("no");
-        }
-       
-
-        // var data = {
-        //     username: this.state.username,
-        //     email: this.state.email,
-        //     nic: this.state.nic,
-        //     phone: this.state.phone,
-
-        //     role: this.state.role,
-        //     image : this.state.image,
-        //     credit_limit: this.state.credit_limit,
-        //     city: this.state.city,
-
-        //     address: this.state.address,
-        //     name: this.state.name,
-        //     lat: this.state.lat,
-        //     long : this.state.long,
-
-        //     signature: this.state.signature,
-        //     dob: this.state.dob,
-        //     postal_code : this.state.postal_code,
-        // }
-
-        // const result = await CUST_CONTROLLER.addCustomer(data, this.props.auth.token);
-
-        // if(result.status == 201){
-        //     CONFIG.setToast("Successfully Added");
-        //     this.clear();
-        // }
     }
 
-    clear = ()=>{
+    clear = () =>{
         this.setState({
-            username:'' ,
-            email:'' ,
-            nic:'' ,
-            phone: '',
-            //image : this.state.image,
-            credit_limit: '',
-            city: '',
+            emp_no:'',
+            full_name:'',
+            date_of_birth:'',
+            gender:"NONE",
             address: '',
-            name: '',
-            lat: '',
-            long : '',
-            //signature: this.state.signature,
-            //dob: this.state.dob,
-            postal_code : '',
+            marital_status: 'NONE',
+            spouse_name:'',
+            city:'',
+            zip_code:'',
+            home_phone:'',
+            phone:'',
+            department:'NONE',
+            designation: 'NONE',
+            service_location:'',
+            bank_name:'',
+            bank_branch:'',
+            bank_account_holder_name:'',
+            bank_account_number:'',
+            basic_salary:'',
+            system_access:'NONE',
+            joined_date:'',
         })
 
        this.change_toggle();
     }
 
     render() {
+        const {errors } = this.state;
+
         return (
             <div>
                 {/* Title and the add new customer button */}
@@ -118,8 +137,8 @@ class addEmployeeCom extends React.Component {
                         <div className="col-sm-9">
                             <div className="row">
                                 <div className="col-sm">
-                                    <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Supplier Details<br></br>
-                                    <span className="text-muted small">Dashboard / Suppliers</span></h6>
+                                    <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Employee Details<br></br>
+                                    <span className="text-muted small">Dashboard / Employees</span></h6>
                                 </div>
                                 <div className="col-sm">
                                     <div className="row">
@@ -177,7 +196,7 @@ class addEmployeeCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addEmployeeState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow">
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
@@ -193,46 +212,48 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'Full Name *'}
                                                                         placeholder={"Enter Employee's Name"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.full_name}
                                                                         name="full_name"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.full_name && errors.full_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.full_name}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Employee No"}
-                                                                        //error={ errors.group_mo}
+                                                                        placeholder={"Enter Employee's Number"}
                                                                         value={this.state.emp_no}
                                                                         name="emp_no"
-                                                                        readOnly 
-                                                                        //error_meesage={'*Group Number required'}
+                                                                        // readOnly
+                                                                        onChange={this.formValueChange} 
                                                                     />
+                                                                    {errors.emp_no && errors.emp_no.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.emp_no}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormSelect 
                                                                         label={'Gender *'}
-                                                                        //error={ errors.group_mo}
                                                                         options={GENDER}
                                                                         value={this.state.gender}
                                                                         name="gender"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.gender && errors.gender.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.gender}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Date of Birth *"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.date_of_birth}
                                                                         type="Date"
                                                                         name="date_of_birth"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.date_of_birth && errors.date_of_birth.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.date_of_birth}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -240,24 +261,24 @@ class addEmployeeCom extends React.Component {
                                                                     <FormSelect 
                                                                         label={'Marital Status *'}
                                                                         placeholder={"Enter Employee's Marital Status"}
-                                                                        //error={ errors.group_mo}
                                                                         options={marital_status}
                                                                         value={this.state.marital_status}
                                                                         name="marital_status"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.marital_status && errors.marital_status.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.marital_status}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={'Spouse Name *'}
                                                                         placeholder={"Enter Employee's Spouse Name"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.spouse_name}
                                                                         name="spouse_name"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.spouse_name && errors.spouse_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.spouse_name}</h4>}
                                                                 </div>
                                                         </div>
 
@@ -266,12 +287,12 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Address *"}
                                                                         placeholder={"Enter Employee's Addres"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.address}
                                                                         name="address"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.address && errors.address.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.address}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -279,23 +300,23 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'City *'}
                                                                         placeholder={"Enter Employee's City"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.city}
                                                                         name="city"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.city && errors.city.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.city}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Zip Code *"}
                                                                         placeholder={"Enter Employee's Zip code"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.zip_code}
                                                                         name="zip_code"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.zip_code && errors.zip_code.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.zip_code}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -303,23 +324,23 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Mobile Number *"}
                                                                         placeholder={"Enter Employee's Mobile No"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.phone}
                                                                         name="phone"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.phone && errors.phone.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.phone}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={"Land Number *"}
                                                                         placeholder={"Enter Employee's Land No"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.home_phone}
                                                                         name="home_phone"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.home_phone && errors.home_phone.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.home_phone}</h4>}
                                                                 </div>
                                                         </div>
 
@@ -331,25 +352,25 @@ class addEmployeeCom extends React.Component {
                                                                     <FormSelect 
                                                                         label={"Department *"}
                                                                         placeholder={"Enter Department"}
-                                                                        //error={ errors.group_mo}
                                                                         options={DEPARTMENTS}
                                                                         value={this.state.department}
                                                                         name="department"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.department && errors.department.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.department}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormSelect 
                                                                         label={"Designation *"}
                                                                         placeholder={"Enter Designation"}
                                                                         options={DESIGNATIONS}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.designation}
                                                                         name="designation"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.designation && errors.designation.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.designation}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row">
@@ -357,24 +378,24 @@ class addEmployeeCom extends React.Component {
                                                                     <FormInput 
                                                                         label={"Service Location *"}
                                                                         placeholder={"Enter Service Location"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.service_location}
                                                                         name="service_location"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.service_location && errors.service_location.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.service_location}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormSelect 
                                                                         label={"System Access *"}
                                                                         placeholder={"Enter Service Location"}
                                                                         options={SYSTEM_ACCESS}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.system_access}
                                                                         name="system_access"
-                                                                        //onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
+                                                                        onChange={this.formValueChange}
                                                                     />
+                                                                    {errors.system_access && errors.system_access.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.system_access}</h4>}
                                                                 </div>
                                                         </div>
                                                         <div className="row mt-3">
@@ -395,12 +416,12 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Basic Salary *"}
                                                                     placeholder={"Enter Basic Salary"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.basic_salary}
                                                                     name="basic_salary"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.basic_salary && errors.basic_salary.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.basic_salary}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -408,12 +429,12 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Name *"}
                                                                     placeholder={"Enter Employee's Bank Name"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_name}
                                                                     name="bank_name"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.bank_name && errors.bank_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_name}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -421,12 +442,12 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Branch *"}
                                                                     placeholder={"Enter Employee's Bank Branch"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_branch}
                                                                     name="bank_branch"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.bank_branch && errors.bank_branch.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_branch}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -434,12 +455,12 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Account Holder *"}
                                                                     placeholder={"Enter Bank Account Holder Name"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_account_holder_name}
                                                                     name="bank_account_holder_name"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.bank_account_holder_name && errors.bank_account_holder_name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_account_holder_name}</h4>}
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -447,12 +468,12 @@ class addEmployeeCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Bank Account Number *"}
                                                                     placeholder={"Enter Bank Account Number"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.bank_account_number}
                                                                     name="bank_account_number"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.bank_account_number && errors.bank_account_number.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.bank_account_number}</h4>}
                                                             </div>
                                                         </div>
                                                        
@@ -492,6 +513,180 @@ class addEmployeeCom extends React.Component {
             </div>
         );
     }
+
+    validate = () => {
+        let { errors, emp_no, full_name, date_of_birth, gender, department, address, marital_status, spouse_name ,
+             city, zip_code, home_phone, phone , joined_date, designation, service_location, bank_name, bank_branch 
+             , bank_account_holder_name, bank_account_number, basic_salary, system_access  } = this.state;
+        let count = 0;
+
+        if (emp_no.length === 0) {
+            errors.emp_no =  'Employee No can not be empty !'
+            count++
+        } else {
+            errors.emp_no = ''
+        }
+
+        if (full_name.length === 0) {
+            errors.full_name =  'Employee Name can not be empty !'
+            count++
+        } else {
+            errors.full_name = ''
+        }
+
+        if (home_phone.length === 0) {
+            errors.home_phone = "Contact Number can not be empty"
+            count++
+        } else {
+            if(home_phone.length < 10){
+                errors.home_phone = "Need 10 Digits for a number"
+                count++
+            }else{
+                errors.home_phone = ""
+            }
+        }
+
+        if (phone.length === 0) {
+            errors.phone = "Mobile Number can not be empty"
+            count++
+        } else {
+            if(phone.length < 10){
+                errors.phone = "Need 10 Digits for a number"
+                count++
+            }else{
+                errors.phone = ""
+            }
+        }
+
+        if (date_of_birth.length === 0) {
+            errors.date_of_birth =  'Birthday can not be empty !'
+            count++
+        } else {
+            errors.date_of_birth = ''
+        }
+
+        if (gender === 'NONE') {
+            errors.gender =  'Gender can not be empty !'
+            count++
+        } else {
+            errors.gender = ''
+        }
+
+        if (address.length === 0) {
+            errors.address =  'Address can not be empty !'
+            count++
+        } else {
+            errors.address = ''
+        }
+
+        if (marital_status === 'NONE') {
+            errors.marital_status =  'Marital Status can not be empty !'
+            count++
+        } else {
+            errors.marital_status = ''
+        }
+
+        if (spouse_name.length === 0) {
+            errors.spouse_name =  'Spouse Name can not be empty !'
+            count++
+        } else {
+            errors.spouse_name = ''
+        }
+
+        if (city.length === 0) {
+            errors.city =  'City can not be empty !'
+            count++
+        } else {
+            errors.city = ''
+        }
+
+        if (zip_code.length === 0) {
+            errors.zip_code =  'Zip Code can not be empty !'
+            count++
+        } else {
+            errors.zip_code = ''
+        }
+
+        if (department === 'NONE') {
+            errors.department =  'Department can not be empty !'
+            count++
+        } else {
+            errors.department = ''
+        }
+
+        if (designation === 'NONE') {
+            errors.designation =  'Designation can not be empty !'
+            count++
+        } else {
+            errors.designation = ''
+        }
+
+        if (service_location.length === 0) {
+            errors.service_location =  'Service Location can not be empty !'
+            count++
+        } else {
+            errors.service_location = ''
+        }
+
+        if (bank_name.length === 0) {
+            errors.bank_name =  'Bank Name can not be empty !'
+            count++
+        } else {
+            errors.bank_name = ''
+        }
+
+        if (bank_branch.length === 0) {
+            errors.bank_branch =  'Branch can not be empty !'
+            count++
+        } else {
+            errors.bank_branch = ''
+        }
+
+        if (bank_account_holder_name.length === 0) {
+            errors.bank_account_holder_name =  'Account Holder can not be empty !'
+            count++
+        } else {
+            errors.bank_account_holder_name = ''
+        }
+
+        if (bank_account_number.length === 0) {
+            errors.bank_account_number =  'Account Number can not be empty !'
+            count++
+        } else {
+            errors.bank_account_number = ''
+        }
+
+        if (basic_salary.length === 0) {
+            errors.basic_salary =  'Basic Salary can not be empty !'
+            count++
+        } else {
+            errors.basic_salary = ''
+        }
+
+        if (system_access === 'NONE') {
+            errors.system_access =  'System Access can not be empty !'
+            count++
+        } else {
+            errors.system_access = ''
+        }
+
+        if (joined_date.length === 0) {
+            errors.joined_date =  'Joined Date can not be empty !'
+            count++
+        } else {
+            errors.joined_date = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
+
+
+
+
+
+
+
 }
 
 const GENDER = [{ label : 'Select the Gender' ,value : 'NONE' } , 

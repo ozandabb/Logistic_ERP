@@ -4,7 +4,7 @@ import {FormInput  } from '../../../../Components/Form'
 import {  Button, Card , Form , Image , OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
-// import SelectSearch from 'react-select-search';
+import SelectSearch from 'react-select-search';
 import Supplier_CONTROLLER from '../../../../Controllers/HR Staff/Supplier.controller';
 import { ComponentToPrint } from '././PrintAllSuppliers';
 import ReactToPrint from 'react-to-print';
@@ -135,7 +135,7 @@ class addSupplierCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addSupplierState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow" style={{paddingBottom:"15px"}}>
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >

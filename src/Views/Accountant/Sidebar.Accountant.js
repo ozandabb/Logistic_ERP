@@ -39,7 +39,7 @@ class Account_Sidebar extends React.Component {
                 </span>
             </nav>
 
-            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }`} >
+            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" } shadow`} >
 
             {/* <div className="sidebar-header pb-4 pt-2">
                 <div className="d-flex px-4">
@@ -56,8 +56,8 @@ class Account_Sidebar extends React.Component {
             <SidebarContent>
                 <Menu iconShape="circle">
                 <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/Accountant/dashboard"/></MenuItem>
-                <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/"/></MenuItem>
-                <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
+                <MenuItem active={activemenu === 'BANK_ACCOUNTS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Bank Accounts<Link to="/Accountant/BankAccount"/></MenuItem>
+                <MenuItem active={activemenu === 'Exchange_Rates'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Exchange Rates<Link to="/Accountant/ExchangeRates"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/"/></MenuItem>

@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import HRSidebar from "../../HRSidebar";
 import { connect } from 'react-redux';
-import {  Button, Card, Table } from 'react-bootstrap';
-import {FormInput  } from '../../../../Components/Form'
-
+import {  Button, Card, Table ,Row , Col } from 'react-bootstrap';
+import {FormInput ,FormSelect } from '../../../../Components/Form';
+import moment from 'moment';
+import Leave_CONTROLLER from '../../../../Controllers/Requests/Leave.controller';
+import CONFIG from '../../../../Controllers/Config.controller';
 
 class LeaveRequest extends Component { 
     constructor(props) {
@@ -12,8 +14,80 @@ class LeaveRequest extends Component {
         this.state = {
             addLeaveState: false,
 
+            start_date:'',
+            end_date:'',
+            date_count:'',
+            type_of_leave:'',
+            no_baby:'',
+            id:'',
+            typeL :'',
         };
+
+        console.log("poppppppppppp", this.props);
     } 
+
+    formValueChange = (e) => {
+        this.setState({
+            [e.target.name] : e.target.value ,
+        });
+        
+    }
+
+    //Normal Leave request from submit
+    onFormSubmitNormal = async (e) => {
+        e.preventDefault();
+
+        // if (this.validate()) {
+            if(this.state.type_of_leave === "Annual_Leave"){
+                this.state.typeL =1
+            }else{
+                this.state.typeL = 2
+            }
+           
+            var data = {
+                start_date:this.state.start_date,
+                end_date:this.state.end_date,
+                date_count: moment(new Date(this.state.end_date)).format("DD") - moment(new Date(this.state.start_date)).format("DD"),
+                type_of_leave:this.state.typeL,
+                id:this.state.id,
+            }
+          
+            const result = await Leave_CONTROLLER.requestNormalLeave(data, this.props.auth.token);
+
+            if(result.status == 201){
+                CONFIG.setToast("Successfully Requested");
+                this.clear();
+            }else{
+                CONFIG.setErrorToast(" Somthing Went Wrong!");
+                this.clear();
+            }
+        //}
+    }
+
+    //Normal Leave request from submit
+    onFormSubmitMaternity = async (e) => {
+        e.preventDefault();
+
+        // if (this.validate()) {
+            var data = {
+                start_date:this.state.start_date,
+                end_date:this.state.end_date,
+                date_count: moment(new Date(this.state.end_date)).format("DD") - moment(new Date(this.state.start_date)).format("DD"),
+                no_baby:this.state.no_baby,
+                id:this.state.id,
+            }
+          
+            const result = await Leave_CONTROLLER.requestMaternity_Leave(data, this.props.auth.token);
+
+            if(result.status == 201){
+                CONFIG.setToast("Successfully Requested");
+                this.clear();
+            }else{
+                CONFIG.setErrorToast(" Somthing Went Wrong!");
+                this.clear();
+            }
+        //}
+    }
 
     
     change_toggle = () => {
@@ -26,10 +100,13 @@ class LeaveRequest extends Component {
 
     clear = ()=>{
         this.setState({
-            name:'' ,
-            email:'' ,
-            address:'' ,
-            phoneNo: '',
+            start_date:'',
+            end_date:'',
+            date_count:'',
+            type_of_leave:'',
+            no_baby:'',
+            id:'',
+            typeL :'',
         })
 
         this.change_toggle();
@@ -40,7 +117,7 @@ class LeaveRequest extends Component {
         return (
             <div className="bg-light wd-wrapper">
                 <HRSidebar activemenu={'REQUEST'} submenu={'LEAVE'} />
-                <div className="wrapper-wx" style={{height:"100hv"}}>
+                <div className="wrapper-wx" >
                     <div className="container-fluid">
 
                         {/* Title and the button section start here */}
@@ -55,23 +132,40 @@ class LeaveRequest extends Component {
                         </div>
                         {/* Title and the button section ends here */}
 
+                        {/* <div className="row" style={{marginBottom:"10px"}}>
+                            <div className="col">
+                                <div className="row">
+                                    <div className="col-sm">
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+                                    </div>
+                                    <div className="col-sm">
+                                        <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col">
+                                
+                            </div>
+                        
+                        </div> */}
 
-                        {/* Add customer form toggle start here */}
+
+                        {/* Add Request form toggle start here */}
                         <div className="row" style={{ display: this.state.addLeaveState == true ? 'block' : 'none', marginBottom:"15px" }}>
                             <div className="col-12">
-                                <Card >
+                                <Card className="shadow">
                                     
                                         <nav>
-                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Normal Leave Request</a>
-                                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Maternity Leave Request</a>
+                                            <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Normal Leave Request</a>
+                                                <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Maternity Leave Request</a>
                                             </div>
                                         </nav>
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                        <div className="tab-content" id="nav-tabContent">
+                                            <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                                 <Card.Body>
                                                     <div className="col-12 bg-white mt-1 pb-1" >
-                                                        <form onSubmit={(e) => this.onFormSubmit(e)}>
+                                                        <form onSubmit={(e) => this.onFormSubmitNormal(e)}>
                                                             <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Leave Request Details<br></br>
                                                             <span className="text-muted small">You can request a leave filling relavant Information</span></h6>
 
@@ -83,22 +177,18 @@ class LeaveRequest extends Component {
                                                                                 <FormInput 
                                                                                     label={'From *'}
                                                                                     type="date"
-                                                                                    //error={ errors.group_mo}
-                                                                                    //value={this.state.name}
+                                                                                    // value={this.state.start_date}
                                                                                     name="start_date"
-                                                                                    //onChange={this.formValueChange}
-                                                                                    //error_meesage={'*Group Number required'}
+                                                                                    onChange={this.formValueChange}
                                                                                 />
                                                                             </div>
                                                                             <div className="col-sm-6 mt-1 mb-1" >
                                                                                 <FormInput 
                                                                                     label={'To *'}
                                                                                     type="date"
-                                                                                    //error={ errors.group_mo}
-                                                                                    //value={this.state.email}
+                                                                                    // value={this.state.end_date}
                                                                                     name="end_date"
-                                                                                    //onChange={this.formValueChange}
-                                                                                    //error_meesage={'*Group Number required'}
+                                                                                    onChange={this.formValueChange}
                                                                                 />
                                                                             </div>
                                                                     </div>
@@ -106,13 +196,11 @@ class LeaveRequest extends Component {
                                                                     <div className="row">
                                                                             <div className="col-sm-6 mt-1 mb-1" >
                                                                                 <FormInput 
-                                                                                    label={'Leave Type *'}
-                                                                                    placeholder={"Enter Supplier's Address"}
-                                                                                    //error={ errors.group_mo}
-                                                                                    //value={this.state.address}
-                                                                                    name="type_of_leave"
-                                                                                    //onChange={this.formValueChange}
-                                                                                    //error_meesage={'*Group Number required'}
+                                                                                    label={'Emp No *'}
+                                                                                    placeholder={"Enter Employee Number"}
+                                                                                    // value={this.state.id}
+                                                                                    name="id"
+                                                                                    onChange={this.formValueChange}
                                                                                 />
                                                                             </div>
                                                                     </div>
@@ -123,16 +211,12 @@ class LeaveRequest extends Component {
 
                                                                     <div className="row">
                                                                         <div className="col-12 mt-1 mb-1" >
-                                                                            <FormInput 
-                                                                                label={"No of Dates *"}
-                                                                                placeholder={"Select Start and End Date"}
-                                                                                //error={ errors.group_mo}
-                                                                                //value={this.state.phoneNo}
-                                                                                name="date_count"
-                                                                                readOnly
-                                                                                //onChange={this.formValueChange}
-                                                                                //error_meesage={'*Group Number required'}
-                                                                            />
+                                                                                <FormSelect 
+                                                                                    label={'Leave Type *'}
+                                                                                    options={Leave}
+                                                                                    name="type_of_leave"
+                                                                                    onChange={this.formValueChange}
+                                                                                />
                                                                         </div>
                                                                     </div>
                                                                     
@@ -142,7 +226,7 @@ class LeaveRequest extends Component {
                                                             <div className="row"> 
                                                                     <div className="col-6 mt-3 mb-1" >
                                                                     <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                                    <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                                    <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
                                                                     </div>
                                                             </div>
 
@@ -150,10 +234,10 @@ class LeaveRequest extends Component {
                                                     </div>
                                                 </Card.Body>
                                             </div>
-                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
+                                            <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                                                 <Card.Body>
                                                     <div className="col-12 bg-white mt-1 pb-1" >
-                                                        <form onSubmit={(e) => this.onFormSubmit(e)}>
+                                                        <form onSubmit={(e) => this.onFormSubmitMaternity(e)}>
                                                             <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Maternity Leave Request Details<br></br>
                                                             <span className="text-muted small">You can request a leave filling relavant Information</span></h6>
 
@@ -165,22 +249,18 @@ class LeaveRequest extends Component {
                                                                                 <FormInput 
                                                                                     label={'From *'}
                                                                                     type="date"
-                                                                                    //error={ errors.group_mo}
-                                                                                    //value={this.state.name}
+                                                                                    value={this.state.start_date}
                                                                                     name="start_date"
-                                                                                    //onChange={this.formValueChange}
-                                                                                    //error_meesage={'*Group Number required'}
+                                                                                    onChange={this.formValueChange}
                                                                                 />
                                                                             </div>
                                                                             <div className="col-sm-6 mt-1 mb-1" >
                                                                                 <FormInput 
                                                                                     label={'To *'}
                                                                                     type="date"
-                                                                                    //error={ errors.group_mo}
-                                                                                    //value={this.state.email}
+                                                                                    value={this.state.end_date}
                                                                                     name="end_date"
-                                                                                    //onChange={this.formValueChange}
-                                                                                    //error_meesage={'*Group Number required'}
+                                                                                    onChange={this.formValueChange}
                                                                                 />
                                                                             </div>
                                                                     </div>
@@ -188,43 +268,35 @@ class LeaveRequest extends Component {
                                                                     <div className="row">
                                                                             <div className="col-sm-6 mt-1 mb-1" >
                                                                                 <FormInput 
-                                                                                    label={'Number of the Baby *'}
-                                                                                    placeholder={"Enter a Number of the Baby"}
-                                                                                    //error={ errors.group_mo}
-                                                                                    //value={this.state.address}
-                                                                                    name="no_baby"
-                                                                                    //onChange={this.formValueChange}
-                                                                                    //error_meesage={'*Group Number required'}
+                                                                                    label={'Emp No *'}
+                                                                                    placeholder={"Enter Employee Number"}
+                                                                                    value={this.state.id}
+                                                                                    name="id"
+                                                                                    onChange={this.formValueChange}
                                                                                 />
                                                                             </div>
                                                                     </div>
-                
                                                                 </div>
 
                                                                 <div className="col-sm-4">
-
                                                                     <div className="row">
                                                                         <div className="col-12 mt-1 mb-1" >
-                                                                            <FormInput 
-                                                                                label={"No of Dates *"}
-                                                                                placeholder={"Select Start and End Date"}
-                                                                                //error={ errors.group_mo}
-                                                                                //value={this.state.phoneNo}
-                                                                                name="date_count"
-                                                                                readOnly
-                                                                                //onChange={this.formValueChange}
-                                                                                //error_meesage={'*Group Number required'}
-                                                                            />
+                                                                                <FormInput 
+                                                                                    label={'Number of the Baby *'}
+                                                                                    placeholder={"Enter a Number of the Baby"}
+                                                                                    value={this.state.no_baby}
+                                                                                    name="no_baby"
+                                                                                    onChange={this.formValueChange}
+                                                                                />
                                                                         </div>
                                                                     </div>
-                                                                    
                                                                 </div>
                                                             </div>
 
                                                             <div className="row"> 
                                                                     <div className="col-6 mt-3 mb-1" >
                                                                     <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                                    <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                                    <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
                                                                     </div>
                                                             </div>
 
@@ -243,25 +315,25 @@ class LeaveRequest extends Component {
                         {/* Card view start here */}
                         <div className="row">
                             <div className="col-sm">
-                                <Card style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
                                     <h5>Annual Leaves</h5>
                                     9
                                 </Card>
                             </div>
                             <div className="col-sm">
-                                <Card style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
                                     <h5>Casual Leaves</h5>
                                     8
                                 </Card>
                             </div>
                             <div className="col-sm">
-                                <Card style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
                                     <h5>Maternity Leaves</h5>
                                     5
                                 </Card>
                             </div>
                             <div className="col-sm">
-                                <Card style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
                                     <h5>Remaining Leaves</h5>
                                     2
                                 </Card>
@@ -329,6 +401,14 @@ class LeaveRequest extends Component {
     }
    
 }
+const Leave = [{ label : 'Select the Leave type' ,value : 'NONE' } , 
+...['Annual_Leave','Casual_Leave'].map( i => {
+    return{
+        label : i  ,
+         value : i 
+    }
+})];
+
 
 const mapStateToProps = state => ({
     auth: state.auth || {},

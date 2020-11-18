@@ -13,7 +13,7 @@ const BasicModal=({
     cancelFn=()=>undefined,
     submitBtnTxt="",
     cancelBtnTxt="",
-    size='sm',
+    size='md',
     btnDisable=false,
     
 })=>{

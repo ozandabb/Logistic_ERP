@@ -1,6 +1,10 @@
 {
     "files.watcherExclude": {
         "**/target": true
+<<<<<<< HEAD
     },
     "compile-hero.disable-compile-files-on-did-save-code": false
+=======
+    }
+>>>>>>> master
 }

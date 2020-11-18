@@ -23,6 +23,12 @@ let PurchasingManagerRoutes = [
         component: PurchasingManagerRequest,
         exact: true,
       },
+      // {
+      //   path: "/PurchasingManager/addClaim",
+      //   name: "AddSupplierClaim",
+      //   component: AddSupplierClaim,
+      //   exact: true,
+      // },
     
     ];
     
