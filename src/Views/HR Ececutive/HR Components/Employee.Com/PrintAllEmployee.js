@@ -71,7 +71,6 @@ export class ComponentToPrint extends React.PureComponent {
     }
 
     renderOneCustomer = (item, i) => {
-        const { search } = this.state;
         return(
             <div>
                 <tr key={item.id}>

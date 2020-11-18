@@ -59,6 +59,7 @@ class addEmployeeCom extends React.Component {
         this.setState({[e.target.name] : e.target.value  });
     }
 
+    //function for add employees
     onFormSubmit = async (e) => {
         e.preventDefault();
 

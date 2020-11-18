@@ -11,6 +11,7 @@ export class ComponentToPrint extends React.PureComponent {
 
             vehicleList: [],
         };
+        this.loadAllVehicles();
     }
 
     async componentDidMount() {

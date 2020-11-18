@@ -41,10 +41,9 @@ class LeaveController{
 
     //GET available leaves
     getAvailableLeaves = async (data,token) => {
-        return await Axios.post(`${Config.host}${Config.port}${this.api.getAvailableLeaves}/${data.id}`, data,
+        return await Axios.get(`${Config.host}${Config.port}${this.api.getAvailableLeaves}/${data.id}`,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
-                console.log("ressssssss", Response);
                 return { ...Response.data , status : 201 }
             })
             .catch(err => {
