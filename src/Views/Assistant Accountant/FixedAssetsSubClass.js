@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AccSidebar from "./Sidebar.Assi.Acc";
 import { connect } from 'react-redux';
-import DisplayFixedAssetsLocationSection from "./Components/FixedAssetsLocation.Com/DisplayFixedAssetsLocation.Com";
+import DisplayFixedAssetsSubClassSection from "./Components/FixedAssetsSubClass.Com/DisplayFixedAssetsSubClass.Com";
 
-class FixedAssetsLocation extends Component {
+class FixedAssetsSubClass extends Component {
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <AccSidebar activemenu={'FIXED_ASSETS'} submenu={'FIXED_ASSETS_LOCATION'} />
+                <AccSidebar activemenu={'FIXED_ASSETS'} submenu={'FIXED_ASSETS_SUBCLASS'} />
+
                 <div className="wrapper-wx" style={{ height: "100hv" }}>
                     <div className="container-fluid">
 
@@ -19,7 +20,7 @@ class FixedAssetsLocation extends Component {
                         */}
                         <div className="row" style={{ marginTop: "20px" }}>
                             <div className="col-sm">
-                                <DisplayFixedAssetsLocationSection />
+                                <DisplayFixedAssetsSubClassSection />
                             </div>
                         </div>
 
@@ -36,4 +37,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, null)(withRouter(FixedAssetsLocation));
+export default connect(mapStateToProps, null)(withRouter(FixedAssetsSubClass));

@@ -8,7 +8,8 @@ class FixedAssetsClass extends Component {
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <AccSidebar activemenu={'FIXED_ASSETS_CLASS'} />
+                <AccSidebar activemenu={'FIXED_ASSETS'} submenu={'FIXED_ASSETS_CLASS'} />
+
                 <div className="wrapper-wx" style={{ height: "100hv" }}>
                     <div className="container-fluid">
 

@@ -7,21 +7,25 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import CONFIG from '../../../../Controllers/Config.controller';
 import { FormInput } from '../../../../Components/Form';
-import './DisplayFixedAssetsClass.Com.css';
+import './DisplayFixedAssetsSubClass.Com.css';
+import FixedAssetsSubClass_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsSubClasses.controller';
 import FixedAssetsClass_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsClasses.controller';
 
-class DisplayFixedAssetsClass extends React.Component {
+class DisplayFixedAssetsSubClass extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             searchState: false,
-            addFixedAssetsClassState: false,
-            updateFixedAssetsClassState: false,
+            addFixedAssetsSubClassState: false,
+            updateFixedAssetsSubClassState: false,
 
             id: '',
             code: '',
             description: '',
+            primary_code_id: '',
+            depreciation_rate: '',
 
+            fixedAssetsSubClassList: [],
             fixedAssetsClassList: [],
             search: '',
 
@@ -33,6 +37,7 @@ class DisplayFixedAssetsClass extends React.Component {
     }
 
     async componentDidMount() {
+        this.loadAllFixedAssetsSubClasses();
         this.loadAllFixedAssetsClasses();
     }
 
@@ -51,83 +56,95 @@ class DisplayFixedAssetsClass extends React.Component {
     }
 
     change_toggle = () => {
-        if (this.state.addFixedAssetsClassState) {
-            this.setState({ addFixedAssetsClassState: false })
+        if (this.state.addFixedAssetsSubClassState) {
+            this.setState({ addFixedAssetsSubClassState: false })
         } else {
-            this.setState({ addFixedAssetsClassState: true })
+            this.setState({ addFixedAssetsSubClassState: true })
         }
+    }
+
+    //GET all FixedAssetsSubClasses
+    loadAllFixedAssetsSubClasses = async () => {
+        const res = await FixedAssetsSubClass_CONTROLLER.getAllFixedAssetsSubClasses(5, this.state.current_page - 1, this.props.auth.token);
+        this.setState({
+            fixedAssetsSubClassList: res.data.rows,
+            no_of_pages: res.data.pages
+        });
     }
 
     //GET all FixedAssetsClasses
     loadAllFixedAssetsClasses = async () => {
-        const res = await FixedAssetsClass_CONTROLLER.getAllFixedAssetsClasses(5, this.state.current_page - 1, this.props.auth.token);
+        const res = await FixedAssetsClass_CONTROLLER.getAllFixedAssetsClassesWithoutPagination(this.props.auth.token);
         this.setState({
-            fixedAssetsClassList: res.data.rows,
-            no_of_pages: res.data.pages
+            fixedAssetsClassList: res.data.rows
         });
     }
 
     //DELETE Fucntion
     onClickDelete = (id) => {
         if (id == '') {
-            CONFIG.setErrorToast("Please Select a Fixed Assets Class to Delete!");
+            CONFIG.setErrorToast("Please Select a Fixed Assets Sub Class to Delete!");
         } else {
             CONFIG.setDeleteConfirmAlert(
                 "",
-                "Are you sure you want to delete this Fixed Assets Class ?",
-                () => this.clickDeleteFixedAssetsClass(id),
+                "Are you sure you want to delete this Fixed Assets SubClass ?",
+                () => this.clickDeleteFixedAssetsSubClass(id),
                 () => { }
             );
         }
     };
-    clickDeleteFixedAssetsClass = async (id) => {
-        const result = await FixedAssetsClass_CONTROLLER.DeleteFixedAssetsClass(id, this.props.auth.token);
+    clickDeleteFixedAssetsSubClass = async (id) => {
+        const result = await FixedAssetsSubClass_CONTROLLER.DeleteFixedAssetsSubClass(id, this.props.auth.token);
 
         if (result.status == 200) {
             CONFIG.setToast("Successfully Deleted!");
-            this.loadAllFixedAssetsClasses();
+            this.loadAllFixedAssetsSubClasses();
         } else {
-            CONFIG.setErrorToast("Somthing Went Wrong!");
+            CONFIG.setErrorToast(result.response.data.message);
         }
     };
 
-    //FixedAssetsClass form value change
+    //FixedAssetsSubClass form value change
     formValueChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    //add FixedAssetsClass submit
+    //add FixedAssetsSubClass submit
     onFormSubmit = async (e) => {
         e.preventDefault();
         if (this.validate()) {
             var data = {
                 code: this.state.code,
                 description: this.state.description,
+                primary_code_id: this.state.primary_code_id,
+                depreciation_rate: this.state.depreciation_rate,
             }
 
-            const result = await FixedAssetsClass_CONTROLLER.addFixedAssetsClass(data, this.props.auth.token);
-
+            const result = await FixedAssetsSubClass_CONTROLLER.addFixedAssetsSubClass(data, this.props.auth.token);
+            console.log(result);
             if (result.status == 201) {
                 CONFIG.setToast("Successfully Added");
                 this.clear();
-                this.loadAllFixedAssetsClasses();
+                this.loadAllFixedAssetsSubClasses();
             } else {
-                CONFIG.setErrorToast(" Somthing Went Wrong!");
+                CONFIG.setErrorToast(result.response.data.message);
             }
         }
     }
 
-    //Get FixedAssetsClass by ID - function
+    //Get FixedAssetsSubClass by ID - function
     onClickEdit = async (id) => {
-        const response = await FixedAssetsClass_CONTROLLER.getFixedAssetsClassByID(id, this.props.auth.token);
+        const response = await FixedAssetsSubClass_CONTROLLER.getFixedAssetsSubClassByID(id, this.props.auth.token);
 
         if (response.status == 200) {
             this.setState({
                 errors: {},
-                updateFixedAssetsClassState: true,
+                updateFixedAssetsSubClassState: true,
                 id: response.data.data.id,
                 code: response.data.data.code,
                 description: response.data.data.description,
+                primary_code_id: response.data.data.primary_code_id,
+                depreciation_rate: response.data.data.depreciation_rate,
             });
         }
     }
@@ -141,17 +158,19 @@ class DisplayFixedAssetsClass extends React.Component {
                 id: this.state.id,
                 code: this.state.code,
                 description: this.state.description,
+                primary_code_id: this.state.primary_code_id,
+                depreciation_rate: this.state.depreciation_rate,
             }
 
-            const result = await FixedAssetsClass_CONTROLLER.updateFixedAssetsClass(data, this.props.auth.token);
+            const result = await FixedAssetsSubClass_CONTROLLER.updateFixedAssetsSubClass(data, this.props.auth.token);
 
             if (result.status == 200) {
                 CONFIG.setToast("Successfully Updated!");
                 this.clear();
-                this.loadAllFixedAssetsClasses();
+                this.loadAllFixedAssetsSubClasses();
             }
             else {
-                CONFIG.setErrorToast("Somthing Went Wrong!");
+                CONFIG.setErrorToast(result.response.data.message);
             }
         }
     }
@@ -162,8 +181,10 @@ class DisplayFixedAssetsClass extends React.Component {
             id: '',
             code: '',
             description: '',
-            updateFixedAssetsClassState: false,
-            addFixedAssetsClassState: false,
+            primary_code_id: '',
+            depreciation_rate: '',
+            updateFixedAssetsSubClassState: false,
+            addFixedAssetsSubClassState: false,
         })
     }
 
@@ -171,7 +192,7 @@ class DisplayFixedAssetsClass extends React.Component {
         this.setState({
             current_page: pageNum
         }, () => {
-            this.loadAllFixedAssetsClasses();
+            this.loadAllFixedAssetsSubClasses();
         });
     };
     nextPage = async () => {
@@ -179,7 +200,7 @@ class DisplayFixedAssetsClass extends React.Component {
             this.setState({
                 current_page: this.state.current_page + 1
             }, () => {
-                this.loadAllFixedAssetsClasses();
+                this.loadAllFixedAssetsSubClasses();
             });
         }
 
@@ -190,13 +211,13 @@ class DisplayFixedAssetsClass extends React.Component {
             this.setState({
                 current_page: this.state.current_page - 1
             }, () => {
-                this.loadAllFixedAssetsClasses();
+                this.loadAllFixedAssetsSubClasses();
             });
         }
     };
 
     render() {
-        const { fixedAssetsClassList, code, description, errors, search, current_page, no_of_pages } = this.state;
+        const { fixedAssetsSubClassList, fixedAssetsClassList, code, description, depreciation_rate, primary_code_id, errors, search, current_page, no_of_pages } = this.state;
         const pageNumbers = [];
 
         for (let i = 1; i <= no_of_pages; i++) {
@@ -210,8 +231,8 @@ class DisplayFixedAssetsClass extends React.Component {
                         <div className="col-sm-9">
                             <div className="row">
                                 <div className="col-sm">
-                                    <h6 style={{ paddingTop: "10px", paddingLeft: "5px" }}>Fixed Assets Class Details<br></br>
-                                        <span className="text-muted small">Dashboard / Fixed Assets Classes</span></h6>
+                                    <h6 style={{ paddingTop: "10px", paddingLeft: "5px" }}>Fixed Assets Sub Class Details<br></br>
+                                        <span className="text-muted small">Dashboard / Fixed Assets Sub Classes</span></h6>
                                 </div>
                                 <div className="col-sm">
                                     {['bottom'].map((placement) => (
@@ -220,7 +241,7 @@ class DisplayFixedAssetsClass extends React.Component {
                                             placement={placement}
                                             overlay={
                                                 <Tooltip id={`tooltip-${placement}`}>
-                                                    Print All Fixed Assets Classes
+                                                    Print All Fixed Assets Sub Classes
                                             </Tooltip>
                                             }
                                         >
@@ -231,7 +252,7 @@ class DisplayFixedAssetsClass extends React.Component {
                             </div>
                         </div>
                         <div className="col-sm-3">
-                            <Button variant="" style={{ backgroundColor: "#475466", color: "#FFFFFF", width: "100%", cursor: 'pointer' }} onClick={() => this.change_toggle()}>Add New Fixed Assets Class</Button>
+                            <Button variant="" style={{ backgroundColor: "#475466", color: "#FFFFFF", width: "100%", cursor: 'pointer' }} onClick={() => this.change_toggle()}>Add New Fixed Assets Sub Class</Button>
                         </div>
                     </div>
                     <div>
@@ -257,30 +278,58 @@ class DisplayFixedAssetsClass extends React.Component {
                         </Row>
                     </div>
 
-                    {/* Add FixedAssetsClass form toggle */}
-                    <div className="row" style={{ display: this.state.addFixedAssetsClassState == true ? 'block' : 'none', marginBottom: "15px" }}>
+                    {/* Add FixedAssetsSubClass form toggle */}
+                    <div className="row" style={{ display: this.state.addFixedAssetsSubClassState == true ? 'block' : 'none', marginBottom: "15px" }}>
                         <div className="col-12">
                             <Card className="col-12">
                                 <Card.Body>
-
                                     <div className="col-12 bg-white mt-1 pb-1" >
                                         <form onSubmit={(e) => this.onFormSubmit(e)}>
-                                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Fixed Assets Class Details<br></br>
-                                                <span className="text-muted small">You can add a new Fixed Assets Class by filling relavant Information</span></h6>
+                                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Enter Fixed Assets Sub Class Details<br></br>
+                                                <span className="text-muted small">You can add a new Fixed Assets Sub Class by filling relavant Information</span></h6>
                                             <div className="row" >
                                                 <div className="col-sm-8">
 
                                                     <div className="row">
-                                                        <div className="col-sm-12 mt-1 mb-1" >
+                                                        <div className="col-sm-6 mt-1 mb-1" >
                                                             <FormInput
-                                                                label={'Fixed Assets Location Code *'}
-                                                                placeholder={"Enter Fixed Assets Location Code"}
+                                                                label={'Fixed Assets Sub Class Code *'}
+                                                                placeholder={"Enter Fixed Assets Sub Class Code"}
                                                                 value={this.state.code}
                                                                 name="code"
                                                                 onChange={this.formValueChange}
                                                             />
                                                             {errors.code && errors.code.length > 0 &&
                                                                 <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.code}</h4>}
+                                                        </div>
+                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                            <FormInput
+                                                                label={'Fixed Assets Sub Class Depreciation Rate *'}
+                                                                placeholder={"Enter Fixed Assets Sub Class Depreciation Rate"}
+                                                                value={this.state.depreciation_rate}
+                                                                type='number'
+                                                                name="depreciation_rate"
+                                                                onChange={this.formValueChange}
+                                                            />
+                                                            {errors.depreciation_rate && errors.depreciation_rate.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.depreciation_rate}</h4>}
+                                                        </div>
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Primary Class</Form.Label>
+                                                                <Form.Control as="select" name="primary_code_id" value={this.state.primary_code_id} onChange={this.formValueChange}>
+                                                                    <option value="">Select Primary Class</option>
+                                                                    {
+                                                                        fixedAssetsClassList && fixedAssetsClassList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.code}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.primary_code_id && errors.primary_code_id.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.primary_code_id}</h4>}
                                                         </div>
                                                         <div className="col-12 mt-1 mb-1" >
                                                             <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -313,30 +362,59 @@ class DisplayFixedAssetsClass extends React.Component {
                         </div>
                     </div>
 
-                    {/* Update FixedAssetsClass form toggle */}
-                    <div className="row" style={{ display: this.state.updateFixedAssetsClassState == true ? 'block' : 'none', marginBottom: "15px" }}>
+                    {/* Update FixedAssetsSubClass form toggle */}
+                    <div className="row" style={{ display: this.state.updateFixedAssetsSubClassState == true ? 'block' : 'none', marginBottom: "15px" }}>
                         <div className="col-12">
                             <Card className="col-12">
                                 <Card.Body>
 
                                     <div className="col-12 bg-white mt-1 pb-1" >
                                         <form onSubmit={(e) => this.onFormSubmitUpdate(e)}>
-                                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update Fixed Assets Class Details<br></br>
-                                                <span className="text-muted small">You can update a Fixed Assets Class by filling relavant Information</span></h6>
+                                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update Fixed Assets Sub Class Details<br></br>
+                                                <span className="text-muted small">You can update a Fixed Assets Sub Class by filling relavant Information</span></h6>
                                             <div className="row" >
                                                 <div className="col-sm-8">
 
                                                     <div className="row">
                                                         <div className="col-sm-12 mt-1 mb-1" >
                                                             <FormInput
-                                                                label={'Fixed Assets Location Code *'}
-                                                                placeholder={"Enter Fixed Assets Location Code"}
+                                                                label={'Fixed Assets Sub Class Code *'}
+                                                                placeholder={"Enter Fixed Assets Sub Class Code"}
                                                                 value={this.state.code}
                                                                 name="code"
                                                                 onChange={this.formValueChange}
                                                             />
                                                             {errors.code && errors.code.length > 0 &&
                                                                 <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.code}</h4>}
+                                                        </div>
+                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                            <FormInput
+                                                                label={'Fixed Assets Sub Class Depreciation Rate *'}
+                                                                placeholder={"Enter Fixed Assets Sub Class Depreciation Rate"}
+                                                                value={this.state.depreciation_rate}
+                                                                type='number'
+                                                                name="depreciation_rate"
+                                                                onChange={this.formValueChange}
+                                                            />
+                                                            {errors.depreciation_rate && errors.depreciation_rate.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.depreciation_rate}</h4>}
+                                                        </div>
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Primary Class</Form.Label>
+                                                                <Form.Control as="select" name="primary_code_id" value={this.state.primary_code_id} onChange={this.formValueChange}>
+                                                                    <option value="">Select Primary Class</option>
+                                                                    {
+                                                                        fixedAssetsClassList && fixedAssetsClassList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.code}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.primary_code_id && errors.primary_code_id.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.primary_code_id}</h4>}
                                                         </div>
                                                         <div className="col-12 mt-1 mb-1" >
                                                             <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -375,13 +453,15 @@ class DisplayFixedAssetsClass extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Depreciation Rate</th>
+                                    <th>Primary Class</th>
                                     <th>Description</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {fixedAssetsClassList && fixedAssetsClassList.map((name) => this.renderOneFixedAssetClass(name))}
+                                {fixedAssetsSubClassList && fixedAssetsSubClassList.map((name) => this.renderOneFixedAssetSubClass(name))}
                             </tbody>
                         </Table>
                         {/*//Pagination*/}
@@ -406,12 +486,14 @@ class DisplayFixedAssetsClass extends React.Component {
         );
     }
 
-    renderOneFixedAssetClass = (item, i) => {
+    renderOneFixedAssetSubClass = (item, i) => {
         const { search } = this.state;
         if (search !== "") {
             if (item.code.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-                if (item.description.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-                    return null;
+                if (item.fa_class_code && item.fa_class_code.code.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                    if (item.description.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                        return null;
+                    }
                 }
             }
         }
@@ -419,6 +501,8 @@ class DisplayFixedAssetsClass extends React.Component {
         return (
             <tr key={i}>
                 <td>{item.code}</td>
+                <td>{item.depreciation_rate}%</td>
+                <td>{item.fa_class_code ? item.fa_class_code.code : ''}</td>
                 <td>{item.description}</td>
                 <td>{moment(new Date(item.createdAt)).format("YYYY MMM DD")}</td>
                 <td>
@@ -441,7 +525,7 @@ class DisplayFixedAssetsClass extends React.Component {
     }
 
     validate = () => {
-        let { errors, code, description } = this.state;
+        let { errors, code, description, primary_code_id, depreciation_rate } = this.state;
         let count = 0;
 
         if (code.length === 0) {
@@ -449,6 +533,28 @@ class DisplayFixedAssetsClass extends React.Component {
             count++
         } else {
             errors.code = ''
+        }
+
+        if (primary_code_id.length === 0) {
+            errors.primary_code_id = 'Select a primary class!'
+            count++
+        } else {
+            errors.primary_code_id = ''
+        }
+
+        if (depreciation_rate.length === 0) {
+            errors.depreciation_rate = 'Depreciation Rate can not be empty !'
+            count++
+        } else {
+            if (depreciation_rate > 100) {
+                errors.depreciation_rate = 'Depreciation Rate can not be larger than 100 !'
+                count++
+            } else if (depreciation_rate < 0) {
+                errors.depreciation_rate = 'Depreciation Rate can not be a negative value !'
+                count++
+            } else {
+                errors.depreciation_rate = ''
+            }
         }
 
         if (description.length === 0) {
@@ -467,4 +573,4 @@ const mapStateToProps = state => ({
     auth: state.auth || {},
 });
 
-export default connect(mapStateToProps, null)(withRouter(DisplayFixedAssetsClass));
+export default connect(mapStateToProps, null)(withRouter(DisplayFixedAssetsSubClass));
