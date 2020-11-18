@@ -104,7 +104,7 @@ class DisplatCustomerCom extends React.Component {
         console.log("custmoer" , res.data.data.id);
 
         // this.change_qrcode_toggle();
-        if(res.status == 200 ){
+        if(res.status === 200 ){
             this.setState({
                 error:false,
                 id: res.data.data.user_id,
@@ -205,11 +205,10 @@ class DisplatCustomerCom extends React.Component {
                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
                                     <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">QR Code</a>
-                                    <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
-                                    <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
                                 </div>
                             </nav>
                             <div className="tab-content" id="nav-tabContent">
+
                                 {/* basic information tab start here */}
                                 <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                 <form onSubmit={(e) => this.onFormSubmit(e)} >
@@ -514,15 +513,7 @@ class DisplatCustomerCom extends React.Component {
                                         ref={el => (this.componentRef = el)}/>
                                     </div>
 
-                                {/* payment history tab start here */}
-                                <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
-                                    fff
-                                </div>
-
-                                {/* statistic tab start here */}
-                                <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                    ff
-                                </div>
+                                
                             </div>
                                                 
                             </Card>
@@ -616,34 +607,6 @@ class DisplatCustomerCom extends React.Component {
             </div>
         );
     } 
-
-    // validate = () => {
-    //     const { t_code   } = this.state
-    //     let error  = 0;
-    //     let error_message = '';
-
-    //     if(t_code.length === 0){
-    //         this.setState({
-    //             error_message : 'Please select a Customer !',
-    //             error : true
-    //         })
-    //         return false
-    //     }
-
-    //    this.setState({
-    //         error_meesage : '',
-    //         error : false
-    //     })
-    //     return true;
-    // }
-    
-
-
-
-
-
-
-
 
 
 

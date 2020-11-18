@@ -225,10 +225,11 @@ class addVehicleCom extends React.Component {
                                                         <div className="row">
                                                             <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
-                                                                        label={'Weight *'}
+                                                                        label={'Weight (Kg) *'}
                                                                         placeholder={"Enter weight"}
                                                                         value={this.state.weight}
                                                                         name="weight"
+                                                                        type="Number"
                                                                         onChange={this.formValueChange}
                                                                     />
                                                                     {errors.weight && errors.weight.length > 0 &&
@@ -386,7 +387,12 @@ class addVehicleCom extends React.Component {
             errors.vehicle_year =  'Vehicle year can not be empty !'
             count++
         } else {
-            errors.vehicle_year = ''
+            if(vehicle_year.length < 4){
+                errors.vehicle_year = "Need 4 Digits for a Year"
+                count++
+            }else{
+                errors.vehicle_year = ''
+            }
         }
 
         if (vehicle_type.length === 0) {

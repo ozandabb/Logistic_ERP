@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import HRSidebar from "../../HRSidebar";
 import { connect } from 'react-redux';
-import {  Button, Card, Table ,Row , Col } from 'react-bootstrap';
+import {  Button, Card, Image ,Row , Col } from 'react-bootstrap';
 import {FormInput ,FormSelect } from '../../../../Components/Form';
 import moment from 'moment';
 import Leave_CONTROLLER from '../../../../Controllers/Requests/Leave.controller';
+import Employee_CONTROLLER from '../../../../Controllers/HR Staff/Employee.controller';
 import CONFIG from '../../../../Controllers/Config.controller';
 
 class LeaveRequest extends Component { 
@@ -13,6 +14,7 @@ class LeaveRequest extends Component {
         super(props);
         this.state = {
             addLeaveState: false,
+            LeaveDashboard : false,
 
             start_date:'',
             end_date:'',
@@ -21,9 +23,12 @@ class LeaveRequest extends Component {
             no_baby:'',
             id:'',
             typeL :'',
-        };
 
-        console.log("poppppppppppp", this.props);
+            emp_id:'',
+            availableLeves: [],
+
+            Maternity:'',
+        };
     } 
 
     formValueChange = (e) => {
@@ -33,63 +38,92 @@ class LeaveRequest extends Component {
         
     }
 
+    //Get available Leaves
+    onFormSubmitLeaves = async (e) => {
+        e.preventDefault();
+
+        var data = {
+            id: this.state.emp_id,
+        }
+        const result = await Leave_CONTROLLER.getAvailableLeaves(data, this.props.auth.token);
+        const resEmpID = await Employee_CONTROLLER.getOneEmpoyeByID(data.id,this.props.auth.token);
+
+        if(result.status == 201){
+            this.change_Leave_toggle();
+            this.setState({
+                availableLeves :result.data, 
+            });
+        }else{
+            CONFIG.setErrorToast("Somthing Went Wrong!");
+        } 
+
+        if(resEmpID.data.data.gender === 'Male' || resEmpID.data.data.gender === 'male'){
+            this.setState({
+                Maternity :"0", 
+            });
+
+        }else if(resEmpID.data.data.gender === 'Female' || resEmpID.data.data.gender === 'female'){
+            this.setState({
+                Maternity :"42", 
+            });
+        }
+
+        
+    }
+
     //Normal Leave request from submit
     onFormSubmitNormal = async (e) => {
         e.preventDefault();
 
-        // if (this.validate()) {
-            if(this.state.type_of_leave === "Annual_Leave"){
-                this.state.typeL =1
-            }else{
-                this.state.typeL = 2
-            }
-           
-            var data = {
-                start_date:this.state.start_date,
-                end_date:this.state.end_date,
-                date_count: moment(new Date(this.state.end_date)).format("DD") - moment(new Date(this.state.start_date)).format("DD"),
-                type_of_leave:this.state.typeL,
-                id:this.state.id,
-            }
-          
-            const result = await Leave_CONTROLLER.requestNormalLeave(data, this.props.auth.token);
+        if(this.state.type_of_leave === "Annual_Leave"){
+            this.state.typeL =1
+        }else{
+            this.state.typeL = 2
+        }
+        
+        var data = {
+            start_date:this.state.start_date,
+            end_date:this.state.end_date,
+            date_count: moment(new Date(this.state.end_date)).format("DD") - moment(new Date(this.state.start_date)).format("DD"),
+            type_of_leave:this.state.typeL,
+            id:this.state.id,
+        }
+        
+        const result = await Leave_CONTROLLER.requestNormalLeave(data, this.props.auth.token);
 
-            if(result.status == 201){
-                CONFIG.setToast("Successfully Requested");
-                this.clear();
-            }else{
-                CONFIG.setErrorToast(" Somthing Went Wrong!");
-                this.clear();
-            }
-        //}
+        if(result.status == 201){
+            CONFIG.setToast("Successfully Requested");
+            this.clear();
+        }else{
+            CONFIG.setErrorToast(result.response.data.message);
+            this.clear();
+        }
     }
 
     //Normal Leave request from submit
     onFormSubmitMaternity = async (e) => {
         e.preventDefault();
 
-        // if (this.validate()) {
-            var data = {
-                start_date:this.state.start_date,
-                end_date:this.state.end_date,
-                date_count: moment(new Date(this.state.end_date)).format("DD") - moment(new Date(this.state.start_date)).format("DD"),
-                no_baby:this.state.no_baby,
-                id:this.state.id,
-            }
-          
-            const result = await Leave_CONTROLLER.requestMaternity_Leave(data, this.props.auth.token);
+        var data = {
+            start_date:this.state.start_date,
+            end_date:this.state.end_date,
+            date_count: moment(new Date(this.state.end_date)).format("DD") - moment(new Date(this.state.start_date)).format("DD"),
+            no_baby:this.state.no_baby,
+            id:this.state.id,
+        }
+        
+        const result = await Leave_CONTROLLER.requestMaternity_Leave(data, this.props.auth.token);
 
-            if(result.status == 201){
-                CONFIG.setToast("Successfully Requested");
-                this.clear();
-            }else{
-                CONFIG.setErrorToast(" Somthing Went Wrong!");
-                this.clear();
-            }
-        //}
+        if(result.status == 201){
+            CONFIG.setToast("Successfully Requested");
+            this.clear();
+        }else{
+            CONFIG.setErrorToast(result.response.data.message);
+            this.clear();
+        }
     }
 
-    
+    //Toggle for add leave section
     change_toggle = () => {
         if (this.state.addLeaveState) {
             this.setState({ addLeaveState: false })
@@ -98,6 +132,16 @@ class LeaveRequest extends Component {
         }
     }
 
+    //Toggle for add leave section
+    change_Leave_toggle = () => {
+        if (this.state.LeaveDashboard) {
+            this.setState({ LeaveDashboard: false })
+        } else {
+            this.setState({ LeaveDashboard: true })
+        }
+    }
+
+    //CLEAR form input data
     clear = ()=>{
         this.setState({
             start_date:'',
@@ -114,11 +158,13 @@ class LeaveRequest extends Component {
 
 
     render() {
+        const {availableLeves , Maternity} = this.state;
+
         return (
-            <div className="bg-light wd-wrapper">
+            <div className="bg-light wd-wrapper" >
                 <HRSidebar activemenu={'REQUEST'} submenu={'LEAVE'} />
-                <div className="wrapper-wx" >
-                    <div className="container-fluid">
+                <div className="wrapper-wx" style={{height:"600px"}}>
+                    <div className="container-fluid"  >
 
                         {/* Title and the button section start here */}
                         <div className="row" style={{marginTop:"5px", fontFamily:"sans-serif", marginBottom:"15px"}}>
@@ -131,23 +177,6 @@ class LeaveRequest extends Component {
                             </div>
                         </div>
                         {/* Title and the button section ends here */}
-
-                        {/* <div className="row" style={{marginBottom:"10px"}}>
-                            <div className="col">
-                                <div className="row">
-                                    <div className="col-sm">
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
-                                    </div>
-                                    <div className="col-sm">
-                                        <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col">
-                                
-                            </div>
-                        
-                        </div> */}
 
 
                         {/* Add Request form toggle start here */}
@@ -171,63 +200,65 @@ class LeaveRequest extends Component {
 
                                                             <div className="row" >
                                                                 <div className="col-sm-8">
-                                                                    
-                                                                    <div className="row">
-                                                                            <div className="col-sm-6 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'From *'}
-                                                                                    type="date"
-                                                                                    // value={this.state.start_date}
-                                                                                    name="start_date"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-sm-6 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'To *'}
-                                                                                    type="date"
-                                                                                    // value={this.state.end_date}
-                                                                                    name="end_date"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
-                                                                            </div>
-                                                                    </div>
 
                                                                     <div className="row">
-                                                                            <div className="col-sm-6 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'Emp No *'}
-                                                                                    placeholder={"Enter Employee Number"}
-                                                                                    // value={this.state.id}
-                                                                                    name="id"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
-                                                                            </div>
+                                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                                            <FormInput 
+                                                                                label={'From *'}
+                                                                                type="date"
+                                                                                required={true}
+                                                                                // value={this.state.start_date}
+                                                                                name="start_date"
+                                                                                onChange={this.formValueChange}
+                                                                            />
+                                                                        </div>
+                                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                                            <FormInput 
+                                                                                label={'To *'}
+                                                                                type="date"
+                                                                                required={true}
+                                                                                // value={this.state.end_date}
+                                                                                name="end_date"
+                                                                                onChange={this.formValueChange}
+                                                                            />
+                                                                        </div>
                                                                     </div>
-                
+                                                                    <div className="row">
+                                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                                            <FormInput 
+                                                                                label={'Emp No *'}
+                                                                                required={true}
+                                                                                placeholder={"Enter Employee Number"}
+                                                                                // value={this.state.id}
+                                                                                name="id"
+                                                                                onChange={this.formValueChange}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
-
                                                                 <div className="col-sm-4">
 
                                                                     <div className="row">
                                                                         <div className="col-12 mt-1 mb-1" >
-                                                                                <FormSelect 
-                                                                                    label={'Leave Type *'}
-                                                                                    options={Leave}
-                                                                                    name="type_of_leave"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
+                                                                            <FormSelect 
+                                                                                label={'Leave Type *'}
+                                                                                options={Leave}
+                                                                                required={true}
+                                                                                name="type_of_leave"
+                                                                                onChange={this.formValueChange}
+                                                                            />
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                             </div>
 
                                                             <div className="row"> 
-                                                                    <div className="col-6 mt-3 mb-1" >
+                                                                <div className="col-6 mt-3 mb-1" >
                                                                     <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
                                                                     <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
-                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                         </form>
@@ -245,59 +276,63 @@ class LeaveRequest extends Component {
                                                                 <div className="col-sm-8">
                                                                     
                                                                     <div className="row">
-                                                                            <div className="col-sm-6 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'From *'}
-                                                                                    type="date"
-                                                                                    value={this.state.start_date}
-                                                                                    name="start_date"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-sm-6 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'To *'}
-                                                                                    type="date"
-                                                                                    value={this.state.end_date}
-                                                                                    name="end_date"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
-                                                                            </div>
+                                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                                            <FormInput 
+                                                                                label={'From *'}
+                                                                                type="date"
+                                                                                required={true}
+                                                                                value={this.state.start_date}
+                                                                                name="start_date"
+                                                                                onChange={this.formValueChange}
+                                                                            />
+                                                                        </div>
+                                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                                            <FormInput 
+                                                                                label={'To *'}
+                                                                                type="date"
+                                                                                required={true}
+                                                                                value={this.state.end_date}
+                                                                                name="end_date"
+                                                                                onChange={this.formValueChange}
+                                                                            />
+                                                                        </div>
                                                                     </div>
 
                                                                     <div className="row">
-                                                                            <div className="col-sm-6 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'Emp No *'}
-                                                                                    placeholder={"Enter Employee Number"}
-                                                                                    value={this.state.id}
-                                                                                    name="id"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
-                                                                            </div>
+                                                                        <div className="col-sm-6 mt-1 mb-1" >
+                                                                            <FormInput 
+                                                                                label={'Emp No *'}
+                                                                                required={true}
+                                                                                placeholder={"Enter Employee Number"}
+                                                                                value={this.state.id}
+                                                                                name="id"
+                                                                                onChange={this.formValueChange}
+                                                                            />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="col-sm-4">
                                                                     <div className="row">
                                                                         <div className="col-12 mt-1 mb-1" >
-                                                                                <FormInput 
-                                                                                    label={'Number of the Baby *'}
-                                                                                    placeholder={"Enter a Number of the Baby"}
-                                                                                    value={this.state.no_baby}
-                                                                                    name="no_baby"
-                                                                                    onChange={this.formValueChange}
-                                                                                />
+                                                                            <FormInput 
+                                                                                label={'Number of the Baby *'}
+                                                                                required={true}
+                                                                                placeholder={"Enter a Number of the Baby"}
+                                                                                value={this.state.no_baby}
+                                                                                name="no_baby"
+                                                                                onChange={this.formValueChange}
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div className="row"> 
-                                                                    <div className="col-6 mt-3 mb-1" >
+                                                                <div className="col-6 mt-3 mb-1" >
                                                                     <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
                                                                     <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
-                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                         </form>
@@ -309,88 +344,57 @@ class LeaveRequest extends Component {
                                 </Card>
                             </div>
                         </div>
-                        {/* Add customer form toggle ends here */}
-                                           
+                        {/* Add Request form toggle ends here */}
+
+                        {/* Input field to enter employee ID */}
+                        <div className="row mb-3"> 
+                            <div className="col-sm-6">
+                                <Card style={{padding:"20px"}}>
+                                    <form onSubmit={(e) => this.onFormSubmitLeaves(e)} >
+                                        <div className="row">
+                                            <div className="col-sm-12 mt-1 mb-1" >
+                                                <FormInput 
+                                                    label={'Enter Employee ID to See the Request Details *'}
+                                                    value={this.state.emp_id}
+                                                    required={true}
+                                                    name="emp_id"
+                                                    onChange={this.formValueChange}
+                                                />
+                                                {/* {errors.description && errors.description.length > 0 &&
+                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.description}</h4>} */}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-sm-12 mt-1 mb-1" >
+                                                <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
+                                            </div>  
+                                        </div>
+                                    </form>
+                                </Card>
+                            </div> 
+                        </div>        
 
                         {/* Card view start here */}
-                        <div className="row">
-                            <div className="col-sm">
-                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
-                                    <h5>Annual Leaves</h5>
-                                    9
-                                </Card>
-                            </div>
-                            <div className="col-sm">
-                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
-                                    <h5>Casual Leaves</h5>
-                                    8
-                                </Card>
-                            </div>
-                            <div className="col-sm">
-                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
-                                    <h5>Maternity Leaves</h5>
-                                    5
-                                </Card>
-                            </div>
-                            <div className="col-sm">
-                                <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
-                                    <h5>Remaining Leaves</h5>
-                                    2
-                                </Card>
-                            </div>
-                        </div>
-
-                        {/* Table start here */}
-                        <div className="row" style={{marginTop:"20px"}}>
-                            <div className="col-sm">
-                            <Card>
-                                <Table striped bordered hover variant="light">
-                                    <thead>
-                                        <tr>
-                                            <th>Leave Type</th>
-                                            <th>From</th>
-                                            <th>To</th>
-                                            <th>Days</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Maternity Leaves</td>
-                                            <td>2020/10/09</td>
-                                            <td>2020/10/09</td>
-                                            <td>10</td>
-                                            <td>Active</td>
-                                            <td>100,000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Casual Leaves</td>
-                                            <td>2020/10/09</td>
-                                            <td>2020/10/09</td>
-                                            <td>1</td>
-                                            <td>Active</td>
-                                            <td>100,000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Casual Leaves</td>
-                                            <td>2020/10/09</td>
-                                            <td>2020/10/09</td>
-                                            <td>6</td>
-                                            <td>Approved</td>
-                                            <td>100,000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Maternity Leaves</td>
-                                            <td>2020/10/09</td>
-                                            <td>2020/10/09</td>
-                                            <td>7</td>
-                                            <td>Approved</td>
-                                            <td>100,000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </Card>
+                        <div style={{ display: this.state.LeaveDashboard == true ? 'block' : 'none'}}>
+                            <div className="row">
+                                <div className="col-sm-4">
+                                    <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                        <h5>Annual Leaves</h5>
+                                        {availableLeves.Annual}
+                                    </Card>
+                                </div>
+                                <div className="col-sm-4">
+                                    <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                        <h5>Casual Leaves</h5>
+                                        {availableLeves.Casual}
+                                    </Card>
+                                </div>
+                                <div className="col-sm-4">
+                                    <Card className="shadow" style={{alignContent:"center", alignItems:"center", padding:"10px"}}>
+                                        <h5>Maternity Leaves</h5>
+                                        {Maternity}
+                                    </Card>
+                                </div>
                             </div>
                         </div>
 
@@ -399,6 +403,8 @@ class LeaveRequest extends Component {
             </div>
         );
     }
+
+
    
 }
 const Leave = [{ label : 'Select the Leave type' ,value : 'NONE' } , 

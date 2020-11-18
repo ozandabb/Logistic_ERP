@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import CommonController from '../../Controllers/Common.controller';
 import { setCurrentUser } from "../../Redux/Action/authAction";
 import { withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEnvelope ,  faLock} from '@fortawesome/free-solid-svg-icons'
 
   
 class SignIn extends Component {
@@ -91,7 +93,8 @@ class SignIn extends Component {
                                         required />
                                         <span className="focus-input100"></span>
                                         <span className="symbol-input100">
-                                            <i className="fa fa-envelope" aria-hidden="true"></i>
+                                            <FontAwesomeIcon  icon={faEnvelope} />
+                                            {/* <i className="fa fa-envelope" aria-hidden="true"></i> */}
                                         </span>
                                 </div>
                                 <div className="wrap-input100 validate-input" data-validate="Password is required">
@@ -103,7 +106,8 @@ class SignIn extends Component {
                                         required/>
                                     <span className="focus-input100"></span>
                                     <span className="symbol-input100">
-                                        <i className="fa fa-lock" aria-hidden="true"></i>
+                                        <FontAwesomeIcon  icon={faLock} />
+                                        {/* <i className="fa fa-lock" aria-hidden="true"></i> */}
                                     </span>
                                 </div>
                                 <div className="container-login100-form-btn">
