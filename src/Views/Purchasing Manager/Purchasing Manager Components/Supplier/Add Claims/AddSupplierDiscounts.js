@@ -104,6 +104,7 @@ const AddSupplierClaim = ({
             show={show}
             handleClose={handleClose}
             onSubmitFn={onSubmitHandler}
+            cancelFn={handleClose}
             
         >
             <div className="row">

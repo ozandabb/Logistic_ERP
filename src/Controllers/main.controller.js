@@ -24,6 +24,30 @@ class MainController{
         );
     }
 
+    putWithJWT=(url,data,token)=>{
+        return this.apiCallFn(
+            'put',
+            url,
+            {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json' 
+            },
+            data
+        );
+    }
+    
+    patchWithJWT=(url,data,token)=>{
+        return this.apiCallFn(
+            'patch',
+            url,
+            {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json' 
+            },
+            data
+        );
+    }
+
     getWithJWT=(url,token)=>{
         return this.apiCallFn(
             'get',

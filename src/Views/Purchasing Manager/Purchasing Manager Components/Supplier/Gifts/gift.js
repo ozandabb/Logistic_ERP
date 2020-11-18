@@ -90,7 +90,7 @@ const SupplierGift=({
     return(
         <div className="row" style={{ marginBottom:"15px" }} style={{minHeight:"100vh"}} onSubmit={(e)=>onSubmitHandler(e)}>
             <div className="col-12">
-                <Card className="col-8" style={{margin:"auto",marginTop:50}}>
+                <Card className="col-12" style={{margin:"auto",marginTop:50}}>
                     <Card.Body>
                             <div className="col-12 bg-white mt-1 pb-1" >
                                 <form onSubmit={(e) => undefined}>
@@ -98,7 +98,7 @@ const SupplierGift=({
                                     <span className="text-muted small">You can Add supplier gifts to the system</span></h6>
                                            
                                     <div className="row" >
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-4">
                                             <FormInput
                                                 label={'Gift Name *'}
                                                 error={ error.name?true:false}
@@ -108,7 +108,7 @@ const SupplierGift=({
                                                 error_meesage={error.name}
                                             />
                                         </div>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-4">
                                             <FormInput
                                                 label={'Gift Description *'}
                                                 error={ error.description?true:false}
@@ -118,9 +118,9 @@ const SupplierGift=({
                                                 error_meesage={error.description}
                                             />
                                         </div>
-                                    </div>
-                                    <div className="row" >
-                                        <div className="col-sm-6">
+                                    {/* </div> */}
+                                    {/* <div className="row" > */}
+                                        <div className="col-sm-4">
                                             <FormInput
                                                 label={'Number Of Gifts*'}
                                                 error={ error.quantity?true:false}
@@ -130,7 +130,7 @@ const SupplierGift=({
                                                 error_meesage={error.quantity}
                                             />
                                         </div>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-4">
                                             <FormSelect
                                                 options={suppliers}
                                                 label={'Supplier*'}

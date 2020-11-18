@@ -57,7 +57,7 @@ class Purchase_Sidebar extends React.Component {
                 <Menu iconShape="circle">
                 <MenuItem active={activemenu === 'PurchasingDashboard'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/PurchasingManager/dashboard"/></MenuItem>
                 <MenuItem active={activemenu === 'CreatePurchasingOrder'} icon={<FontAwesomeIcon icon={faHandshake} />}>Suppliers<Link to="/PurchasingManager/supplier"/></MenuItem>
-                {/* <MenuItem active={activemenu === 'AddSupplierClaim'} icon={<FontAwesomeIcon icon={faHome} />}>Add Claim<Link to="/PurchasingManager/addClaim"/></MenuItem> */}
+                <MenuItem active={activemenu === 'PurchasingManagerRequest'} icon={<FontAwesomeIcon icon={faHome} />}>Request<Link to="/PurchasingManager/request"/></MenuItem>
                 {/* <MenuItem active={activemenu === 'CUSTOMERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Customers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>

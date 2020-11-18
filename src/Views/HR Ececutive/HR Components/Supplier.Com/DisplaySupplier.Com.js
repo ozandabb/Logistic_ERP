@@ -130,7 +130,6 @@ class DisplatSupplierCom extends React.Component {
                 this.clear();
             }
         }
-
     }
 
     formValueChange = (e) => {

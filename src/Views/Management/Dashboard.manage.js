@@ -17,7 +17,7 @@ class ManageTeamDashboard extends Component {
                 <ManageTeam_Sidebar activemenu={'DASHBOARD'} />
                 <div className="wrapper-wx" style={{height:"100hv"}}>
                     <div className="container-fluid">
-                        <h4>Accountant Dashboard</h4>
+                        <h4>Managment Dashboard</h4>
                     </div>
                 </div>
             </div>

@@ -10,12 +10,15 @@ const BasicModal=({
     headerTxt="",
     children=null,
     onSubmitFn=()=>undefined,
+    cancelFn=()=>undefined,
     submitBtnTxt="",
     cancelBtnTxt="",
+    size='md',
+    btnDisable=false,
     
 })=>{
     return(
-        <Modal show={show} onHide={handleClose}  backdrop="static">
+        <Modal show={show} onHide={handleClose} size={size}  backdrop="static">
         <Modal.Header closeButton>
             <Modal.Title>{headerTxt}</Modal.Title>
         </Modal.Header>
@@ -23,12 +26,14 @@ const BasicModal=({
             {children}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          {cancelBtnTxt?<Button variant="secondary" onClick={cancelFn}>
             {cancelBtnTxt}
-          </Button>
-          <Button variant="primary" onClick={onSubmitFn}>
+          </Button>:""}
+          {
+            submitBtnTxt?
+            <Button disabled={btnDisable} variant="primary" onClick={onSubmitFn}>
             {submitBtnTxt}
-          </Button>
+          </Button>:""}
         </Modal.Footer>
       </Modal>
     );
