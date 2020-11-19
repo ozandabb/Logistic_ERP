@@ -23,7 +23,7 @@ const DetailPopup=({
             cancelFn={handleClose}
             submitBtnTxt=""
             // onSubmitFn={acceptRequest}
-            size='lg'
+            // size='lg'
             headerTxt="About Customer"
             handleClose={handleClose}
         >

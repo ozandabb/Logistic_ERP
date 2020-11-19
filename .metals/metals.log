@@ -6,3 +6,15 @@
 2020.11.18 06:54:49 INFO  time: initialize in 4.43s
 2020.11.18 06:55:06 WARN  Build server is not auto-connectable.
 2020.11.18 06:55:06 WARN  no build tool detected in workspace 'E:\Projects\Logistic_ERP'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.11.18 09:26:11 INFO  Started: Metals version 0.9.5 in workspace 'E:\Projects\Logistic_ERP' for client vscode.
+2020.11.18 09:26:16 INFO  time: initialize in 5.27s
+2020.11.18 09:26:24 WARN  Build server is not auto-connectable.
+2020.11.18 09:26:24 WARN  no build tool detected in workspace 'E:\Projects\Logistic_ERP'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+Nov 18, 2020 11:21:09 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+Nov 18, 2020 11:40:52 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+2020.11.19 09:45:45 INFO  Started: Metals version 0.9.5 in workspace 'E:\Projects\Logistic_ERP' for client vscode.
+2020.11.19 09:45:49 INFO  time: initialize in 3.94s
+2020.11.19 09:45:54 WARN  Build server is not auto-connectable.
+2020.11.19 09:45:54 WARN  no build tool detected in workspace 'E:\Projects\Logistic_ERP'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 

@@ -15,11 +15,7 @@ const SampleTabel=({
 
 
 })=>{
-    useEffect(() => {
-        console.log(rows);
-        console.log(columns);
-
-    }, [])
+    
     return(
         <Table   borderless hover >
             

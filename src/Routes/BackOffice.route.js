@@ -1,5 +1,5 @@
 import backOffice_dashboard from '../Views/BackOffice/Dashboard.BackOffice';
-import {SalesOrder} from '../Views/BackOffice/BackOffice Components/pages/salesorder';
+import SalesOrder from '../Views/BackOffice/BackOffice Components/pages/salesorder';
 import { Cheque } from '../Views/BackOffice/BackOffice Components/pages/cheque';
 
 
