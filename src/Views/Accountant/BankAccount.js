@@ -44,6 +44,7 @@ class BankAccount extends Component {
 
             error_message:'',
             errors : {},
+            isLoading: '',
         };
     }
 
@@ -159,10 +160,15 @@ class BankAccount extends Component {
 
     //GET all bank accounts
     loadAllBankAccounts = async () => {
-        const res = await Accountant_CONTROLLER.getAllBankAccounts(5,this.state.current_page - 1,this.props.auth.token);
+        this.setState({
+            isLoading : true,
+        })
+        const res = await Accountant_CONTROLLER.getAllBankAccounts(10,this.state.current_page - 1,this.props.auth.token);
         this.setState({
             bank_accounts: res.data.rows,
-            no_of_pages : res.data.pages
+            no_of_pages : res.data.pages,
+            isLoading : false,
+
         });
 
         console.log("load"+this.state.no_of_pages);
@@ -245,21 +251,35 @@ class BankAccount extends Component {
     }
 
     paginate = async pageNum => {
-        this.setState({ current_page: pageNum });
-        this.loadAllBankAccounts();
+        this.setState({ 
+            current_page: pageNum 
+        },() => {
+            this.loadAllBankAccounts();
+        }
+        );
     };
     nextPage = async () => {
-        if(this.state.current_page <= this.state.no_of_pages){
-            this.setState({ current_page: this.state.current_page + 1 });
-            this.loadAllBankAccounts();
+        if(this.state.current_page < this.state.no_of_pages){
+
+
+            this.setState({ 
+                current_page: this.state.current_page + 1 
+            },() => {
+                this.loadAllBankAccounts();
+            }
+            );
         }
 
     };
 
     prevPage = async () =>{
         if(this.state.current_page >= this.state.no_of_pages) {
-            this.setState({ currentPage: this.state.current_page - 1 });
-            this.loadAllBankAccounts();
+            this.setState({ 
+                current_page: this.state.current_page - 1 
+            },() => {
+                this.loadAllBankAccounts();
+            }
+            );
         }
     };
 
@@ -506,7 +526,7 @@ class BankAccount extends Component {
                             Display All Bank Accounts
                         */}
                         <div>
-                            <div className="row" style={{marginTop:"20px"}}>
+                            <div className="row" style={{display: this.state.isLoading == false ? 'block' : 'none',marginTop:"20px"}}>
                                 <div className="col-sm">
                                     <Card>
                                         <Table striped bordered hover variant="light">
@@ -566,19 +586,25 @@ class BankAccount extends Component {
                             </div>
                         </div>
 
+
+                        <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto'}}>
+                            <span className="sr-only">Loading...</span>
+                        </Spinner>
+
+
                         {/*//Pagination*/}
-                        <nav style={{marginTop:"15px" }}>
+                        <nav style={{display: this.state.isLoading == false ? 'block' : 'none',marginTop:"15px" }}>
                             <ul className="pagination justify-content-center">
                                 <li className="page-item">
-                                    <button className="page-link" href="#" onClick={() => this.prevPage()}>Previous</button>
+                                    <button className="page-link"  onClick={() => this.prevPage()}>Previous</button>
                                 </li>
                                 {pageNumbers.map(num => (
                                     <li className="page-item" key={num}>
-                                        <button onClick={() => this.paginate(num)} href="#" className="page-link" style={{ color: current_page == num ? "blue" : "black" }}>{num}</button>
+                                        <button onClick={() => this.paginate(num)}  className="page-link" style={{ color: current_page == num ? "blue" : "black" }}>{num}</button>
                                     </li>
                                 ))}
                                 <li className="page-item">
-                                    <button className="page-link" href="#" onClick={() => this.nextPage()}>Next</button>
+                                    <button className="page-link"  onClick={() => this.nextPage()}>Next</button>
                                 </li>
                             </ul>
                         </nav>
