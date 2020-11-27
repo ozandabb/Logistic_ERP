@@ -1,23 +1,28 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {FormInput  } from '../../../../Components/Form'
-import {  Button, Card , Form , Image , OverlayTrigger , Tooltip  } from 'react-bootstrap';
+import {  Button, Card , Form , Image , OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
-
-
+import SelectSearch from 'react-select-search';
 import Supplier_CONTROLLER from '../../../../Controllers/HR Staff/Supplier.controller';
+import { ComponentToPrint } from '././PrintAllSuppliers';
+import ReactToPrint from 'react-to-print';
 
+ 
 class addSupplierCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             addSupplierState: false,
+            printSupplierState: false,
 
             name:'',
             address:'',
             phoneNo:'',
             email:'',
+            errors : {},
+            error_message : '',
 
         };
     }
@@ -37,21 +42,23 @@ class addSupplierCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        var data = {
-            name: this.state.name,
-            address: this.state.address,
-            phoneNo: this.state.phoneNo,
-            email: this.state.email,
-        }
+        if (this.validate()) {
+            var data = {
+                name: this.state.name,
+                address: this.state.address,
+                phoneNo: this.state.phoneNo,
+                email: this.state.email,
+            }
 
-        const result = await Supplier_CONTROLLER.addSupplier(data, this.props.auth.token);
+            const result = await Supplier_CONTROLLER.addSupplier(data, this.props.auth.token);
 
-        if(result.status == 201){
-            CONFIG.setToast("Successfully Added");
-            this.clear();
-        }else{
-            CONFIG.setErrorToast(" Somthing Went Wrong!");
-            this.clear();
+            if(result.status == 201){
+                CONFIG.setToast("Successfully Added");
+                this.clear();
+            }else{
+                CONFIG.setErrorToast(" Somthing Went Wrong!");
+                this.clear();
+            }
         }
     }
 
@@ -67,6 +74,7 @@ class addSupplierCom extends React.Component {
     }
 
     render() {
+        const {errors } = this.state;
         return (
             <div>
                 {/* Title and the add new customer button */}
@@ -78,20 +86,45 @@ class addSupplierCom extends React.Component {
                                     <span className="text-muted small">Dashboard / Suppliers</span></h6>
                                 </div>
                                 <div className="col-sm">
-                                    {['bottom'].map((placement) => (
-                                        <OverlayTrigger
-                                        key={placement}
-                                        placement={placement}
-                                        overlay={
-                                            <Tooltip id={`tooltip-${placement}`}>
-                                             Print All Suppliers
-                                            </Tooltip>
-                                        }
-                                        >
-                                    <Image src="/images/printer.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px"}} rounded />
-                                        </OverlayTrigger>
-                                    ))}
+                                    <div className="row">
+                                        <ReactToPrint
+                                            trigger={() => {
+                                                return <Image src="/images/printer.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px", cursor:"pointer"}} rounded />;
+                                            }}
+                                            content={() => this.componentRef}
+                                        />
+                                        <>
+                                        {['bottom'].map((placement) => (
+                                            <OverlayTrigger
+                                            trigger="click"
+                                            key={placement}
+                                            placement={placement}
+                                            overlay={
+                                                <Popover id={`popover-positioned-${placement}`}>
+                                                <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                                                <Popover.Content>
+                                                    <Form>
+                                                        <Form.Group controlId="exampleForm.ControlInput1">
+                                                            <Form.Label>Email address</Form.Label>
+                                                            <Form.Control type="email" placeholder="name@example.com" />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Message</Form.Label>
+                                                            <Form.Control as="textarea" rows={3} />
+                                                        </Form.Group>
+                                                        <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                                                    </Form>
+                                                </Popover.Content>
+                                                </Popover>
+                                            }
+                                            >
+                                            <Image src="/images/email.png" className="d-none d-lg-block" style={{width:"40px", marginTop:"10px", marginLeft:"10px", cursor:"pointer"}} rounded />
+                                            </OverlayTrigger>
+                                        ))}
+                                        </>
+                                    </div>
                                 </div>
+                               
                             </div>
                         </div>
                         <div className="col-sm-3">
@@ -102,7 +135,7 @@ class addSupplierCom extends React.Component {
                     {/* Add customer form toggle */}
                     <div className="row" style={{ display: this.state.addSupplierState == true ? 'block' : 'none', marginBottom:"15px" }}>
                         <div className="col-12">
-                            <Card className="col-12">
+                            <Card className="col-12 shadow" style={{paddingBottom:"15px"}}>
                                 <Card.Body>
 
                                         <div className="col-12 bg-white mt-1 pb-1" >
@@ -117,23 +150,24 @@ class addSupplierCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'Supplier Name *'}
                                                                         placeholder={"Enter Supplier's Name"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.name}
                                                                         name="name"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                                 </div>
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={'Email *'}
+                                                                        type="Email"
                                                                         placeholder={"Enter Supplier's Email"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.email}
                                                                         name="email"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.email && errors.email.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.email}</h4>}
                                                                 </div>
                                                         </div>
 
@@ -142,12 +176,12 @@ class addSupplierCom extends React.Component {
                                                                     <FormInput 
                                                                         label={'Address *'}
                                                                         placeholder={"Enter Supplier's Address"}
-                                                                        //error={ errors.group_mo}
                                                                         value={this.state.address}
                                                                         name="address"
                                                                         onChange={this.formValueChange}
-                                                                        //error_meesage={'*Group Number required'}
                                                                     />
+                                                                    {errors.address && errors.address.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.address}</h4>}
                                                                 </div>
                                                         </div>
     
@@ -159,23 +193,25 @@ class addSupplierCom extends React.Component {
                                                             <div className="col-12 mt-1 mb-1" >
                                                                 <FormInput 
                                                                     label={"Contact Number *"}
+                                                                    type="Number"
                                                                     placeholder={"Enter Supplier's Contact No"}
-                                                                    //error={ errors.group_mo}
                                                                     value={this.state.phoneNo}
                                                                     name="phoneNo"
                                                                     onChange={this.formValueChange}
-                                                                    //error_meesage={'*Group Number required'}
                                                                 />
+                                                                {errors.phoneNo && errors.phoneNo.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.phoneNo}</h4>}
                                                             </div>
                                                         </div>
                                                         
                                                     </div>
+                                                    {/* <SelectSearch options={options} value="sv" name="language" placeholder="Choose your language" /> */}
                                                 </div>
 
                                                 <div className="row"> 
                                                         <div className="col-6 mt-3 mb-1" >
                                                         <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
-                                                        <button type="submit" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
+                                                        <button type="button" style={{backgroundColor:"red",marginLeft:"10px", color:"#FFFFFF", cursor: 'pointer'}} onClick={() => this.clear()} className="btn mt-2 btn btn-sm px-5">Cancel</button>
                                                         </div>
                                                 </div>
 
@@ -187,11 +223,76 @@ class addSupplierCom extends React.Component {
                             </Card>
                         </div>
                     </div>
+
+                    {/* print all suppliers */}
+                    <div className="row" style={{ display: this.state.printSupplierState == true ? 'block' : 'none', marginBottom:"15px" }}>
+                    <ComponentToPrint
+                        proid={this.props.auth.token}
+                        HRname = {this.props.auth.user.user_details.username}
+                        ref={el => (this.componentRef = el)} />
+                    </div>
             </div>
         );
     }
+
+    validate = () => {
+        let { errors, name, address, phoneNo, email } = this.state;
+        let count = 0;
+
+        if (name.length === 0) {
+            errors.name =  'Supplier Name can not be empty !'
+            count++
+        } else {
+            errors.name = ''
+        }
+
+        if (address.length === 0) {
+            errors.address =  'Address can not be empty !'
+            count++
+        } else {
+            errors.address = ''
+        }
+
+        if (phoneNo.length === 0) {
+            errors.phoneNo = "Contact Number can not be empty"
+            count++
+        } else {
+            if(phoneNo.length < 10){
+                errors.phoneNo = "Need 10 Digits for a number"
+                count++
+            }else{
+                errors.phoneNo = ""
+            }
+        }
+
+        if (email.length === 0) {
+            errors.email =  'Email can not be empty !'
+            count++
+        } else {
+            errors.email = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
+
+
+
+
+
 }
 
+const options = [
+    {name: 'Swedish', value: 'sv'},
+    {name: 'English', value: 'en'},
+    {
+        type: 'group',
+        name: 'Group name',
+        items: [
+            {name: 'Spanish', value: 'es'},
+        ]
+    },
+];
 
 const mapStateToProps = state => ({
     auth: state.auth || {},

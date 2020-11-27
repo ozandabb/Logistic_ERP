@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { ProSidebar, Menu, MenuItem,  SidebarContent  } from 'react-pro-sidebar';
-import { faBars ,faReplyAll,  faAddressBook,faSignOutAlt,  faHome } from '@fortawesome/free-solid-svg-icons'
+import { faBars ,faReplyAll,  faAddressBook,faSignOutAlt,  faHome , faTable } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -39,7 +39,7 @@ class Backoffice_Sidebar extends React.Component {
                 </span>
             </nav>
 
-            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }`} >
+            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" } shadow`} >
 
             {/* <div className="sidebar-header pb-4 pt-2">
                 <div className="d-flex px-4">
@@ -56,11 +56,12 @@ class Backoffice_Sidebar extends React.Component {
             <SidebarContent>
                 <Menu iconShape="circle">
                     <MenuItem active={activemenu === 'backOffice_dashboard'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/backOffice/dashboard"/></MenuItem>
-                    <MenuItem active={activemenu === 'backOffice_salesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/salesOrder"/></MenuItem>
-                    <MenuItem active={activemenu === 'backOffice_Cheque'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Cheque<Link to="/backOffice/cheque"/></MenuItem>
-                    {/* <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
-                    <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
+                    <MenuItem active={activemenu === 'SalesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/SalesOrder"/></MenuItem>
+                    <MenuItem active={activemenu === 'backOffice_Cheque'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Cheque<Link to="/backOffice/ChequeVerify"/></MenuItem>
+                    <MenuItem active={activemenu === 'MAPS'} icon={<FontAwesomeIcon icon={faTable} />}>Maps<Link to="/backOffice/LiveMap"/></MenuItem>
+                    {/* <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
                     <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/"/></MenuItem> */}
+                    <MenuItem active={activemenu === 'ASSIGN_VEHICLE'} icon={<FontAwesomeIcon icon={faTable} />}>Vehicle Assign<Link to="/backOffice/AssignVehicle"/></MenuItem>
                     <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt}  />}>Logout</MenuItem>
             
                 {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>

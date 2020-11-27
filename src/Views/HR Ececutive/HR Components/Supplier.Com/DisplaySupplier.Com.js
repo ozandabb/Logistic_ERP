@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch , faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons'
-import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button } from 'react-bootstrap';
+import { faSearch , faRedo } from '@fortawesome/free-solid-svg-icons'
+import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
 import moment from 'moment';
@@ -25,10 +25,17 @@ class DisplatSupplierCom extends React.Component {
             supplierList: [],
             search: '',
 
+            errors : {},
         };
     }
 
     async componentDidMount() {
+        this.loadAllSuppliers();
+        this.refreshList();
+    }
+
+    //REFRESH all Suppliers
+    refreshList = () => {
         this.loadAllSuppliers();
     }
 
@@ -60,6 +67,7 @@ class DisplatSupplierCom extends React.Component {
 
         if( resSup.status == 200 ){
             this.setState({
+                errors : {},
                 id: resSup.data.data.id,
                 name: resSup.data.data.name,
                 address: resSup.data.data.address,
@@ -99,26 +107,29 @@ class DisplatSupplierCom extends React.Component {
     onFormSubmit = async (e) => {
         e.preventDefault();
 
-        var data = {
-            id: this.state.id,
-            name: this.state.name,
-            address: this.state.address,
-            phoneNo: this.state.phoneNo,
-            email: this.state.email,
-        }
+        if(this.state.id == ''){
+            CONFIG.setErrorToast("Please Select a Supplier to Update!");
+        }else{
+            var data = {
+                id: this.state.id,
+                name: this.state.name,
+                address: this.state.address,
+                phoneNo: this.state.phoneNo,
+                email: this.state.email,
+            }
 
-        const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data , this.props.auth.token );
+            const result = await SUPPLIER_CONTROLLER.UpdateSupplier( data ,this.props.auth.token );
 
-        if(result.status == 200){
-            CONFIG.setToast("Successfully Updated!");
-            this.clear();
-            this.loadAllSuppliers();
+            if(result.status == 200){
+                CONFIG.setToast("Successfully Updated!");
+                this.clear();
+                this.loadAllSuppliers();
+            }
+            else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.clear();
+            }
         }
-        else{
-            CONFIG.setErrorToast("Somthing Went Wrong!");
-            this.clear();
-        }
-
     }
 
     formValueChange = (e) => {
@@ -128,6 +139,7 @@ class DisplatSupplierCom extends React.Component {
     //Clear all input details
     clear = ()=>{
         this.setState({
+            id:'',
             name:'' ,
             address:'' ,
             phoneNo:'' ,
@@ -136,7 +148,7 @@ class DisplatSupplierCom extends React.Component {
     }
 
     render() {
-        const {supplierList , name,address,phoneNo, email, id } = this.state;
+        const {supplierList , name,address,phoneNo, email, id , errors} = this.state;
         return (
             <div>
 
@@ -145,17 +157,17 @@ class DisplatSupplierCom extends React.Component {
                     <Row>
 
                         <Col sm={9}>
-                            <Card >
+                            <Card className="shadow" >
                                  <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
-                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
-                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+                                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
+                                        <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
+                                        <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
                                     </div>
                                 </nav>
-                                <div class="tab-content" id="nav-tabContent">
+                                <div className="tab-content" id="nav-tabContent">
                                     {/* basic information tab start here */}
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                     <form onSubmit={(e) => this.onFormSubmit(e)} >
                                         <div className="row ml-3 mt-1">
                                         <div className="col-sm" style={{paddingRight:"50px"}}>
@@ -170,25 +182,25 @@ class DisplatSupplierCom extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6 mt-1 mb-1" >
                                                         <FormInput 
-                                                            label={'Customer Name *'}
+                                                            label={'Supplier Name *'}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={name}
                                                             name="name"
                                                             onChange={(e) => this.formValueChange(e)}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                     <div className="col-md-6 mt-1 mb-1" >
                                                         <FormInput 
                                                             label={"Contact Number *"}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={phoneNo}
                                                             name="phoneNo"
                                                             onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                 </div>
 
@@ -198,12 +210,12 @@ class DisplatSupplierCom extends React.Component {
                                                         <FormInput 
                                                             label={'Address *'}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={address}
                                                             name="address"
                                                             onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                 </div>
 
@@ -212,12 +224,12 @@ class DisplatSupplierCom extends React.Component {
                                                         <FormInput 
                                                             label={"Email *"}
                                                             placeholder={"Select one Supplier"}
-                                                            //error={ errors.group_mo}
                                                             value={email}
                                                             name="email"
                                                             onChange={this.formValueChange}
-                                                            //error_meesage={'*Group Number required'}
                                                         />
+                                                        {errors.name && errors.name.length > 0 &&
+                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.name}</h4>}
                                                     </div>
                                                 </div>
 
@@ -235,10 +247,10 @@ class DisplatSupplierCom extends React.Component {
                                     </form>
                                     </div>
                                 
-                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
+                                    <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                                         fff
                                     </div>
-                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         ff
                                     </div>
                                 </div>
@@ -246,7 +258,7 @@ class DisplatSupplierCom extends React.Component {
                         </Col>
 
                         <Col sm={3}>
-                            <Nav variant="pills" className="flex-column bg-white">
+                            <Nav variant="pills" className="flex-column bg-white shadow">
                                 <Card>
                                 <Nav.Item style={{backgroundColor:"#475466", height:"65px"}}>
                                     <Row>
@@ -265,8 +277,23 @@ class DisplatSupplierCom extends React.Component {
                                             </div>
                                         </Col>
                                         {/* <Col xs={6} md={4}> */}
-                                        <Col md="auto"  style={{paddingTop:"16px", paddingBottom:"8px"}}>
-                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"20px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                        <Col md="auto"  style={{paddingTop:"20px", paddingBottom:"8px"}}>
+                                            <div className="row">
+                                            <FontAwesomeIcon onClick={() => this.change_search_toggle()}  icon={faSearch} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"5px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                                {['bottom'].map((placement) => (
+                                                    <OverlayTrigger
+                                                        key={placement}
+                                                        placement={placement}
+                                                        overlay={
+                                                            <Tooltip id={`tooltip-${placement}`}>
+                                                                Refresh List
+                                                        </Tooltip>
+                                                        }
+                                                    >
+                                                    <FontAwesomeIcon  onClick={() => this.refreshList()} icon={faRedo} style={{cursor: 'pointer', color:"#FFFFFF", marginLeft:"15px", alignContent:"flex-end", alignItems:"flex-end"}} />
+                                                    </OverlayTrigger>
+                                                ))}
+                                            </div>
                                         </Col>
                                     </Row>
                                 </Nav.Item>
@@ -305,7 +332,7 @@ class DisplatSupplierCom extends React.Component {
         return(
             <div style={{paddingLeft:"20px"}} key={item.id} onClick={() => this.loadSupplierData(item.id)}>
                  <div className="row">
-                        <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>{item.id}</p></div>
+                        <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>Sup No : {item.id}</p></div>
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> {moment(new Date(item.createdAt)).format("YYYY MMM DD")}</p></div>
                 </div>
                 <p style={{fontSize:"18px", color:"#18A0FB",fontFamily:"sans-serif", marginBottom:"0px"}}>{item.name}</p>
@@ -316,6 +343,21 @@ class DisplatSupplierCom extends React.Component {
     } 
 
 
+
+    validate = () => {
+        let { errors, name } = this.state;
+        let count = 0;
+
+        if (name.length === 0) {
+            errors.name =  'Please select a Supplier'
+            count++
+        } else {
+            errors.name = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
     
     
   
@@ -344,7 +386,7 @@ class DisplatSupplierCom extends React.Component {
 
 const mapStateToProps = state => ({
     auth: state.auth || {},
-  });
+});
  
   
 export default connect(mapStateToProps, null)(withRouter(DisplatSupplierCom));

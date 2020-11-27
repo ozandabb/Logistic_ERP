@@ -1,0 +1,8 @@
+2020.11.14 01:07:42 INFO  Started: Metals version 0.9.5 in workspace 'E:\Projects\Logistic_ERP' for client vscode.
+2020.11.14 01:07:46 INFO  time: initialize in 4.14s
+2020.11.14 01:07:52 WARN  Build server is not auto-connectable.
+2020.11.14 01:07:52 WARN  no build tool detected in workspace 'E:\Projects\Logistic_ERP'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.11.18 06:54:44 INFO  Started: Metals version 0.9.5 in workspace 'E:\Projects\Logistic_ERP' for client vscode.
+2020.11.18 06:54:49 INFO  time: initialize in 4.43s
+2020.11.18 06:55:06 WARN  Build server is not auto-connectable.
+2020.11.18 06:55:06 WARN  no build tool detected in workspace 'E:\Projects\Logistic_ERP'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 

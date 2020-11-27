@@ -20,7 +20,7 @@ const FormSelect =  props => {
     <label className={`${props.error && 'text-danger'} form-label`}>{props.label}</label>
        
     <select  {...props} 
-    className={`${props.error && 'error'} form-control form-control-sm`} 
+    className={`${props.error && 'is-invalid'} form-control form-control-sm`} 
     >
     { props.options && props.options.map( (op,i) => {
            return (

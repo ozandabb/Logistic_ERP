@@ -1,15 +1,30 @@
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Table } from 'react-bootstrap';
+import get from 'lodash.get';
+
 
 
 const SampleTabel=({
     rows=[],
-    columns=[]
+    columns=[],
+    border=false,
+    striped=true,
+    hover=false,
+    bordered=false
+
+
 })=>{
+    useEffect(() => {
+        console.log(rows);
+        console.log(columns);
+
+    }, [])
     return(
-        <Table striped bordered hover>
+        <Table   borderless hover >
+            
             <thead>
+    
                 {
                     columns.map((column,index)=>{
                         return <th scope="col" key={index}>{column.name}</th>;
@@ -20,11 +35,12 @@ const SampleTabel=({
             <tbody>
                 {
                     rows.map((row,index)=>{
+                        
                         return(
                             <tr key={index}>
                                 {
                                     columns.map((column,index2)=>{
-                                    return <td scope="col" key={index2}>{row[column.key]}</td>;
+                                    return <td scope="col" key={index2}>{get(row,column.key,"")}</td>;
                                     })
                                 }
                             </tr>

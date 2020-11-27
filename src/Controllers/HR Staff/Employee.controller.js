@@ -15,7 +15,7 @@ class Employeecontroller{
         return await Axios.post( `${Config.host}${Config.port}${this.api.addEmployee}`, data,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
-                return { ...Response.data , status : 200 }
+                return { ...Response.data  }
             })
             .catch(err => {
                 console.error(err);

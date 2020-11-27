@@ -1,10 +1,12 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { ProSidebar, Menu, MenuItem, SubMenu , SidebarHeader , SidebarContent , SidebarFooter } from 'react-pro-sidebar';
-import { faTable, faBars , faPlusSquare, faColumns  , faAddressBook,faSnowman,faObjectGroup,faTruck, faAtom,faSignOutAlt, faTachometerAlt,faPeopleArrows, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTable, faBars , faPlusSquare, faColumns  , faAddressBook,faSnowman,faObjectGroup,faTruck, faAtom,faSignOutAlt, faEnvelopeOpenText,faPeopleArrows, faGlobe, faHome, faChalkboard, faAd, faChartBar, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
+import {  Button, Card , Form , Image ,FormFile, OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
+import ADMIN_CONTROLLER from '../../Controllers/Admin/AdminController';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -12,8 +14,26 @@ class Admin_Sidebar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-        side_bar_toggle: false,
+            side_bar_toggle: false,
+            accessList: [],
+            completeList: [],
+            NotCompleted: [],
+            length:'',
+
         };
+    }
+
+    async componentDidMount() {
+        this.loadAllSystemAccess();
+    }
+
+    //GET all User system access
+    loadAllSystemAccess = async () => {
+        const res = await ADMIN_CONTROLLER.getAllUserAccess(this.props.auth.token);
+        console.log("alll cus", res);
+        this.setState({
+            accessList: res.data.rows,
+        });
     }
 
     //Sign out function
@@ -25,8 +45,10 @@ class Admin_Sidebar extends React.Component {
 
     render() {
 
-    const { side_bar_toggle } = this.state;
-    const { activemenu, submenu } = this.props;
+    const { side_bar_toggle, accessList } = this.state;
+    const { activemenu, submenu} = this.props;
+    const length = accessList.length;
+
 
     return (
         <div>
@@ -37,9 +59,85 @@ class Admin_Sidebar extends React.Component {
                     style={{color:"#FFFFFF"}}
                     className="ml-4 click show-icon"></FontAwesomeIcon>
                 </span>
+
+                <div style={{justifyContent:"center"}} className="d-none d-lg-block">
+                    <h5 style={{color:"#FFFFFF"}}>Administration </h5>
+                </div>
+
+
+          <div style={{justifyContent:"right"}}>
+            <div className="row">
+            {/* <FontAwesomeIcon  icon={faEnvelope}  className="d-none d-lg-block" /> */}
+              <div style={{justifyContent:"center", marginTop:"5px"}}> 
+              {/* <FontAwesomeIcon  icon={faEnvelope}  /> */}
+              
+              <>
+                {['bottom'].map((placement) => (
+                    <OverlayTrigger
+                    trigger="click"
+                    key={placement}
+                    placement={placement}
+                    overlay={
+                        <Popover id={`popover-positioned-${placement}`}>
+                        <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                        <Popover.Content>
+                            <Form>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="name@example.com" />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>Message</Form.Label>
+                                    <Form.Control as="textarea" rows={3} />
+                                </Form.Group>
+                                <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                            </Form>
+                        </Popover.Content>
+                        </Popover>
+                    }
+                    >
+                    <div>
+                        <Image src="/images/notify.gif" style={{width:"30px", cursor:"pointer"}} roundedCircle  />
+                        {/* {length != 0 && <FontAwesomeIcon  icon={faEnvelopeOpenText} style={{ color:"#FFFFFF", cursor: 'pointer'}}   />} */}
+                   </div>
+                    </OverlayTrigger>
+                ))}
+                </>
+                </div>
+              <>
+                {['bottom'].map((placement) => (
+                    <OverlayTrigger
+                    trigger="click"
+                    key={placement}
+                    placement={placement}
+                    overlay={
+                        <Popover id={`popover-positioned-${placement}`}>
+                        <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                        <Popover.Content>
+                            <Form>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="name@example.com" />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>Message</Form.Label>
+                                    <Form.Control as="textarea" rows={3} />
+                                </Form.Group>
+                                <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                            </Form>
+                        </Popover.Content>
+                        </Popover>
+                    }
+                    >
+                    <Image src="/images/userprofile.png" style={{width:"35px",marginRight:"20px", marginLeft:"20px", cursor:"pointer"}} rounded />
+                    </OverlayTrigger>
+                ))}
+                </>
+            </div>
+          </div>
             </nav>
 
-            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }`} >
+            <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }shadow`} >
 
             {/* <div className="sidebar-header pb-4 pt-2">
                 <div className="d-flex px-4">
@@ -55,7 +153,7 @@ class Admin_Sidebar extends React.Component {
             <ProSidebar>
             <SidebarContent>
                 <Menu iconShape="circle">
-                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/Accountant/dashboard"/></MenuItem>
+                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/AdminTeam/dashboard"/></MenuItem>
                 <MenuItem active={activemenu === 'USERS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Users<Link to="/AdminTeam/Users"/></MenuItem>
                 {/* <MenuItem active={activemenu === 'SUPPLIERS'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Suppliers<Link to="/"/></MenuItem>
                 <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>

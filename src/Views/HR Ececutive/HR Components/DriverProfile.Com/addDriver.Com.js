@@ -52,6 +52,8 @@ class addDriverCom extends React.Component {
 
         const result = await Driver_CONTROLLER.addDriver(data, this.props.auth.token);
 
+        console.log("driver", result);
+
         // if(result.status == 201){
         //     CONFIG.setToast("Successfully Added");
         //     this.clear();
