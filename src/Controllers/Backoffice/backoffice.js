@@ -36,6 +36,7 @@ class BackOffice {
             });
     }
     creae_job_card_i = async (data, token) => {
+        console.log(data);
         return await Axios.post(`${Config.host}${Config.port}${this.api.create_job_card}`, data, {
             headers: {
                 'Authorization': `bearer ${token}`,
@@ -43,12 +44,14 @@ class BackOffice {
             }
         })
             .then(Response => {
+                console.log(Response);
                 return {
                     ...Response.data,
                     status: 201
                 }
             })
             .catch(err => {
+
                 console.error(err);
                 return {
                     ...err,

@@ -54,16 +54,22 @@ class Routes extends Component {
     }
     get_all_customers = async () => {
         const cus = await BACKOFFICE.getAllCustomers(this.props.auth.token)
-        this.setState({ customers: cus.data.rows, loading: false })
-        console.log(this.state.customers);
-        this.setState({
-            WD_DAYS: this.state.customers.map(i => ({ label: i.name, value: i.id }))
-        })
+        if(cus.data != undefined || cus.data != null){
+        
+            this.setState({ customers: cus.data.rows, loading: false })
+            console.log(this.state.customers);
+            this.setState({
+                WD_DAYS: this.state.customers.map(i => ({ label: i.name, value: i.id }))
+            })
+        }
     }
     get_all_routes = async () => {
         const res = await BACKOFFICE.getAllRoutes(this.props.auth.token)
-        this.setState({ routes_all: res.data.rows })
-        console.log(res);
+        if(res.data != undefined || res.data != null){
+        
+            this.setState({ routes_all: res.data.rows })
+            console.log(res);
+        }
     }
     // paginate = async pageNum => {
     //     this.setState({
@@ -121,7 +127,8 @@ class Routes extends Component {
             const data = {
                 name: this.state.name,
                 description: this.state.description,
-                customer: results.map(cus => ({ customer_id: cus.id, address: cus.address, lat: cus.lat, long: cus.long }))
+                customer: results.map(cus => ({ customer_id: cus.id, address: cus.address, lat: cus.lat, long: cus.long })),
+                sales:true
             }
             const result = await BACKOFFICE.addRoute(data, this.props.auth.token)
             if (result.status == 201) {

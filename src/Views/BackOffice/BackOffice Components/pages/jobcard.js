@@ -62,18 +62,24 @@ class JobCards extends Component {
     }
     get_all_customers = async () => {
         const cus = await BACKOFFICE.getAllCustomers(this.props.auth.token)
-        this.setState({ customers: cus.data.rows, loading: false })
-        console.log(this.state.customers);
+        if(cus.data != undefined || cus.data != null){
+
+            this.setState({ customers: cus.data.rows, loading: false })
+            console.log(this.state.customers);
+        }
 
     }
     get_all_routes = async () => {
         const res = await BACKOFFICE.getAllRoutes(this.props.auth.token)
         console.log(res);
-        this.setState({
-            WD_DAYS: [this.state.WD_DAYS, ...res.data.rows.map(i => ({ label: i.name, value: i.id }))],
-            routes_all: res.data.rows
-        })
-        console.log(this.state.routes_all);
+        if(res.data != undefined || res.data != null){
+
+            this.setState({
+                WD_DAYS: [this.state.WD_DAYS, ...res.data.rows.map(i => ({ label: i.name, value: i.id }))],
+                routes_all: res.data.rows
+            })
+            console.log(this.state.routes_all);
+        }
     }
 
     get_all_orders = async () => {
@@ -118,13 +124,16 @@ class JobCards extends Component {
                 console.log(main_route);
                 const cus_list = main_route.route_details.map(i => ({ customer_id: i.customer_id }))
                 const res = await BACKOFFICE.get_all_confirm_orders(this.props.auth.token)
-                this.setState({
-                    order_list: res.data.rows
-                })
-                const results = this.state.order_list.filter(cus => cus_list.map(i => (i.customer_id)).includes(cus.customer_id))
-                this.setState({
-                    confirms_order_list: results
-                })
+                if(res.data != undefined || res.data != null ){
+
+                    this.setState({
+                        order_list: res.data.rows
+                    })
+                    const results = this.state.order_list.filter(cus => cus_list.map(i => (i.customer_id)).includes(cus.customer_id))
+                    this.setState({
+                        confirms_order_list: results
+                    })
+                }
                 this.get_all_orders()
             }
         }
@@ -164,11 +173,18 @@ class JobCards extends Component {
                 orders: this.state.current_list.map(cus => (cus.value))
             }
             const result = await BACKOFFICE.creae_job_card_i(data, this.props.auth.token)
+            if(result.status == 400){
+                CONFIG.setErrorToast("Please add sales route");
+
+                window.location.replace("/backOffice/job_cards");
+            }
             if (result.status == 201) {
                 CONFIG.setToast("Successfully Added");
                 this.get_all_routes()
                 this.clear()
-            } else {
+                window.location.replace("/backOffice/job_cards");
+
+         } else {
                 CONFIG.setErrorToast(result.message);
                 this.clear()
             }
