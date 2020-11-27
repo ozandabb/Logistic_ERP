@@ -7,7 +7,6 @@ import Routes from '../Views/BackOffice/BackOffice Components/pages/routes'
 import Jobcards from '../Views/BackOffice/BackOffice Components/pages/jobcard'
 
 
-//import LiveMap from '../Views/BackOffice/BackOffice Components/Map/LiveMap';
 import AssignVehicle from '../Views/BackOffice/BackOffice Components/Vehicle Assign/vehicleAssign';
 import ChequeVerify from '../Views/BackOffice/BackOffice Components/Cheque/chequeVerify';
 import SalesOrder from '../Views/BackOffice/BackOffice Components/Sales Orders/salesOrder';
@@ -53,8 +52,8 @@ let backOfficeRoutes = [
     component: Jobcards,
     exact: true,
   },
-  {
-
+ 
+{
     path: "/backOffice/AssignVehicle",
     name: "AssignVehicle",
     component: AssignVehicle,
