@@ -12,7 +12,7 @@ import { Tab, Row, Col, Nav, Card, InputGroup, FormControl, Image, Button, Table
 import { connect } from 'react-redux';
 import CONFIG from '../../../../Controllers/Config.controller';
 import ReactToPrint from 'react-to-print';
-import BACKOFFICE from '../../../../Controllers/Backoffice/backoffice';
+import BACKOFFICE from '../../../../Controllers/BackOffice/backoffice';
 import moment from 'moment';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
