@@ -1,6 +1,8 @@
 import backOffice_dashboard from '../Views/BackOffice/Dashboard.BackOffice';
 import {SalesOrder} from '../Views/BackOffice/BackOffice Components/pages/salesorder';
 import { Cheque } from '../Views/BackOffice/BackOffice Components/pages/cheque';
+import LiveMap from '../Views/BackOffice/BackOffice Components/Map/LiveMap'
+import Routes from '../Views/BackOffice/BackOffice Components/pages/routes'
 
 
 let backOfficeRoutes = [
@@ -21,6 +23,18 @@ let backOfficeRoutes = [
     path: "/backOffice/cheque",
     name: "backOffice_Cheque",
     component: Cheque,
+    exact: true,
+  },
+  {
+    path: "/backOffice/LiveMap",
+    name: "LiveMap",
+    component: LiveMap,
+    exact: true,
+  },
+  {
+    path: "/backOffice/routes",
+    name: "Routes",
+    component: Routes,
     exact: true,
   },
  

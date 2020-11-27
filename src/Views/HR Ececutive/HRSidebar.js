@@ -1,8 +1,9 @@
 import React from "react";
 import PropType from 'prop-types';
 import { connect } from 'react-redux';
+import {  Button, Card , Form , Image ,FormFile, OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { ProSidebar, Menu, MenuItem, SubMenu  , SidebarContent  } from 'react-pro-sidebar';
-import { faTable, faBars , faHandshake  , faAddressBook,faObjectGroup,faTruck,faSignOutAlt,faPeopleArrows, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faTable, faBars , faHandshake  , faAddressBook,faObjectGroup,faTruck,faSignOutAlt,faPeopleArrows, faHome, faEnvelope, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -18,7 +19,6 @@ class HRSidebar extends React.Component {
   }
 
   signoutuser = () => {
-
     const role = this.props.auth.user.user_details.role;
     // const isadmin = (role && (role == 3 || role == 1 || role == 2 || role == 0)) ? true : false
     this.props.SignOut && this.props.SignOut();
@@ -31,14 +31,88 @@ class HRSidebar extends React.Component {
     return (
       <div>
         <nav className="navbar  py-0 shadow-sm  fixed-top" style={{ background: "#475466", height:"50px" }} >
+
           <span className="navbar-brand mb-0 h6 text-dark ml-2">
-          
             <FontAwesomeIcon onClick={() => this.setState({ side_bar_toggle: !this.state.side_bar_toggle, }) }
               icon={faBars}
               style={{color:"#FFFFFF"}}
               className="ml-4 click show-icon"
             ></FontAwesomeIcon>
           </span>
+
+          <div style={{justifyContent:"center"}} className="d-none d-lg-block">
+            <h5 style={{color:"#FFFFFF"}}>Human Resources Management Executive </h5>
+          </div>
+
+
+          <div style={{justifyContent:"right"}}>
+            <div className="row">
+            {/* <FontAwesomeIcon  icon={faEnvelope}  className="d-none d-lg-block" /> */}
+              <div style={{justifyContent:"center", marginTop:"5px"}}> 
+              {/* <FontAwesomeIcon  icon={faEnvelope}  /> */}
+              
+              <>
+                {['bottom'].map((placement) => (
+                    <OverlayTrigger
+                    trigger="click"
+                    key={placement}
+                    placement={placement}
+                    overlay={
+                        <Popover id={`popover-positioned-${placement}`}>
+                        <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                        <Popover.Content>
+                            <Form>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="name@example.com" />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>Message</Form.Label>
+                                    <Form.Control as="textarea" rows={3} />
+                                </Form.Group>
+                                <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                            </Form>
+                        </Popover.Content>
+                        </Popover>
+                    }
+                    >
+                    {/* <Image src="/images/userprofile.png" style={{width:"35px",marginRight:"20px", marginLeft:"20px", cursor:"pointer"}} rounded /> */}
+                    <FontAwesomeIcon  icon={faEnvelopeOpenText} style={{ color:"#FFFFFF", cursor: 'pointer'}}   />
+                    </OverlayTrigger>
+                ))}
+                </>
+                </div>
+              <>
+                {['bottom'].map((placement) => (
+                    <OverlayTrigger
+                    trigger="click"
+                    key={placement}
+                    placement={placement}
+                    overlay={
+                        <Popover id={`popover-positioned-${placement}`}>
+                        <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                        <Popover.Content>
+                            <Form>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="name@example.com" />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>Message</Form.Label>
+                                    <Form.Control as="textarea" rows={3} />
+                                </Form.Group>
+                                <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                            </Form>
+                        </Popover.Content>
+                        </Popover>
+                    }
+                    >
+                    <Image src="/images/userprofile.png" style={{width:"35px",marginRight:"20px", marginLeft:"20px", cursor:"pointer"}} rounded />
+                    </OverlayTrigger>
+                ))}
+                </>
+            </div>
+          </div>
         </nav>
 
         <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" } shadow`} >

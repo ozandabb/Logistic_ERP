@@ -640,6 +640,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 placeholder={"Enter Driver ID "}
                                                                 value={this.state.driver_id}
                                                                 name="driver_id"
+                                                                required={true}
                                                                 onChange={this.formValueChange}
                                                             />
                                                             {errors.driver_id && errors.driver_id.length > 0 &&
@@ -652,6 +653,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Fuel Station *'}
                                                                 placeholder={"Enter Fuel Station "}
                                                                 value={fuel_station}
+                                                                required={true}
                                                                 name="fuel_station"
                                                                 onChange={(e) => this.formValueChange(e)}
                                                             />
@@ -663,6 +665,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Fuel Type *"}
                                                                 placeholder={"Enter Fuel Type "}
                                                                 value={fuel_type}
+                                                                required={true}
                                                                 name="fuel_type"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -676,6 +679,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Price *'}
                                                                 placeholder={"Enter Price"}
                                                                 value={price}
+                                                                required={true}
                                                                 name="price"
                                                                 onChange={(e) => this.formValueChange(e)}
                                                             />
@@ -687,6 +691,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Amount *"}
                                                                 placeholder={"Enter Amount"}
                                                                 value={amount}
+                                                                required={true}
                                                                 name="amount"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -699,6 +704,7 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Date *'}
                                                                 value={date}
+                                                                required={true}
                                                                 type="Date"
                                                                 name="date"
                                                                 onChange={(e) => this.formValueChange(e)}
@@ -721,6 +727,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Description *'}
                                                                 placeholder={"Description about the Fuel Consumption "}
                                                                 value={descriptionfuel}
+                                                                required={true}
                                                                 name="descriptionfuel"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -831,6 +838,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Driver ID  *"}
                                                                 placeholder={"Enter Driver ID "}
                                                                 value={Repair_driver_id}
+                                                                required={true}
                                                                 name="Repair_driver_id"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -844,6 +852,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Price *'}
                                                                 placeholder={"Enter Price"}
                                                                 value={Repair_price}
+                                                                required={true}
                                                                 name="Repair_price"
                                                                 onChange={(e) => this.formValueChange(e)}
                                                             />
@@ -855,6 +864,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Amount *"}
                                                                 placeholder={"Enter Amount"}
                                                                 value={Repair_amount}
+                                                                required={true}
                                                                 name="Repair_amount"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -867,6 +877,7 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Date *'}
                                                                 value={Repair_date}
+                                                                required={true}
                                                                 type="Date"
                                                                 name="Repair_date"
                                                                 onChange={(e) => this.formValueChange(e)}
@@ -889,6 +900,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Description *'}
                                                                 placeholder={"Description about the Repaire"}
                                                                 value={Repair_description}
+                                                                required={true}
                                                                 name="Repair_description"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -902,6 +914,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Garage Location *'}
                                                                 placeholder={"Enter Garage Location"}
                                                                 value={garage_location}
+                                                                required={true}
                                                                 name="garage_location"
                                                                 onChange={this.formValueChange}
                                                             />
