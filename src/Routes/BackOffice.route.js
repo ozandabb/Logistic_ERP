@@ -1,10 +1,17 @@
 import backOffice_dashboard from '../Views/BackOffice/Dashboard.BackOffice';
 // import {SalesOrder} from '../Views/BackOffice/BackOffice Components/pages/salesorder';
 import { Cheque } from '../Views/BackOffice/BackOffice Components/pages/cheque';
+
+import LiveMap from '../Views/BackOffice/BackOffice Components/Map/LiveMap'
+import Routes from '../Views/BackOffice/BackOffice Components/pages/routes'
+import Jobcards from '../Views/BackOffice/BackOffice Components/pages/jobcard'
+
+
 import LiveMap from '../Views/BackOffice/BackOffice Components/Map/LiveMap';
 import AssignVehicle from '../Views/BackOffice/BackOffice Components/Vehicle Assign/vehicleAssign';
 import ChequeVerify from '../Views/BackOffice/BackOffice Components/Cheque/chequeVerify';
 import SalesOrder from '../Views/BackOffice/BackOffice Components/Sales Orders/salesOrder';
+
 
 
 let backOfficeRoutes = [
@@ -34,6 +41,20 @@ let backOfficeRoutes = [
     exact: true,
   },
   {
+
+    path: "/backOffice/routes",
+    name: "Routes",
+    component: Routes,
+    exact: true,
+  },
+  {
+    path: "/backOffice/job_cards",
+    name: "JobCards",
+    component: Jobcards,
+    exact: true,
+  },
+ 
+
     path: "/backOffice/AssignVehicle",
     name: "AssignVehicle",
     component: AssignVehicle,
@@ -51,6 +72,7 @@ let backOfficeRoutes = [
     component: SalesOrder,
     exact: true,
   },
+
 ];
 
 export default backOfficeRoutes;
