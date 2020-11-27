@@ -56,7 +56,7 @@ class Backoffice_Sidebar extends React.Component {
             <SidebarContent>
                 <Menu iconShape="circle">
                     <MenuItem active={activemenu === 'backOffice_dashboard'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/backOffice/dashboard"/></MenuItem>
-                    <MenuItem active={activemenu === 'backOffice_salesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/salesOrder"/></MenuItem>
+                    <MenuItem active={activemenu === 'SalesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/SalesOrder"/></MenuItem>
                     <MenuItem active={activemenu === 'backOffice_Cheque'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Cheque<Link to="/backOffice/ChequeVerify"/></MenuItem>
                     <MenuItem active={activemenu === 'MAPS'} icon={<FontAwesomeIcon icon={faTable} />}>Maps<Link to="/backOffice/LiveMap"/></MenuItem>
                     {/* <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
