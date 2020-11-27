@@ -56,13 +56,21 @@ class Backoffice_Sidebar extends React.Component {
             <SidebarContent>
                 <Menu iconShape="circle">
                     <MenuItem active={activemenu === 'backOffice_dashboard'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/backOffice/dashboard"/></MenuItem>
+
                     <MenuItem active={activemenu === 'backOffice_salesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/salesOrder"/></MenuItem>
                     <MenuItem active={activemenu === 'backOffice_Cheque'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Cheque<Link to="/backOffice/cheque"/></MenuItem>
                     <MenuItem active={activemenu === 'routes'} icon={<FontAwesomeIcon icon={faRoute} />}>Routes<Link to="/backOffice/routes"/></MenuItem>
                     <MenuItem active={activemenu === 'backoffice_job_card'} icon={<FontAwesomeIcon icon={faTasks} />}>Job Cards<Link to="/backOffice/job_cards"/></MenuItem>
                     {/* <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
                     <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
+
+                    <MenuItem active={activemenu === 'SalesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/SalesOrder"/></MenuItem>
+                    <MenuItem active={activemenu === 'backOffice_Cheque'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Cheque<Link to="/backOffice/ChequeVerify"/></MenuItem>
+                    <MenuItem active={activemenu === 'MAPS'} icon={<FontAwesomeIcon icon={faTable} />}>Maps<Link to="/backOffice/LiveMap"/></MenuItem>
+                    {/* <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
+
                     <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/"/></MenuItem> */}
+                    <MenuItem active={activemenu === 'ASSIGN_VEHICLE'} icon={<FontAwesomeIcon icon={faTable} />}>Vehicle Assign<Link to="/backOffice/AssignVehicle"/></MenuItem>
                     <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt}  />}>Logout</MenuItem>
             
                 {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
