@@ -21,7 +21,7 @@ var _ = require('lodash');
 
 
 
-class Routes extends Component {
+class JobCards extends Component {
     constructor() {
         super();
         this.state = {
@@ -163,14 +163,14 @@ class Routes extends Component {
         }
         return (
             <div className="bg-light wd-wrapper">
-                <Backoffice_Sidebar activemenu={'routes'} />
+                <Backoffice_Sidebar activemenu={'backoffice_job_card'} />
                 <div className="wrapper-wx" style={{ height: "100hv", margin: '20px' }} >
                     <div className="row " style={{ marginTop: "5px", fontFamily: "sans-serif", marginBottom: "15px" }}>
                         <div className="col-sm-9" >
                             <div className="row">
                                 <div className="col-sm">
-                                    <h6 style={{ paddingTop: "10px", paddingLeft: "5px" }}>Route Details<br></br>
-                                        <span className="text-muted small">Dashboard / Routes</span></h6>
+                                    <h6 style={{ paddingTop: "10px", paddingLeft: "5px" }}>Job Card Details<br></br>
+                                        <span className="text-muted small">Dashboard / Job Cards</span></h6>
                                 </div>
                             </div>
                         </div>
@@ -360,4 +360,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, null)(withRouter(Routes));
+export default connect(mapStateToProps, null)(withRouter(JobCards));

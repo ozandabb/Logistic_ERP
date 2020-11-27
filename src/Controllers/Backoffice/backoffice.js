@@ -7,6 +7,7 @@ class BackOffice {
             get_all_customers: "/api/customer/all",
             get_all_routes: "/api/route/all",
             create_route: "/api/route/create",
+            delete_route: "/api/route/delete",
           
         };
     }
@@ -22,6 +23,29 @@ class BackOffice {
                 return {
                     ...Response.data,
                     status: 201
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                return {
+                    ...err,
+                    status: 400
+                }
+            });
+    }
+    delete_route = async (id, token) => {
+        console.log(id);
+        return await Axios.delete(`${Config.host}${Config.port}${this.api.delete_route}/${id}`, {
+            headers: {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(Response => {
+                console.log(Response);
+                return {
+                    ...Response.data,
+                    status: 200
                 }
             })
             .catch(err => {

@@ -3,6 +3,8 @@ import {SalesOrder} from '../Views/BackOffice/BackOffice Components/pages/saleso
 import { Cheque } from '../Views/BackOffice/BackOffice Components/pages/cheque';
 import LiveMap from '../Views/BackOffice/BackOffice Components/Map/LiveMap'
 import Routes from '../Views/BackOffice/BackOffice Components/pages/routes'
+import Jobcards from '../Views/BackOffice/BackOffice Components/pages/jobcard'
+
 
 
 let backOfficeRoutes = [
@@ -35,6 +37,12 @@ let backOfficeRoutes = [
     path: "/backOffice/routes",
     name: "Routes",
     component: Routes,
+    exact: true,
+  },
+  {
+    path: "/backOffice/job_cards",
+    name: "JobCards",
+    component: Jobcards,
     exact: true,
   },
  
