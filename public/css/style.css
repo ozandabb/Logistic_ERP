@@ -71,6 +71,8 @@ h5 {
   font-size: 18px;
 }
 
+.gm-style-iw + div {display: none;}
+
 h6 {
   font-size: 16px;
 }
@@ -106,6 +108,16 @@ ul,
 ol {
   padding: 0;
   margin: 0;
+}
+
+.ad_card{
+  position: absolute !important;
+  bottom: 75px;
+  left: 230px;
+  z-index: 9999;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 5px;
 }
 
 /*---------------------
