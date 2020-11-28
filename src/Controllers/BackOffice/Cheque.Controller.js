@@ -1,22 +1,22 @@
 import Axios from "axios";
 import Config from "../Config.controller";
 
-class SalesOrdercontroller{
+class ChequeController {
     constructor(){
         this.api = {
-            getAllPending: "/api/sales_orders/get/pending",
-            getAllCompleted: "/api/sales_orders/get/completed",
-            getAllRejected: "/api/sales_orders/get/reject",
-            getPendingByCusID : "/api/sales_orders/get/pending",
-
+            getAllCheques: "/api/cheques/getall",
+            getAllJobCards: "/api/jobcards/get",
+            getAllVehicles: "/api/vehicle/all",
+            getAllEmployees: "/api/employees/getall",
+            updateJobCard: "/api/jobcards/update",
         };
     }
 
-    //GET all pending orders
-    getAllPending = async (token) => {
+    //get all cheques
+    getAllCheques = async (token) => {
         var resp = 600;
         var userData = {}
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllPending}`,
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllCheques}`,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 resp = Response.status;
@@ -36,11 +36,11 @@ class SalesOrdercontroller{
         return resp;
     }
 
-    //GET all Completed orders
-    getAllCompleted = async (token) => {
+    //get all job cards
+    getAllJobCards = async (token) => {
         var resp = 600;
         var userData = {}
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllCompleted}`,
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllJobCards}`,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 resp = Response.status;
@@ -60,11 +60,11 @@ class SalesOrdercontroller{
         return resp;
     }
 
-    //GET all rejected Orders
-    getAllRejected = async (token) => {
+    //get all job cards
+    getAllVehicles = async (token) => {
         var resp = 600;
         var userData = {}
-        await Axios.get(`${Config.host}${Config.port}${this.api.getAllRejected}`,
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllVehicles}`,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 resp = Response.status;
@@ -84,16 +84,38 @@ class SalesOrdercontroller{
         return resp;
     }
 
-    //Get Pending orders by cutomer id
-    getPendingByCusID = async (id, token) => {
+    //get all job cards
+    // getAllEmployees = async (token) => {
+    //     var resp = 600;
+    //     var userData = {}
+    //     await Axios.get(`${Config.host}${Config.port}${this.api.getAllEmployees}`,
+    //     { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
+    //         .then(Response => {
+    //             resp = Response.status;
+    //             userData = Response.data;
+    //         })
+    //         .catch(err => {
+    //             try {
+    //                 resp = err.response.status;
+    //             } catch (error) {
+    //                 resp = 600;
+    //             }
+    //         });
+
+    //     if (resp === 200) {
+    //         return userData;
+    //     }
+    //     return resp;
+    // }
+
+    async getAllEmployees(token) {
         var resp = 600;
         var userData = {}
-        const data = await Axios.get(
-            `${Config.host}${Config.port}${this.api.getPendingByCusID}/${id}`,
-            { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }})      
+        await Axios.get(`${Config.host}${Config.port}${this.api.getAllEmployees}`,
+        { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 resp = Response.status;
-                userData = Response;
+                userData = Response.data;
             })
             .catch(err => {
                 try {
@@ -108,10 +130,19 @@ class SalesOrdercontroller{
         }
         return resp;
     }
-
-
-
+    
+    UpdateJobCard = async ( data , token ) => {
+        return await Axios.patch( `${Config.host}${Config.port}${this.api.updateJobCard}/${data.id}`, data,
+        { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
+            .then(Response => {
+                return { ...Response.data , status : 200 }
+            })
+            .catch(err => {
+                console.error(err);
+                return { ...err , status : 400 }
+            });
+    }
 }
 
-var UserObject = new SalesOrdercontroller();
+var UserObject = new ChequeController();
 export default UserObject;
