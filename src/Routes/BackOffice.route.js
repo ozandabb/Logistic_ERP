@@ -38,7 +38,7 @@ let backOfficeRoutes = [
     exact: true,
   },
   {
-    path: "/backOffice/LiveMap",
+    path: "/backOffice/LiveMap/:id",
     name: "LiveMap",
     component: LiveMap,
     exact: true,
