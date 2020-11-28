@@ -5,6 +5,10 @@ import LiveMap from '../Views/BackOffice/BackOffice Components/Map/LiveMap';
 import AssignVehicle from '../Views/BackOffice/BackOffice Components/Vehicle Assign/vehicleAssign';
 import ChequeVerify from '../Views/BackOffice/BackOffice Components/Cheque/chequeVerify';
 import SalesOrder from '../Views/BackOffice/BackOffice Components/Sales Orders/salesOrder';
+import SingleRejected from '../Views/BackOffice/BackOffice Components/Sales Orders/SingleRejected';
+import SinglePending from '../Views/BackOffice/BackOffice Components/Sales Orders/SinglePending'
+import SingleCompleted from '../Views/BackOffice/BackOffice Components/Sales Orders/SingleCompleted'
+
 
 
 let backOfficeRoutes = [
@@ -15,12 +19,12 @@ let backOfficeRoutes = [
     component: backOffice_dashboard,
     exact: true,
   },
-  {
-    path: "/backOffice/salesOrder",
-    name: "backOffice_salesOrder",
-    component: SalesOrder,
-    exact: true,
-  },
+  // {
+  //   path: "/backOffice/salesOrder",
+  //   name: "backOffice_salesOrder",
+  //   component: SalesOrder,
+  //   exact: true,
+  // },
   {
     path: "/backOffice/cheque",
     name: "backOffice_Cheque",
@@ -49,6 +53,27 @@ let backOfficeRoutes = [
     path: "/backOffice/SalesOrder",
     name: "SalesOrder",
     component: SalesOrder,
+    exact: true,
+  },
+
+  {
+    path: "/backOffice/SinglePending/:id",
+    name: "SinglePending",
+    component: SinglePending,
+    exact: true,
+  },
+
+  {
+    path: "/backOffice/SingleCompleted",
+    name: "SingleCompleted",
+    component: SingleCompleted,
+    exact: true,
+  },
+
+  {
+    path: "/backOffice/SingleRejected",
+    name: "SingleRejected",
+    component: SingleRejected,
     exact: true,
   },
 ];
