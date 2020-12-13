@@ -41,20 +41,6 @@ class Sidebar_Assi_Acc extends React.Component {
 
 
                 <div className={`sidebar_wrap sidebar-top ${side_bar_toggle ? "sidebar_active" : ""} shadow`} >
-
-
-
-                    {/* <div className="sidebar-header pb-4 pt-2">
-                <div className="d-flex px-4">
-                <img src="/images/user2.jpg" className="rounded-circle sidebar-image my-auto"></img>
-                        <div className="my-auto">
-                                    <h6 style={{lineHeight: '12px', fontWeight: 600}}
-                                        className={`text-white mb-0 mt-1`}>HR Staff </h6>
-                                    <span className="small text-light ">@GamageUYT</span>
-                        </div>
-                </div>
-            </div> */}
-
                     <ProSidebar>
                         <SidebarContent>
                             <Menu iconShape="circle">
@@ -63,22 +49,11 @@ class Sidebar_Assi_Acc extends React.Component {
                                     <MenuItem active={submenu === 'FIXED_ASSETS_LOCATION'} >Locations<Link to="/AssistantAccountant/fixedAssetsLocation" /></MenuItem>
                                     <MenuItem active={submenu === 'FIXED_ASSETS_CLASS'}>Classes<Link to="/AssistantAccountant/fixedAssetsClass" /></MenuItem>
                                     <MenuItem active={submenu === 'FIXED_ASSETS_SUBCLASS'}>Sub Classes<Link to="/AssistantAccountant/fixedAssetsSubClass" /></MenuItem>
+                                    <MenuItem active={submenu === 'FIXED_ASSETS_POSTING_GROUP'}>Posting Groups<Link to="/AssistantAccountant/fixedAssetsPostingGroup" /></MenuItem>
                                 </SubMenu>
                                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout</MenuItem>
-
-                                {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
-                    <MenuItem active={submenu === 'CUSTOMER_REG'}>Customer Registration<Link to="/hrstaff/customer_registration"/></MenuItem>
-                    <MenuItem active={submenu === 'SUPPLIER_REG'}>Supplier Registration<Link to="/hrstaff/supplier_registration"></Link></MenuItem>
-                    <MenuItem active={submenu === 'EMPLOYEE_REG'}>Employee Registration<Link to="/hrstaff/employee_registration"/></MenuItem>
-                    <MenuItem active={submenu === 'DRIVER_REG'}>Driver Registration<Link to="/hrstaff/driver_registration"/></MenuItem>
-                    <MenuItem active={submenu === 'VEHICLE_REG'}>Vehicle Registration<Link to="/hrstaff/vehicle_Registration"/></MenuItem>
-                </SubMenu>
-            */}
                             </Menu>
                         </SidebarContent>
-                        {/* <SidebarFooter style={{backgroundColor:"#475466",height:"50px",color:"#FFFFFF", padding:"15px"}}>
-                Contact Admin
-                </SidebarFooter> */}
                     </ProSidebar>
                 </div>
             </div>
