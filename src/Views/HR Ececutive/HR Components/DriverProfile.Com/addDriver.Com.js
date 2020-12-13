@@ -54,10 +54,10 @@ class addDriverCom extends React.Component {
 
         console.log("driver", result);
 
-        // if(result.status == 201){
-        //     CONFIG.setToast("Successfully Added");
-        //     this.clear();
-        // }
+        if(result.status == 200){
+            CONFIG.setToast("Successfully Added");
+            this.clear();
+        }
     }
 
     clear = ()=>{
