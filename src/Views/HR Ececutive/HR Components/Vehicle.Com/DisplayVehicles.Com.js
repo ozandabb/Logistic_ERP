@@ -9,6 +9,7 @@ import {FormInput  } from '../../../../Components/Form'
 import CONFIG from '../../../../Controllers/Config.controller';
 import moment from 'moment';
 import Vehicle_CONTROLLER from '../../../../Controllers/HR Staff/Vehicle.controller';
+import Spinner from "react-bootstrap/Spinner";
 
 class DisplayVehiclesCom extends React.Component {
     constructor(props) {
@@ -58,6 +59,8 @@ class DisplayVehiclesCom extends React.Component {
 
             error:true,
             errors : {},
+            isLoading: '',
+
         };
     }
 
@@ -103,8 +106,12 @@ class DisplayVehiclesCom extends React.Component {
 
     //GET all vehicles
     loadAllVehicles = async () => {
+        this.setState({
+            isLoading : true,
+        })
         const res = await Vehicle_CONTROLLER.getAllVehicle(this.props.auth.token);
         this.setState({
+            isLoading : false,
             vehicleList: res.data.rows,
         });
     }
@@ -640,6 +647,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 placeholder={"Enter Driver ID "}
                                                                 value={this.state.driver_id}
                                                                 name="driver_id"
+                                                                required={true}
                                                                 onChange={this.formValueChange}
                                                             />
                                                             {errors.driver_id && errors.driver_id.length > 0 &&
@@ -652,6 +660,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Fuel Station *'}
                                                                 placeholder={"Enter Fuel Station "}
                                                                 value={fuel_station}
+                                                                required={true}
                                                                 name="fuel_station"
                                                                 onChange={(e) => this.formValueChange(e)}
                                                             />
@@ -663,6 +672,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Fuel Type *"}
                                                                 placeholder={"Enter Fuel Type "}
                                                                 value={fuel_type}
+                                                                required={true}
                                                                 name="fuel_type"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -676,6 +686,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Price *'}
                                                                 placeholder={"Enter Price"}
                                                                 value={price}
+                                                                required={true}
                                                                 name="price"
                                                                 onChange={(e) => this.formValueChange(e)}
                                                             />
@@ -687,6 +698,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Amount *"}
                                                                 placeholder={"Enter Amount"}
                                                                 value={amount}
+                                                                required={true}
                                                                 name="amount"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -699,6 +711,7 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Date *'}
                                                                 value={date}
+                                                                required={true}
                                                                 type="Date"
                                                                 name="date"
                                                                 onChange={(e) => this.formValueChange(e)}
@@ -721,6 +734,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Description *'}
                                                                 placeholder={"Description about the Fuel Consumption "}
                                                                 value={descriptionfuel}
+                                                                required={true}
                                                                 name="descriptionfuel"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -831,6 +845,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Driver ID  *"}
                                                                 placeholder={"Enter Driver ID "}
                                                                 value={Repair_driver_id}
+                                                                required={true}
                                                                 name="Repair_driver_id"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -844,6 +859,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Price *'}
                                                                 placeholder={"Enter Price"}
                                                                 value={Repair_price}
+                                                                required={true}
                                                                 name="Repair_price"
                                                                 onChange={(e) => this.formValueChange(e)}
                                                             />
@@ -855,6 +871,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={"Amount *"}
                                                                 placeholder={"Enter Amount"}
                                                                 value={Repair_amount}
+                                                                required={true}
                                                                 name="Repair_amount"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -867,6 +884,7 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Date *'}
                                                                 value={Repair_date}
+                                                                required={true}
                                                                 type="Date"
                                                                 name="Repair_date"
                                                                 onChange={(e) => this.formValueChange(e)}
@@ -889,6 +907,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Description *'}
                                                                 placeholder={"Description about the Repaire"}
                                                                 value={Repair_description}
+                                                                required={true}
                                                                 name="Repair_description"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -902,6 +921,7 @@ class DisplayVehiclesCom extends React.Component {
                                                                 label={'Garage Location *'}
                                                                 placeholder={"Enter Garage Location"}
                                                                 value={garage_location}
+                                                                required={true}
                                                                 name="garage_location"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -956,6 +976,8 @@ class DisplayVehiclesCom extends React.Component {
                                                             </thead>
                                                             <tbody>
                                                             {RepaireDetailsList && RepaireDetailsList.map((name) => this.renderRepaireDetails(name))}
+                                                            
+                                                            
                                                             </tbody>
                                                         </Table>
                                                     </Card>
@@ -1019,6 +1041,9 @@ class DisplayVehiclesCom extends React.Component {
                                         horizontal={false}
                                         >
                                         {vehicleList && vehicleList.map((name) => this.renderOneCustomer(name))}
+                                        <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto', alignContent:'center'}}>
+                                                                <span className="sr-only">Loading...</span>
+                                                            </Spinner>
                                         </ScrollArea>
                                     </Nav.Link>
                                 </Nav.Item>

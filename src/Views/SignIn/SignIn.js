@@ -1,7 +1,8 @@
 /*  eslint-disable */
 import React, { Component } from 'react';
 import '../../assersts/signin/css/main.css'
-import '../../assersts/signin/css/util.css'
+import '../../assersts/signin/css/util.css';
+import '../../hello.scss'
 import img_1 from '../../assersts/signin/img/img-03.jpg'
 import { connect } from 'react-redux';
 import CommonController from '../../Controllers/Common.controller';
@@ -16,7 +17,9 @@ class SignIn extends Component {
         super();
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            error : false , 
+
         };
     }
 
@@ -42,6 +45,7 @@ class SignIn extends Component {
         
         if(status.status === 200){
             this.props.setCurrentUser(status.data.data );
+            this.clear();
             if(status.data.data.user_details.role === 18 ){
                 this.props.history.push("/AdminTeam/dashboard");
             }else if(status.data.data.user_details.role === 16 ){
@@ -71,16 +75,34 @@ class SignIn extends Component {
             }else{
                 this.props.history.push("/");
             }   
+        }else if(status === 406){
+            this.clear();
+        }else{
+            this.clear();
         }
+    }
+
+    clear = ()=>{
+        this.setState({
+            username:'',
+            password:'',
+            error: true,
+        })
     }
     
     render() {
+
         return (
-            <div className="container-fluid" style={{backgroundColor:"#ffffff"}} >
-                <div className="limiter">
-                    <div className="container-login100">
-                        <div className="wrap-login100"> 
-                            <form className="login100-form validate-form" onSubmit={e => {this.onLogin(e);}}>
+                    <div class="back-gradient">  
+                        <div class="hexagon1 slide-top"></div>
+                        <div class="hexagon2 fe-pulse"></div>
+                        <div class="hexagon3 shimmer"></div>
+                        <div class="hexagon4"></div>
+                        <div class="hexagon5"></div>
+
+                        <div className="container-login100">
+                        <div className="wrap-login100">
+                       <form className="login100-form validate-form" onSubmit={e => {this.onLogin(e);}} style={{justifyContent:"center"}}>
                                 <span className="login100-form-title font-weight-bold">
                                     Welcome!<br></br>
                                     <span className="text-muted small"><h6>Login Portal</h6></span>
@@ -89,48 +111,77 @@ class SignIn extends Component {
                                         <input className="input100" type="text" name="username" 
                                         value={this.state.username}
                                         placeholder="Username" 
+                                        name="username"
                                         onChange={e => this.onChangeuEmail(e)}
                                         required />
                                         <span className="focus-input100"></span>
                                         <span className="symbol-input100">
                                             <FontAwesomeIcon  icon={faEnvelope} />
-                                            {/* <i className="fa fa-envelope" aria-hidden="true"></i> */}
                                         </span>
+
                                 </div>
                                 <div className="wrap-input100 validate-input" data-validate="Password is required">
                                     <input className="input100" type="password" name="password" 
                                         placeholder="Password" 
                                         value={this.state.password} 
                                         placeholder="Enter Password" 
+                                        name="password"
                                         onChange={e => this.onChangeuPass(e)}
                                         required/>
                                     <span className="focus-input100"></span>
                                     <span className="symbol-input100">
                                         <FontAwesomeIcon  icon={faLock} />
-                                        {/* <i className="fa fa-lock" aria-hidden="true"></i> */}
                                     </span>
                                 </div>
+
+                                {/* ------------------------------ error message-------------------------- */}
+                                {  this.state.error &&
+                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">Invalid Username or Password</h4>
+                                }
                                 <div className="container-login100-form-btn">
                                     <button className="login100-form-btn">
                                         Login
                                     </button>
                                 </div>
                             </form>
-
-                            <div className="login100-pic js-tilt" data-tilt>
-                                <img src={img_1} alt="IMG" />
                             </div>
+
+                            </div>
+
+                            {/* <div className="login100-pic js-tilt" data-tilt> */}
+                                {/* <img src={img_1} alt="IMG" /> */}
+                                    {/* <div class="content">
+                                        <div class="content__container">
+                                            <p class="content__container__text">
+                                            Hello
+                                            </p>
+                                            
+                                            <ul class="content__container__list">
+                                            <li class="content__container__list__item">world !</li>
+                                            <li class="content__container__list__item">bob !</li>
+                                            <li class="content__container__list__item">users !</li>
+                                            <li class="content__container__list__item">everybody !</li>
+                                            </ul>
+                                        </div>
+                                    </div> */}
+                            {/* </div> */}
+
+
+
                         </div>
-                    </div>
-                </div>
-            </div>
         )
     }
+
+
+
+
+
+
+
+
 }
 
 
 export default connect(null, { setCurrentUser })(
     withRouter(SignIn)
 );
-
-      
