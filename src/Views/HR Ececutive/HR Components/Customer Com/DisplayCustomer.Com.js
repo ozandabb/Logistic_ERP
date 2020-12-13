@@ -12,6 +12,7 @@ import CONFIG from '../../../../Controllers/Config.controller';
 import QRCODE from './QRcode';
 import QRCode from "react-qr-code";
 import ReactToPrint from 'react-to-print';
+import Spinner from "react-bootstrap/Spinner";
 
 class DisplatCustomerCom extends React.Component {
     constructor(props) {
@@ -55,6 +56,7 @@ class DisplatCustomerCom extends React.Component {
             discount :'',
             promotions:'',
             gifts:'',
+            isLoading: '',
 
             PromotionDetailsList:[],
 
@@ -73,9 +75,13 @@ class DisplatCustomerCom extends React.Component {
 
     //GET all Customers
     loadAllCustomers = async () => {
+        this.setState({
+            isLoading : true,
+        })
         const res = await CUST_CONTROLLER.getAllCustomer(this.props.auth.token);
         console.log("alll cus", res);
         this.setState({
+            isLoading : false,
             customerList: res.data.rows,
         });
     }
@@ -770,6 +776,9 @@ class DisplatCustomerCom extends React.Component {
                                         horizontal={false}
                                         >
                                         {customerList && customerList.map((name) => this.renderOneCustomer(name))}
+                                        <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto', alignContent:'center'}}>
+                                            <span className="sr-only">Loading...</span>
+                                        </Spinner>
                                         </ScrollArea>
                                     </Nav.Link>
                                 </Nav.Item>

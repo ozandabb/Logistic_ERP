@@ -9,6 +9,7 @@ import moment from 'moment';
 import CONFIG from '../../../../Controllers/Config.controller';
 import {FormInput  } from '../../../../Components/Form'
 import SUPPLIER_CONTROLLER from '../../../../Controllers/HR Staff/Supplier.controller';
+import Spinner from "react-bootstrap/Spinner";
 
 class DisplatSupplierCom extends React.Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class DisplatSupplierCom extends React.Component {
 
             supplierList: [],
             search: '',
-
+            isLoading: '',
             errors : {},
         };
     }
@@ -55,8 +56,12 @@ class DisplatSupplierCom extends React.Component {
 
     //GET all supplliers
     loadAllSuppliers = async () => {
+        this.setState({
+            isLoading : true,
+        })
         const res = await SUPPLIER_CONTROLLER.getAllSuppliers(this.props.auth.token);
         this.setState({
+            isLoading : false,
             supplierList: res.data.rows,
         });
     }
@@ -308,6 +313,9 @@ class DisplatSupplierCom extends React.Component {
                                         horizontal={false}
                                         >
                                         {supplierList && supplierList.map((name) => this.renderOneCustomer(name))}
+                                        <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto', alignContent:'center'}}>
+                                            <span className="sr-only">Loading...</span>
+                                        </Spinner>
                                         </ScrollArea>
                                     </Nav.Link>
                                 </Nav.Item>

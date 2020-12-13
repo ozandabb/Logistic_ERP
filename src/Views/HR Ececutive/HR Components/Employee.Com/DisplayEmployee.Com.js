@@ -8,6 +8,7 @@ import ScrollArea from 'react-scrollbar'
 import moment from 'moment';
 import {FormInput  } from '../../../../Components/Form'
 import Employee_CONTROLLER from '../../../../Controllers/HR Staff/Employee.controller';
+import Spinner from "react-bootstrap/Spinner";
 
 class DisplayEmployeeCom extends React.Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class DisplayEmployeeCom extends React.Component {
             joined_date:'',
 
             errors : {},
+            isLoading: '',
 
             employeeList: [],
             search: '',
@@ -67,8 +69,12 @@ class DisplayEmployeeCom extends React.Component {
 
     //GET all supplliers
     loadAllEmployee = async () => {
+        this.setState({
+            isLoading : true,
+        })
         const res = await Employee_CONTROLLER.getAllEmployee(this.props.auth.token);
         this.setState({
+            isLoading : false,
             employeeList: res.data.rows,
         });
     }
@@ -442,6 +448,9 @@ class DisplayEmployeeCom extends React.Component {
                                         horizontal={false}
                                         >
                                         {employeeList && employeeList.map((name) => this.renderOneCustomer(name))}
+                                        <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto', alignContent:'center'}}>
+                                            <span className="sr-only">Loading...</span>
+                                        </Spinner>
                                         </ScrollArea>
                                     </Nav.Link>
                                 </Nav.Item>

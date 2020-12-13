@@ -9,6 +9,7 @@ import {FormInput  } from '../../../../Components/Form'
 import CONFIG from '../../../../Controllers/Config.controller';
 import moment from 'moment';
 import Vehicle_CONTROLLER from '../../../../Controllers/HR Staff/Vehicle.controller';
+import Spinner from "react-bootstrap/Spinner";
 
 class DisplayVehiclesCom extends React.Component {
     constructor(props) {
@@ -58,6 +59,8 @@ class DisplayVehiclesCom extends React.Component {
 
             error:true,
             errors : {},
+            isLoading: '',
+
         };
     }
 
@@ -103,8 +106,12 @@ class DisplayVehiclesCom extends React.Component {
 
     //GET all vehicles
     loadAllVehicles = async () => {
+        this.setState({
+            isLoading : true,
+        })
         const res = await Vehicle_CONTROLLER.getAllVehicle(this.props.auth.token);
         this.setState({
+            isLoading : false,
             vehicleList: res.data.rows,
         });
     }
@@ -969,6 +976,8 @@ class DisplayVehiclesCom extends React.Component {
                                                             </thead>
                                                             <tbody>
                                                             {RepaireDetailsList && RepaireDetailsList.map((name) => this.renderRepaireDetails(name))}
+                                                            
+                                                            
                                                             </tbody>
                                                         </Table>
                                                     </Card>
@@ -1032,6 +1041,9 @@ class DisplayVehiclesCom extends React.Component {
                                         horizontal={false}
                                         >
                                         {vehicleList && vehicleList.map((name) => this.renderOneCustomer(name))}
+                                        <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto', alignContent:'center'}}>
+                                                                <span className="sr-only">Loading...</span>
+                                                            </Spinner>
                                         </ScrollArea>
                                     </Nav.Link>
                                 </Nav.Item>
