@@ -9,7 +9,8 @@ import moment from 'moment';
 import CONFIG from '../../../../Controllers/Config.controller';
 import { FormInput } from '../../../../Components/Form';
 import './DisplayFixedAssetsPostingGroup.Com.css';
-import FixedAssetsPostingGroup_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsPostingGroup.controller';
+import FixedAssetsPostingGroup_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsPostingGroups.controller';
+import Accounts_CONTROLLER from '../../../../Controllers/AssistantAccountant/Accounts.controller';
 
 class DisplayFixedAssetsPostingGroup extends React.Component {
     constructor(props) {
@@ -21,10 +22,17 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
 
             id: '',
             code: '',
-            location_address: '',
-            description: '',
+            acquisition_cost_account: '',
+            accum_depreciation_account: '',
+            acq_cost_acc_on_disposal: '',
+            accum_depr_acc_on_disposal: '',
+            gains_acc_on_disposal: '',
+            losses_acc_on_disposal: '',
+            maintenance_expense_account: '',
+            depreciation_expense_acc: '',
 
             fixedAssetsPostingGroupList: [],
+            accountList: [],
             search: '',
 
             no_of_pages: 0,
@@ -36,6 +44,7 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
 
     async componentDidMount() {
         this.loadAllFixedAssetsPostingGroups();
+        this.loadAllFixedAssetsClasses();
     }
 
     //Search input text
@@ -69,6 +78,14 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
         });
     }
 
+    //GET all accountList
+    loadAllFixedAssetsClasses = async () => {
+        const res = await Accounts_CONTROLLER.getAllAccountsWithoutPagination(this.props.auth.token);
+        this.setState({
+            accountList: res.data.rows
+        });
+    }
+
     //DELETE Fucntion
     onClickDelete = (id) => {
         if (id == '') {
@@ -82,6 +99,7 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
             );
         }
     };
+
     clickDeleteFixedAssetsPostingGroup = async (id) => {
         const result = await FixedAssetsPostingGroup_CONTROLLER.DeleteFixedAssetsPostingGroup(id, this.props.auth.token);
 
@@ -104,8 +122,14 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
         if (this.validate()) {
             var data = {
                 code: this.state.code,
-                location_address: this.state.location_address,
-                description: this.state.description,
+                acquisition_cost_account: this.state.acquisition_cost_account,
+                accum_depreciation_account: this.state.accum_depreciation_account,
+                acq_cost_acc_on_disposal: this.state.acq_cost_acc_on_disposal,
+                accum_depr_acc_on_disposal: this.state.accum_depr_acc_on_disposal,
+                gains_acc_on_disposal: this.state.gains_acc_on_disposal,
+                losses_acc_on_disposal: this.state.losses_acc_on_disposal,
+                maintenance_expense_account: this.state.maintenance_expense_account,
+                depreciation_expense_acc: this.state.depreciation_expense_acc,
             }
 
             const result = await FixedAssetsPostingGroup_CONTROLLER.addFixedAssetsPostingGroup(data, this.props.auth.token);
@@ -130,8 +154,14 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
                 updateFixedAssetsPostingGroupState: true,
                 id: response.data.data.id,
                 code: response.data.data.code,
-                location_address: response.data.data.location_address,
-                description: response.data.data.description,
+                acquisition_cost_account: response.data.data.acquisition_cost_account,
+                accum_depreciation_account: response.data.data.accum_depreciation_account,
+                acq_cost_acc_on_disposal: response.data.data.acq_cost_acc_on_disposal,
+                accum_depr_acc_on_disposal: response.data.data.accum_depr_acc_on_disposal,
+                gains_acc_on_disposal: response.data.data.gains_acc_on_disposal,
+                losses_acc_on_disposal: response.data.data.losses_acc_on_disposal,
+                maintenance_expense_account: response.data.data.maintenance_expense_account,
+                depreciation_expense_acc: response.data.data.depreciation_expense_acc,
             });
         }
     }
@@ -144,8 +174,14 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
             var data = {
                 id: this.state.id,
                 code: this.state.code,
-                location_address: this.state.location_address,
-                description: this.state.description,
+                acquisition_cost_account: this.state.acquisition_cost_account,
+                accum_depreciation_account: this.state.accum_depreciation_account,
+                acq_cost_acc_on_disposal: this.state.acq_cost_acc_on_disposal,
+                accum_depr_acc_on_disposal: this.state.accum_depr_acc_on_disposal,
+                gains_acc_on_disposal: this.state.gains_acc_on_disposal,
+                losses_acc_on_disposal: this.state.losses_acc_on_disposal,
+                maintenance_expense_account: this.state.maintenance_expense_account,
+                depreciation_expense_acc: this.state.depreciation_expense_acc,
             }
 
             const result = await FixedAssetsPostingGroup_CONTROLLER.updateFixedAssetsPostingGroup(data, this.props.auth.token);
@@ -166,8 +202,14 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
         this.setState({
             id: '',
             code: '',
-            location_address: '',
-            description: '',
+            acquisition_cost_account: '',
+            accum_depreciation_account: '',
+            acq_cost_acc_on_disposal: '',
+            accum_depr_acc_on_disposal: '',
+            gains_acc_on_disposal: '',
+            losses_acc_on_disposal: '',
+            maintenance_expense_account: '',
+            depreciation_expense_acc: '',
             updateFixedAssetsPostingGroupState: false,
             addFixedAssetsPostingGroupState: false,
         })
@@ -201,7 +243,7 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
         }
     };
     render() {
-        const { fixedAssetsPostingGroupList, code, location_address, description, errors, search, current_page, no_of_pages } = this.state;
+        const { fixedAssetsPostingGroupList, accountList, errors, search, current_page, no_of_pages } = this.state;
         const pageNumbers = [];
 
         for (let i = 1; i <= no_of_pages; i++) {
@@ -287,21 +329,157 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
                                                             {errors.code && errors.code.length > 0 &&
                                                                 <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.code}</h4>}
                                                         </div>
-                                                        <div className="col-6 mt-1 mb-1" >
-                                                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                                <Form.Label>Location Address *</Form.Label>
-                                                                <Form.Control as="textarea" placeholder={"Enter Location Address"} value={this.state.location_address} name="location_address" onChange={this.formValueChange} rows={3} />
+
+                                                        {/* 1 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Acquisition Cost Account</Form.Label>
+                                                                <Form.Control as="select" name="acquisition_cost_account" value={this.state.acquisition_cost_account} onChange={this.formValueChange}>
+                                                                    <option value="">Select Acquisition Cost Account</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
                                                             </Form.Group>
-                                                            {errors.location_address && errors.location_address.length > 0 &&
-                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.location_address}</h4>}
+                                                            {errors.acquisition_cost_account && errors.acquisition_cost_account.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.acquisition_cost_account}</h4>}
                                                         </div>
-                                                        <div className="col-6 mt-1 mb-1" >
-                                                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                                <Form.Label>Description *</Form.Label>
-                                                                <Form.Control as="textarea" placeholder={"Enter Description"} value={this.state.description} name="description" onChange={this.formValueChange} rows={3} />
+
+                                                        {/* 2 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Accumulated Depreciation Account</Form.Label>
+                                                                <Form.Control as="select" name="accum_depreciation_account" value={this.state.accum_depreciation_account} onChange={this.formValueChange}>
+                                                                    <option value="">Select Accumulated Depreciation Account</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
                                                             </Form.Group>
-                                                            {errors.description && errors.description.length > 0 &&
-                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.description}</h4>}
+                                                            {errors.accum_depreciation_account && errors.accum_depreciation_account.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.accum_depreciation_account}</h4>}
+                                                        </div>
+
+                                                        {/* 3 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Acquisition Cost Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="acq_cost_acc_on_disposal" value={this.state.acq_cost_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Acquisition Cost Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.acq_cost_acc_on_disposal && errors.acq_cost_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.acq_cost_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 4 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Accumulated Depreciation Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="accum_depr_acc_on_disposal" value={this.state.accum_depr_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Accumulated Depreciation Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.accum_depr_acc_on_disposal && errors.accum_depr_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.accum_depr_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 5 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Gains Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="gains_acc_on_disposal" value={this.state.gains_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Gains Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.gains_acc_on_disposal && errors.gains_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.gains_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 6 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Losses Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="losses_acc_on_disposal" value={this.state.losses_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Losses Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.losses_acc_on_disposal && errors.losses_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.losses_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 7 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Maintanence Expense Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="maintenance_expense_account" value={this.state.maintenance_expense_account} onChange={this.formValueChange}>
+                                                                    <option value="">Select Maintanence Expense Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.maintenance_expense_account && errors.maintenance_expense_account.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.maintenance_expense_account}</h4>}
+                                                        </div>
+
+                                                        {/* 8 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Depreciation Expense Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="depreciation_expense_acc" value={this.state.depreciation_expense_acc} onChange={this.formValueChange}>
+                                                                    <option value="">Select Depreciation Expense Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.depreciation_expense_acc && errors.depreciation_expense_acc.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.depreciation_expense_acc}</h4>}
                                                         </div>
                                                     </div>
 
@@ -342,8 +520,8 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
                                                     <div className="row">
                                                         <div className="col-sm-12 mt-1 mb-1" >
                                                             <FormInput
-                                                                label={'Fixed Assets Location Code *'}
-                                                                placeholder={"Enter Fixed Assets Location Code"}
+                                                                label={'Fixed Assets Posting Group Code *'}
+                                                                placeholder={"Enter Fixed Assets Posting Group Code"}
                                                                 value={this.state.code}
                                                                 name="code"
                                                                 onChange={this.formValueChange}
@@ -351,21 +529,156 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
                                                             {errors.code && errors.code.length > 0 &&
                                                                 <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.code}</h4>}
                                                         </div>
-                                                        <div className="col-6 mt-1 mb-1" >
-                                                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                                <Form.Label>Location Address *</Form.Label>
-                                                                <Form.Control as="textarea" placeholder={"Enter Location Address"} value={this.state.location_address} name="location_address" onChange={this.formValueChange} rows={3} />
+                                                        {/* 1 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Acquisition Cost Account</Form.Label>
+                                                                <Form.Control as="select" name="acquisition_cost_account" value={this.state.acquisition_cost_account} onChange={this.formValueChange}>
+                                                                    <option value="">Select Acquisition Cost Account</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
                                                             </Form.Group>
-                                                            {errors.location_address && errors.location_address.length > 0 &&
-                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.location_address}</h4>}
+                                                            {errors.acquisition_cost_account && errors.acquisition_cost_account.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.acquisition_cost_account}</h4>}
                                                         </div>
-                                                        <div className="col-6 mt-1 mb-1" >
-                                                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                                <Form.Label>Description *</Form.Label>
-                                                                <Form.Control as="textarea" placeholder={"Enter Description"} value={this.state.description} name="description" onChange={this.formValueChange} rows={3} />
+
+                                                        {/* 2 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Accumulated Depreciation Account</Form.Label>
+                                                                <Form.Control as="select" name="accum_depreciation_account" value={this.state.accum_depreciation_account} onChange={this.formValueChange}>
+                                                                    <option value="">Select Accumulated Depreciation Account</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
                                                             </Form.Group>
-                                                            {errors.description && errors.description.length > 0 &&
-                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.description}</h4>}
+                                                            {errors.accum_depreciation_account && errors.accum_depreciation_account.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.accum_depreciation_account}</h4>}
+                                                        </div>
+
+                                                        {/* 3 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Acquisition Cost Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="acq_cost_acc_on_disposal" value={this.state.acq_cost_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Acquisition Cost Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.acq_cost_acc_on_disposal && errors.acq_cost_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.acq_cost_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 4 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Accumulated Depreciation Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="accum_depr_acc_on_disposal" value={this.state.accum_depr_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Accumulated Depreciation Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.accum_depr_acc_on_disposal && errors.accum_depr_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.accum_depr_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 5 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Gains Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="gains_acc_on_disposal" value={this.state.gains_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Gains Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.gains_acc_on_disposal && errors.gains_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.gains_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 6 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Losses Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="losses_acc_on_disposal" value={this.state.losses_acc_on_disposal} onChange={this.formValueChange}>
+                                                                    <option value="">Select Losses Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.losses_acc_on_disposal && errors.losses_acc_on_disposal.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.losses_acc_on_disposal}</h4>}
+                                                        </div>
+
+                                                        {/* 7 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Maintanence Expense Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="maintenance_expense_account" value={this.state.maintenance_expense_account} onChange={this.formValueChange}>
+                                                                    <option value="">Select Maintanence Expense Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.maintenance_expense_account && errors.maintenance_expense_account.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.maintenance_expense_account}</h4>}
+                                                        </div>
+
+                                                        {/* 8 */}
+                                                        <div className="col-sm-6 mt-1 mb-1">
+                                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                                <Form.Label>Select Depreciation Expense Account On Disposal</Form.Label>
+                                                                <Form.Control as="select" name="depreciation_expense_acc" value={this.state.depreciation_expense_acc} onChange={this.formValueChange}>
+                                                                    <option value="">Select Depreciation Expense Account On Disposal</option>
+                                                                    {
+                                                                        accountList && accountList.map((value,) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                            {errors.depreciation_expense_acc && errors.depreciation_expense_acc.length > 0 &&
+                                                                <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.depreciation_expense_acc}</h4>}
                                                         </div>
                                                     </div>
 
@@ -396,8 +709,6 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Description</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -432,19 +743,13 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
         const { search } = this.state;
         if (search !== "") {
             if (item.code.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-                if (item.location_address.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-                    if (item.description.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-                        return null;
-                    }
-                }
+                return null;
             }
         }
 
         return (
             <tr key={i}>
                 <td>{item.code}</td>
-                <td>{item.location_address}</td>
-                <td>{item.description}</td>
                 <td>{moment(new Date(item.createdAt)).format("YYYY MMM DD")}</td>
                 <td>
                     <Dropdown>
@@ -466,7 +771,7 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
     }
 
     validate = () => {
-        let { errors, code, location_address, description } = this.state;
+        let { errors, code, acquisition_cost_account, accum_depreciation_account, acq_cost_acc_on_disposal, accum_depr_acc_on_disposal, gains_acc_on_disposal, losses_acc_on_disposal, maintenance_expense_account, depreciation_expense_acc } = this.state;
         let count = 0;
 
         if (code.length === 0) {
@@ -476,18 +781,60 @@ class DisplayFixedAssetsPostingGroup extends React.Component {
             errors.code = ''
         }
 
-        if (location_address.length === 0) {
-            errors.location_address = 'Address can not be empty !'
+        if (acquisition_cost_account.length === 0) {
+            errors.acquisition_cost_account = 'Accuisition Cost Account Cannot be empty !'
             count++
         } else {
-            errors.location_address = ''
+            errors.acquisition_cost_account = ''
         }
 
-        if (description.length === 0) {
-            errors.description = 'Description can not be empty !'
+        if (accum_depreciation_account.length === 0) {
+            errors.accum_depreciation_account = 'Accumulated Depreciation Account Cannot be empty !'
             count++
         } else {
-            errors.description = ''
+            errors.accum_depreciation_account = ''
+        }
+
+        if (acq_cost_acc_on_disposal.length === 0) {
+            errors.acq_cost_acc_on_disposal = 'Accuisition Cost Account on disposal Cannot be empty !'
+            count++
+        } else {
+            errors.acq_cost_acc_on_disposal = ''
+        }
+
+        if (accum_depr_acc_on_disposal.length === 0) {
+            errors.accum_depr_acc_on_disposal = 'Accumulated Depreciation Account on disposal Cannot be empty !'
+            count++
+        } else {
+            errors.accum_depr_acc_on_disposal = ''
+        }
+
+        if (gains_acc_on_disposal.length === 0) {
+            errors.gains_acc_on_disposal = 'Gains Account on disposal Cannot be empty !'
+            count++
+        } else {
+            errors.gains_acc_on_disposal = ''
+        }
+
+        if (losses_acc_on_disposal.length === 0) {
+            errors.losses_acc_on_disposal = 'Losses Account on disposal Cannot be empty !'
+            count++
+        } else {
+            errors.losses_acc_on_disposal = ''
+        }
+
+        if (maintenance_expense_account.length === 0) {
+            errors.maintenance_expense_account = 'Maintanence Expense Account Cannot be empty !'
+            count++
+        } else {
+            errors.maintenance_expense_account = ''
+        }
+
+        if (depreciation_expense_acc.length === 0) {
+            errors.depreciation_expense_acc = 'Depreciation Expense Account Cannot be empty !'
+            count++
+        } else {
+            errors.depreciation_expense_acc = ''
         }
 
         this.setState({ errors });
