@@ -146,16 +146,16 @@ class Deductions extends React.Component {
                                 <span className="text-muted small">Dashboard / Deductions</span></h6>
                             </div> 
 
-                            {/* <div className="col-sm">
+                            <div className="col-sm">
                                 <InputGroup className="" >
                                     <FormControl
                                     style={{height:"35px", marginTop:"5px"}}
-                                    placeholder="Search by Employee ID"
+                                    placeholder="Search by Employee Name"
                                     onChange={ this.onChange}
                                     aria-describedby="basic-addon1"
                                     />
                                 </InputGroup>
-                            </div>  */}
+                            </div> 
                             
                         </div>
                     </div>
@@ -274,12 +274,13 @@ class Deductions extends React.Component {
                     {/* All earnings from  all Employees */}
                     <div className="row" >
                             <div className="col-sm">
-                                        <Card>
+                                        <Card className="shadow">
                                     <Table striped bordered hover variant="light">
                                         <thead>
                                             <tr>
-                                                <th>Earn ID</th>
+                                                <th>ID</th>
                                                 <th>Emp ID</th>
+                                                <th>Emp name</th>
                                                 <th>Amount</th>
                                                 <th>Reason</th>
                                                 <th>Date</th>
@@ -308,14 +309,15 @@ class Deductions extends React.Component {
     //reander all earnings
     renderAllEarndetails = (item) => {
         const { search } = this.state;
-        // if( search !== "" && item.emp_id.indexOf(search) === -1 ){
-        //     return null;
-        // }
+        if( search !== "" && item.employee.full_name.toLowerCase().indexOf(search.toLowerCase()) === -1 ){
+            return null;
+        }
 
         return(
                 <tr key={item.id}>
                     <td>{item.id}</td>
                     <td>{item.emp_id}</td>
+                    <td>{item.employee.full_name}</td>
                     <td>{item.amount}</td>
                     <td>{item.reason}</td>
                     <td>{moment(new Date(item.date)).format("YYYY MMM DD")}</td>

@@ -166,8 +166,8 @@ class DisplatSupplierCom extends React.Component {
                                  <nav>
                                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
-                                        <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
-                                        <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+                                        {/* <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a> */}
+                                        {/* <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a> */}
                                     </div>
                                 </nav>
                                 <div className="tab-content" id="nav-tabContent">
@@ -252,12 +252,12 @@ class DisplatSupplierCom extends React.Component {
                                     </form>
                                     </div>
                                 
-                                    <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
+                                    {/* <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                                         fff
                                     </div>
                                     <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         ff
-                                    </div>
+                                    </div> */}
                                 </div>
                             </Card>
                         </Col>

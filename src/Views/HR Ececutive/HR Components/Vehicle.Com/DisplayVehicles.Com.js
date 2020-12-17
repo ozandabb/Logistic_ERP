@@ -19,6 +19,9 @@ class DisplayVehiclesCom extends React.Component {
             searchState: false, 
             fuelState:false,
             RepaireState:false,
+            WarningState: false, 
+
+            curTime : new Date().toLocaleString(),
 
             id:'',
             vehicle_name:'',
@@ -61,6 +64,12 @@ class DisplayVehiclesCom extends React.Component {
             errors : {},
             isLoading: '',
 
+            fulepumped:'',
+            distance:'',
+            totalmileage:'',
+
+            black: true,
+
         };
     }
 
@@ -85,6 +94,21 @@ class DisplayVehiclesCom extends React.Component {
             this.setState({ searchState: true })
         }
     }
+
+    // warning= async (li_re , in_re) => {
+
+    //     if (li_re > this.state.curTime) {
+    //         console.log("goooooooooooo", li_re);
+    //         this.setState({ WarningState: true })
+    //     } else {
+    //         this.setState({ WarningState: false })
+    //     }
+    //     if (in_re < this.state.curTime) {
+    //         this.setState({ WarningState: true })
+    //     } else {
+    //         this.setState({ WarningState: false })
+    //     }
+    // }
 
     //Function for fuel details to toggle 
     change_fuel_toggle = () => {
@@ -141,6 +165,19 @@ class DisplayVehiclesCom extends React.Component {
                 insurance_renew_date: res.data.data.insurance_renew_date,
                 description:  res.data.data.description,
             });
+
+            if(this.state.licen_renew_date < this.state.curTime){
+                CONFIG.setToast("License Renew Date is due");
+                this.setState({
+                    WarningState:true,
+                });  
+            }
+            if(this.state.insurance_renew_date < this.state.curTime){
+                CONFIG.setToast("Insurance Renew Date is due");
+                this.setState({
+                    WarningState:true,
+                });
+            }
         }
     }
 
@@ -208,7 +245,7 @@ class DisplayVehiclesCom extends React.Component {
         }else{
             CONFIG.setDeleteConfirmAlert(
                 "",
-                "Are you sure you want to delete this Supplier ?",
+                "Are you sure you want to delete this Vehicle ?",
                 () => this.clickDeleteVehicle(id),
                 () => {}
             );
@@ -331,10 +368,21 @@ class DisplayVehiclesCom extends React.Component {
             }
             else{
                 CONFIG.setErrorToast("Somthing Went Wrong!");
-                this.clear();
                 this.loadAllVehicles();
             }
         }
+    }
+
+    //Calculate Mileage
+    calculateMileage = async (e) => {
+        e.preventDefault();
+
+        this.state.totalmileage = this.state.distance / this.state.fulepumped;
+
+        this.setState({
+      
+        });
+
     }
 
     //Clear all input details
@@ -394,7 +442,8 @@ class DisplayVehiclesCom extends React.Component {
         const {vehicleList , vehicle_name, vehicle_type, vehicle_number, vehicle_year, weight , id, 
             licen_number, licen_renew_date, insurance_number, insurance_renew_date, mileage, service_due, description, image , errors , RepaireDetailsList,
             driver_id, fuel_station , fuel_type,price, amount, date, descriptionfuel, FuelDetailsList,
-            garage_location, Repair_added_by, Repair_amount, Repair_date, Repair_description, Repair_driver_id, Repair_price} = this.state;
+            garage_location, Repair_added_by, Repair_amount, Repair_date, Repair_description, Repair_driver_id, Repair_price,
+            fulepumped,distance ,totalmileage } = this.state;
         return (
             <div>
 
@@ -409,6 +458,7 @@ class DisplayVehiclesCom extends React.Component {
                                             <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
                                             <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Fuel Details</a>
                                             <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Repair Details</a>
+                                            <a className="nav-item nav-link" id="nav-mileage-tab" data-toggle="tab" href="#nav-mileage" role="tab" aria-controls="nav-mileage" aria-selected="false">Calculate Mileage</a>
                                         </div>
                                     </nav>
                                     <div class="tab-content" id="nav-tabContent">
@@ -986,6 +1036,65 @@ class DisplayVehiclesCom extends React.Component {
 
                                         </div>
                                    
+                                        <div className="tab-pane fade" id="nav-mileage" role="tabpanel" aria-labelledby="nav-mileage-tab">
+                                        <form onSubmit={(e) => this.calculateMileage(e)} >
+                                            <div className="row ml-3 mt-1 mb-5">
+                                            
+
+                                                <div className="col-sm" style={{paddingRight:"50px"}}>
+                                                    <div className="row">
+                                                        <div className="col-sm">
+                                                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Calculate Vehicle Mileage<br></br>
+                                                            <span className="text-muted small">Enter basic information to calculate the mileage</span></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row">
+                                                        <div className="col-md-6 mt-1 mb-1" >
+                                                            <FormInput 
+                                                                label={'Fuel Pumped *'}
+                                                                placeholder={"Enter value of fuel pumped in litres"}
+                                                                value={fulepumped}
+                                                                name="fulepumped"
+                                                                required={true}
+                                                                onChange={(e) => this.formValueChange(e)}
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-6 mt-1 mb-1" >
+                                                            <FormInput 
+                                                                label={"Distance Driven  *"}
+                                                                placeholder={"Enter kilometres vehicle travelled "}
+                                                                value={distance}
+                                                                required={true}
+                                                                name="distance"
+                                                                onChange={this.formValueChange}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row"> 
+                                                        <div className="col-6 mt-3 mb-1" >
+                                                            <button type="submit" style={{ color:"#FFFFFF",  cursor: 'pointer'}} className="btn  btn-success btn-sm px-5">Calculate</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row">
+                                                        <div className="col-md-6 mt-1 mb-1" >
+                                                            <FormInput 
+                                                                value={totalmileage}
+                                                                name="totalmileage"
+                                                                readOnly                               
+                                                                />
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            
+                                            </div>
+                                            </form>
+                                        </div>
                                     </div>
                             </Card>
                         </Col>
@@ -1060,17 +1169,21 @@ class DisplayVehiclesCom extends React.Component {
     }
 
     renderOneCustomer = (item, i) => {
+
         const { search } = this.state;
         if( search !== "" && item.vehicle_number.toLowerCase().indexOf(search.toLowerCase()) === -1  && item.vehicle_name.toLowerCase().indexOf(search.toLowerCase()) === -1){
         return null;
         }
 
         return(
-            <div className="row" key={item.id} onClick={() => this.loadVehicleData(item.id)} >
+            <div className="row" key={item.id} onClick={() => this.loadVehicleData(item.id)}  >
                 <div className="col-sm-4">
                     <Image src="/images/isaiah_1.jpg" className="d-none d-lg-block" style={{width:"50px", marginLeft:"10px"}} rounded />
+                    <div style={{ display: this.state.WarningState == true ? 'block' : 'none'}}>
+                        <FontAwesomeIcon icon={faExclamationTriangle} style={{color:"#FFC300"}}  className="mr-2"/>
+                    </div>
                 </div>
-                <div className="col-sm-8"  onClick={() => this.loadAllFuel(item.id)}>
+                <div className="col-sm-8"  onClick={() => this.loadAllFuel(item.id)} >
                     <div className="row">
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>{item.vehicle_number}</p></div>
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> {item.vehicle_year}</p></div>

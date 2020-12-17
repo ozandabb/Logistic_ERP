@@ -38,7 +38,7 @@ class DisplatCustomerCom extends React.Component {
             lat:'',
             long:'',
             signature: "https://www.docsketch.com/assets/vip-signatures/muhammad-ali-signature-6a40cd5a6c27559411db066f62d64886c42bbeb03b347237ffae98b0b15e0005.svg",
-            dob:"1997-03-25",
+            dob:"",
             postal_code:'',
 
             t_code:'',
