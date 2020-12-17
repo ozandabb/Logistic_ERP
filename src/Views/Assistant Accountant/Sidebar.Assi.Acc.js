@@ -50,6 +50,7 @@ class Sidebar_Assi_Acc extends React.Component {
                                     <MenuItem active={submenu === 'FIXED_ASSETS_CLASS'}>Classes<Link to="/AssistantAccountant/fixedAssetsClass" /></MenuItem>
                                     <MenuItem active={submenu === 'FIXED_ASSETS_SUBCLASS'}>Sub Classes<Link to="/AssistantAccountant/fixedAssetsSubClass" /></MenuItem>
                                     <MenuItem active={submenu === 'FIXED_ASSETS_POSTING_GROUP'}>Posting Groups<Link to="/AssistantAccountant/fixedAssetsPostingGroup" /></MenuItem>
+                                    <MenuItem active={submenu === 'FIXED_ASSETS_CARD'}>Cards<Link to="/AssistantAccountant/fixedAssetsCard" /></MenuItem>
                                 </SubMenu>
                                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout</MenuItem>
                             </Menu>

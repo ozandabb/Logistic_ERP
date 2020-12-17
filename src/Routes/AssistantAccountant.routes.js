@@ -3,6 +3,7 @@ import FixedAssetsLocation from '../Views/Assistant Accountant/FixedAssetsLocati
 import FixedAssetsClass from '../Views/Assistant Accountant/FixedAssetsClass';
 import FixedAssetsSubClass from '../Views/Assistant Accountant/FixedAssetsSubClass';
 import FixedAssetsPostingGroup from '../Views/Assistant Accountant/FixedAssetsPostingGroup';
+import FixedAssetsCard from '../Views/Assistant Accountant/FixedAssetsCard';
 
 let AssistantAccountantRoutes = [
 
@@ -34,6 +35,12 @@ let AssistantAccountantRoutes = [
     path: "/AssistantAccountant/fixedAssetsPostingGroup",
     name: "Fixed Assets Posting Groups",
     component: FixedAssetsPostingGroup,
+    exact: true,
+  },
+  {
+    path: "/AssistantAccountant/fixedAssetsCard",
+    name: "Fixed Assets Cards",
+    component: FixedAssetsCard,
     exact: true,
   },
 ];
