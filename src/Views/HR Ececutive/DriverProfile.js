@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import HRSidebar from "./HRSidebar";
 import { connect } from 'react-redux';
 import AddDriverSection from "./HR Components/DriverProfile.Com/addDriver.Com";
-import DisplayCustomerSection from "./HR Components/Customer Com/DisplayCustomer.Com";
+import DisplayDriversSection from "./HR Components/DriverProfile.Com/displayDrivers";
 
 class Drivers extends Component {   
     render() {
@@ -25,7 +25,7 @@ class Drivers extends Component {
                             Component
                             DisplayCustomer.Com.js
                         */}
-                        <DisplayCustomerSection/>
+                        <DisplayDriversSection/>
 
                     </div>
                 </div>

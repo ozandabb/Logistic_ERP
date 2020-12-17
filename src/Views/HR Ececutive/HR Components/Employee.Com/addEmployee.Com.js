@@ -89,7 +89,7 @@ class addEmployeeCom extends React.Component {
             }
 
             const result = await Employee_CONTROLLER.addEmployee(data, this.props.auth.token);
-
+console.log("resultttt", result);
             if(result.status == 201){
                 CONFIG.setToast("Successfully Added");
                 this.clear();
@@ -278,8 +278,7 @@ class addEmployeeCom extends React.Component {
                                                                         name="spouse_name"
                                                                         onChange={this.formValueChange}
                                                                     />
-                                                                    {errors.spouse_name && errors.spouse_name.length > 0 &&
-                                                                    <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.spouse_name}</h4>}
+                                                                 
                                                                 </div>
                                                         </div>
 
@@ -587,13 +586,6 @@ class addEmployeeCom extends React.Component {
             errors.marital_status = ''
         }
 
-        if (spouse_name.length === 0) {
-            errors.spouse_name =  'Spouse Name can not be empty !'
-            count++
-        } else {
-            errors.spouse_name = ''
-        }
-
         if (city.length === 0) {
             errors.city =  'City can not be empty !'
             count++
@@ -715,7 +707,7 @@ const SYSTEM_ACCESS = [{ label : 'Select the Option' ,value : 'NONE' } ,
 })];
 
 const DESIGNATIONS = [{ label : 'Select the Option' ,value : 'NONE' } , 
-...['IT','Accountant'].map( i => {
+...['IT','Accountant', 'Accounts Executive', 'Assistant Accountant', 'Back Office Staff' , 'Management Team', 'Warehouse Manager', 'Sales Person' , 'Cashier' , 'Purchasing Manager', 'HR Executive' , 'Payroll Officer' , 'Head Of Department' , 'Driver'  ].map( i => {
     return{
         label : i  ,
          value : i 

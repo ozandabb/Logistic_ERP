@@ -4,6 +4,9 @@ import Supplier from '../Views/HR Ececutive/Supplier';
 import Employee from '../Views/HR Ececutive/Employee';
 import Vehicles from '../Views/HR Ececutive/Vehicle';
 import Driver from '../Views/HR Ececutive/DriverProfile';
+import benefits from '../Views/HR Ececutive/HR Components/Benefits/benefits';
+import Goals from '../Views/HR Ececutive/HR Components/Goals/Goals';
+import training from '../Views/HR Ececutive/HR Components/Goals/trainning';
 
 import Loans from '../Views/HR Ececutive/HR Components/Requests/LoanRequest';
 import Leave from '../Views/HR Ececutive/HR Components/Requests/LeaveRequest';
@@ -45,6 +48,24 @@ let HRRoutes = [
     path: "/hr/driver",
     name: "Driver",
     component: Driver,
+    exact: true,
+  },
+  {
+    path: "/hr/benefits",
+    name: "benefits",
+    component: benefits,
+    exact: true,
+  },
+  {
+    path: "/hr/Goals",
+    name: "Goals",
+    component: Goals,
+    exact: true,
+  },
+  {
+    path: "/hr/training",
+    name: "training",
+    component: training,
     exact: true,
   },
 

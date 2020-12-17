@@ -1,14 +1,16 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch , faRedo} from '@fortawesome/free-solid-svg-icons'
-import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Image , OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { faSearch , faRedo, faPen} from '@fortawesome/free-solid-svg-icons'
+import { Tab , Row , Col, Nav , Card , InputGroup , FormControl, Table , OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ScrollArea from 'react-scrollbar'
 import moment from 'moment';
 import {FormInput  } from '../../../../Components/Form'
 import Employee_CONTROLLER from '../../../../Controllers/HR Staff/Employee.controller';
 import Spinner from "react-bootstrap/Spinner";
+import {  faTrash } from '@fortawesome/free-solid-svg-icons'
+import CONFIG from '../../../../Controllers/Config.controller';
 
 class DisplayEmployeeCom extends React.Component {
     constructor(props) {
@@ -16,6 +18,7 @@ class DisplayEmployeeCom extends React.Component {
         this.state = {
             addCustomerState: false,
             searchState: false, 
+            comGoalState:false,
 
             emp_no:'',
             full_name:'',
@@ -43,7 +46,10 @@ class DisplayEmployeeCom extends React.Component {
             isLoading: '',
 
             employeeList: [],
+            goalslIST:[],
             search: '',
+
+            completed_tasks:'',
 
         };
     }
@@ -51,6 +57,14 @@ class DisplayEmployeeCom extends React.Component {
     async componentDidMount() {
        this.loadAllEmployee();
        this.refreshList();
+    }
+
+    change_toggle = () => {
+        if (this.state.comGoalState) {
+            this.setState({ comGoalState: false })
+        } else {
+            this.setState({ comGoalState: true })
+        }
     }
 
     //REFRESH All Employee list
@@ -65,6 +79,58 @@ class DisplayEmployeeCom extends React.Component {
     //SEARCH input text
     onChange = e =>{
         this.setState({search : e.target.value });
+    }
+
+    EditTasks = async (id) => {
+        var data = {
+            id: id,
+            completed_tasks: this.state.completed_tasks,
+        }
+        const editTasks = await Employee_CONTROLLER.UpdateGoals( data, this.props.auth.token);
+        if(editTasks.status == 200){
+            CONFIG.setToast("Successfully Updated!");
+            this.setState({
+                completed_tasks:'' ,
+                comGoalState:false,
+            })
+            this.loadGoals(id);
+        }else{
+            CONFIG.setErrorToast(" Somthing Went Wrong!");
+        }
+    }
+
+      //DELETE Fucntion
+      onClickDelete = (id) => {
+        if(id == ''){
+            CONFIG.setErrorToast("Please Select an Employee to Delete!");
+        }else{
+            CONFIG.setDeleteConfirmAlert(
+                "",
+                "Are you sure you want to delete this Goal ?",
+                () => this.clickDeleteGoal(id),
+                () => {}
+            );
+        }
+       
+    };
+    clickDeleteGoal = async (id) => {
+        const resultDelete = await Employee_CONTROLLER.DeleteGoal( id , this.props.auth.token );
+
+        if(resultDelete.status == 200){
+            CONFIG.setToast("Successfully Deleted!");
+            this.loadGoals(id);
+        }else{
+            CONFIG.setErrorToast("Somthing Went Wrong!");
+            this.loadGoals(id);
+        }
+    };
+
+      //GET all Promo, gifts, discount
+    loadGoals = async (id) => {
+        const resFuel = await Employee_CONTROLLER.GetAllGoals( id, this.props.auth.token);
+        this.setState({
+            goalslIST :resFuel.data.rows, 
+        });
     }
 
     //GET all supplliers
@@ -124,7 +190,7 @@ class DisplayEmployeeCom extends React.Component {
     render() {
         const {employeeList ,emp_no,full_name,date_of_birth,errors, gender, address , marital_status,spouse_name, city,
             zip_code, home_phone, phone, department,designation,service_location,bank_name,bank_branch,bank_account_holder_name,
-            bank_account_number,basic_salary,system_access,joined_date} = this.state;
+            bank_account_number,basic_salary,system_access,goalslIST} = this.state;
         return (
             <div>
 
@@ -137,8 +203,8 @@ class DisplayEmployeeCom extends React.Component {
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
-                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Payment History</a>
-                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Goals</a>
+                                        {/* <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a> */}
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -387,12 +453,42 @@ class DisplayEmployeeCom extends React.Component {
                                         </div>
 
                                     </div>
+                                    
+                                    {/* Goals */}
                                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
-                                        fff
+
+                                         {/* user benefit table eka */}
+                                         <div className="row" style={{ marginBottom:"15px" }}>
+                                                <div className="col-sm">
+                                                    <Card className="shadow">
+                                                        <Table striped bordered hover variant="light">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Title</th>
+                                                                    <th>Description</th>
+                                                                    <th>Due Date</th>
+                                                                    <th>Total Tasks</th>
+                                                                    <th>Completed Tasks</th>
+                                                                    <th>Completed Date</th>
+                                                                    <th>Status</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {goalslIST && goalslIST.map((name) => this.renderaAllGoals(name))}
+                                                                <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto'}}>
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </Spinner>
+                                                            </tbody>
+                                                        </Table>
+                                                    </Card>
+                                                </div>
+                                            </div>
+
                                     </div>
-                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    {/* <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         ff
-                                    </div>
+                                    </div> */}
                                 </div>
                             </Card>
                         </Col>
@@ -478,12 +574,43 @@ class DisplayEmployeeCom extends React.Component {
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginBottom:"0px"}}>EMP ID : {item.id} </p></div>
                         <div className="col"><p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466",  marginBottom:"0px"}}> </p></div>
                 </div>
-                <p style={{fontSize:"18px", color:"#18A0FB",fontFamily:"sans-serif", marginBottom:"0px"}}>{item.full_name}</p>
+                <p onClick={() => this.loadGoals(item.id)} style={{fontSize:"18px", color:"#18A0FB",fontFamily:"sans-serif", marginBottom:"0px"}}>{item.full_name}</p>
                 <p className="d-none d-lg-block" style={{fontSize:"11px", color:"#475466", marginTop:"0px",  marginBottom:"0px"}}> {item.address}</p>
                 <hr></hr>
             </div>
         );
     } 
+
+    //reander all goals
+    renderaAllGoals = (item) => {
+        return(
+            <tr key={item.id}>
+                <td>{item.title}</td>
+                <td>{item.description}</td>
+                <td>{moment(new Date(item.due_date)).format("YYYY MMM DD")}</td>
+                <td>{item.total_tasks}</td>
+                <td>
+                    {item.completed_tasks}
+                    <div className="col" style={{ display: this.state.comGoalState == true ? 'block' : 'none' , paddingTop:"15px"}}>
+                        <FormInput 
+                            placeholder={"Tasks"}
+                            value={this.state.completed_tasks}
+                            name="completed_tasks"
+                            onChange={this.formValueChange}
+                        />
+                        <button type="submit" onClick={() => this.EditTasks(item.id)} style={{ color:"#FFFFFF",  cursor: 'pointer'}} className="btn  btn-success btn-sm px-5">Submit</button>
+
+                    </div>
+                </td>
+                <td>{moment(new Date(item.completed_date)).format("YYYY MMM DD")}</td>
+                <td>{item.status}</td>
+                <td>
+                    <FontAwesomeIcon icon={faTrash} onClick={() => this.onClickDelete(item.id)} style={{color:"red" , cursor: 'pointer'}} />
+                    <FontAwesomeIcon icon={faPen} onClick={() => this.change_toggle()} style={{color:"green" , cursor: 'pointer', marginLeft:"10px"}} />
+                </td>
+            </tr>
+        );
+    }
     
 
 

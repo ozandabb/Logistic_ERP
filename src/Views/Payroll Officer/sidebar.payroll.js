@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { ProSidebar, Menu, MenuItem,  SidebarContent  } from 'react-pro-sidebar';
-import { faTable, faBars , faAddressBook,faObjectGroup,faTruck,faSignOutAlt,faDollarSign, faHome} from '@fortawesome/free-solid-svg-icons'
+import {  Button, Card , Form , Image ,FormFile, OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
+import { faTable, faBars , faAddressBook,faEnvelopeOpenText,faTruck,faSignOutAlt,faDollarSign, faHome} from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -37,7 +38,82 @@ class PAYROLL_Sidebar extends React.Component {
                     style={{color:"#FFFFFF"}}
                     className="ml-4 click show-icon"></FontAwesomeIcon>
                 </span>
+
+                <div style={{justifyContent:"center"}} className="d-none d-lg-block">
+                    <h5 style={{color:"#FFFFFF"}}>Payroll Management Executive </h5>
+                </div>
+
+                <div style={{justifyContent:"right"}}>
+            <div className="row">
+            {/* <FontAwesomeIcon  icon={faEnvelope}  className="d-none d-lg-block" /> */}
+              <div style={{justifyContent:"center", marginTop:"5px"}}> 
+              {/* <FontAwesomeIcon  icon={faEnvelope}  /> */}
+              
+              <>
+                {['bottom'].map((placement) => (
+                    <OverlayTrigger
+                    trigger="click"
+                    key={placement}
+                    placement={placement}
+                    overlay={
+                        <Popover id={`popover-positioned-${placement}`}>
+                        <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                        <Popover.Content>
+                            <Form>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="name@example.com" />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>Message</Form.Label>
+                                    <Form.Control as="textarea" rows={3} />
+                                </Form.Group>
+                                <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                            </Form>
+                        </Popover.Content>
+                        </Popover>
+                    }
+                    >
+                    {/* <Image src="/images/userprofile.png" style={{width:"35px",marginRight:"20px", marginLeft:"20px", cursor:"pointer"}} rounded /> */}
+                    <FontAwesomeIcon  icon={faEnvelopeOpenText} style={{ color:"#FFFFFF", cursor: 'pointer'}}   />
+                    </OverlayTrigger>
+                ))}
+                </>
+                </div>
+              <>
+                {['bottom'].map((placement) => (
+                    <OverlayTrigger
+                    trigger="click"
+                    key={placement}
+                    placement={placement}
+                    overlay={
+                        <Popover id={`popover-positioned-${placement}`}>
+                        <Popover.Title as="h3">{`Quick Email`}</Popover.Title>
+                        <Popover.Content>
+                            <Form>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control type="email" placeholder="name@example.com" />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>Message</Form.Label>
+                                    <Form.Control as="textarea" rows={3} />
+                                </Form.Group>
+                                <Button style={{backgroundColor:"#7800B7", color:"#FFFFFF", cursor: 'pointer'}}  className="btn mt-2 form-control btn btn-sm ">Send</Button>
+                            </Form>
+                        </Popover.Content>
+                        </Popover>
+                    }
+                    >
+                    <Image src="/images/userprofile.png" style={{width:"35px",marginRight:"20px", marginLeft:"20px", cursor:"pointer"}} rounded />
+                    </OverlayTrigger>
+                ))}
+                </>
+            </div>
+          </div>
             </nav>
+
+            
 
             <div className={`sidebar_wrap sidebar-top ${ side_bar_toggle ? "sidebar_active" : "" }shadow`} >
 
@@ -55,7 +131,8 @@ class PAYROLL_Sidebar extends React.Component {
             <ProSidebar>
             <SidebarContent>
                 <Menu iconShape="circle">
-                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/Accountant/dashboard"/></MenuItem>
+                <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/PayrollOfficer/dashboard"/></MenuItem>
+                <MenuItem active={activemenu === 'NOTIFICATION'} icon={<FontAwesomeIcon icon={faDollarSign} />}>Notifications<Link to="/PayrollOfficer/earning"/></MenuItem>
                 <MenuItem active={activemenu === 'EARNING'} icon={<FontAwesomeIcon icon={faDollarSign} />}>Earnings<Link to="/PayrollOfficer/earning"/></MenuItem>
                 <MenuItem active={activemenu === 'DEDUCTION'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Deduction<Link to="/PayrollOfficer/deduction"/></MenuItem>
                 <MenuItem active={activemenu === 'PAYROLL'} icon={<FontAwesomeIcon icon={faTable} />}>Run Payroll<Link to="/PayrollOfficer/payroll"/></MenuItem>

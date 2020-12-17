@@ -12,7 +12,7 @@ class Earningscontroller{
         };
     }
 
-    //ADD a new supplier
+    //ADD a new eaning
     addEarnings = async (data, token) => {
         return await Axios.post( `${Config.host}${Config.port}${this.api.addEarnings}`, data,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )

@@ -70,7 +70,7 @@ class addVehicleCom extends React.Component {
             const result = await Vehicle_CONTROLLER.addVehicle(data, this.props.auth.token);
 
             if(result.status == 201){
-                CONFIG.setToast("Vehicle Successfully Added!");
+                CONFIG.setToast("Vehicle Successfully Added! Refresh the List");
                 this.props.history.push("/hr/vehicles");
                 this.clear();
             }else{

@@ -21,7 +21,7 @@ class earning extends React.Component {
             search: '',
 
             AllEarnList:[],
-            EarnByEmpID:[],
+            PayrollByEmpID:[],
             id:'',
             emp_id:'',
             amount:'',
@@ -101,7 +101,7 @@ class earning extends React.Component {
         if(earnbyid.status == 200){
             this.setState({
                 isLoading : false,
-                EarnByEmpID: earnbyid.data.data,
+                PayrollByEmpID: earnbyid.data.data,
             });
         }else{
             CONFIG.setErrorToast("Somthing Went Wrong! ");
@@ -136,7 +136,7 @@ class earning extends React.Component {
     }
 
      //Search input text
-     onChange = e =>{
+     onChangesearch = e =>{
         this.setState({search : e.target.value });
     }
 
@@ -154,7 +154,7 @@ class earning extends React.Component {
     }
 
     render() {
-        const {errors , AllEarnList , EarnByEmpID , reason , year, month } = this.state;
+        const {errors , AllEarnList , PayrollByEmpID  } = this.state;
         return (
             <div className="bg-light wd-wrapper">
             <PAYROLL_Sidebar activemenu={'EARNING'} />
@@ -170,16 +170,16 @@ class earning extends React.Component {
                                 <span className="text-muted small">Dashboard / Earnings</span></h6>
                             </div> 
 
-                            {/* <div className="col-sm">
+                            <div className="col-sm">
                                 <InputGroup className="" >
                                     <FormControl
                                     style={{height:"35px", marginTop:"5px"}}
-                                    placeholder="Search by Employee ID"
-                                    onChange={ this.onChange}
+                                    placeholder="Search by Employee Name"
+                                    onChange={ this.onChangesearch}
                                     aria-describedby="basic-addon1"
                                     />
                                 </InputGroup>
-                            </div>  */}
+                            </div> 
                             
                         </div>
                     </div>
@@ -296,19 +296,16 @@ class earning extends React.Component {
                     </div> 
                     
                     {/* All earnings from  all Employees */}
-                     {/* All earnings from  all Employees */}
-                     <div className="row" >
+                     {/* <div className="row" >
                     <div className="col-12">
                     <Card className="shadow" >
                                  <nav>
                                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All Earnings</a>
                                         <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Earnings by Earn ID </a>
-                                        {/* <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a> */}
                                     </div>
                                 </nav>
                                 <div className="tab-content" id="nav-tabContent">
-                                    {/* basic information tab start here */}
                                     <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                         <div className="row ml-3 mt-1">
                                         <div className="col-sm" style={{paddingRight:"50px"}}>
@@ -348,7 +345,6 @@ class earning extends React.Component {
                                 
                                     </div>
                                 
-                                {/* payroll by eemployee id */}
                                     <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"> 
                                         <div className="row ml-3 mt-1">
                                             <div className="col-sm" style={{paddingRight:"50px"}}>
@@ -360,7 +356,7 @@ class earning extends React.Component {
                                                                 placeholder={"Enter Employee ID"}
                                                                 value={this.state.id}
                                                                 name="id"
-                                                                requireds
+                                                                required
                                                                 onChange={this.formValueChange}
                                                             />
                                                         </div> 
@@ -369,25 +365,30 @@ class earning extends React.Component {
                                             </form>
 
 
-                                                <div className="row">
-                                                    <Table striped bordered hover variant="light">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Payroll ID</th>
-                                                                <th>Emp ID</th>
-                                                                <th>Amount</th>
-                                                                <th>Unique Key</th>
-                                                                <th>Paid Date</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {EarnByEmpID && EarnByEmpID.map((name) => this.renderPayrollbyid(name))}
-                                                            <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto'}}>
-                                                                <span className="sr-only">Loading...</span>
-                                                            </Spinner>
-                                                        </tbody>
-                                                    </Table>
-                                            </div>
+                                            <div className="row" >
+                            <div className="col-sm">
+                                        <Card>
+                                    <Table striped bordered hover variant="light">
+                                        <thead>
+                                            <tr>
+                                                <th>Earn ID</th>
+                                                <th>Emp ID</th>
+                                                <th>Amount</th>
+                                                <th>Reason</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {PayrollByEmpID && PayrollByEmpID.map((name) => this.renderPayrollbyid(name))}
+                                            <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto'}}>
+                                                <span className="sr-only">Loading...</span>
+                                            </Spinner>
+                                        </tbody>
+                                    </Table>
+                                </Card>
+                            </div>
+                        </div>
                                         
 
                                             </div>
@@ -399,15 +400,20 @@ class earning extends React.Component {
 
                             </div>
                             
-                    </div>
-                    {/* <div className="row" >
+                    </div> */}
+
+
+
+
+                    <div className="row" >
                             <div className="col-sm">
-                                        <Card>
+                                        <Card className="shadow">
                                     <Table striped bordered hover variant="light">
                                         <thead>
                                             <tr>
                                                 <th>Earn ID</th>
                                                 <th>Emp ID</th>
+                                                <th>Employee Name</th>
                                                 <th>Amount</th>
                                                 <th>Reason</th>
                                                 <th>Date</th>
@@ -423,7 +429,7 @@ class earning extends React.Component {
                                     </Table>
                                 </Card>
                             </div>
-                        </div> */}
+                        </div>
 
 
 
@@ -436,14 +442,16 @@ class earning extends React.Component {
     //reander all earnings
     renderAllEarndetails = (item) => {
         const { search } = this.state;
-        // if( search !== "" && item.emp_id.indexOf(search) === -1 ){
-        //     return null;
-        // }
+
+        if( search !== "" && item.employee.full_name.toLowerCase().indexOf(search.toLowerCase()) === -1 ){
+            return null;
+        }
 
         return(
             <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.emp_id}</td>
+                <td>{item.employee.full_name}</td>
                 <td>{item.amount}</td>
                 <td>{item.reason}</td>
                 <td>{moment(new Date(item.date)).format("YYYY MMM DD")}</td>
@@ -453,22 +461,18 @@ class earning extends React.Component {
     }
 
      //reander payroll byy emp id
-     renderPayrollbyid = (item) => {
-        const { search } = this.state;
-        // if( search !== "" && item.emp_id.indexOf(search) === -1 ){
-        //     return null;
-        // }
-
-        return(
-            <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.emp_id}</td>
-                <td>{item.amount}</td>
-                <td>{item.unique_key}</td>
-                <td>{moment(new Date(item.payed_date)).format("YYYY MMM DD")}</td>
-            </tr>
-        );
-    }
+    //  renderPayrollbyid = (item) => {
+       
+    //     return(
+    //         <tr key={item.id}>
+    //             <td>{item.id}</td>
+    //             <td>{item.emp_id}</td>
+    //             <td>{item.amount}</td>
+    //             <td>{item.unique_key}</td>
+    //             <td>{moment(new Date(item.payed_date)).format("YYYY MMM DD")}</td>
+    //         </tr>
+    //     );
+    // }
 
 
 

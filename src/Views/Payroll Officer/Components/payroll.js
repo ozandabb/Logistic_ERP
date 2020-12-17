@@ -291,7 +291,7 @@ class runPayroll extends React.Component {
                                                                 placeholder={"Enter Employee ID"}
                                                                 value={this.state.id}
                                                                 name="id"
-                                                                requireds
+                                                                required
                                                                 onChange={this.formValueChange}
                                                             />
                                                         </div> 
@@ -351,7 +351,7 @@ class runPayroll extends React.Component {
             <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.emp_id}</td>
-                <td>{item.amount}</td>
+                <td>{item.amount} LKR</td>
                 <td>{item.unique_key}</td>
                 <td>{moment(new Date(item.payed_date)).format("YYYY MMM DD")}</td>
             </tr>
@@ -369,7 +369,7 @@ class runPayroll extends React.Component {
             <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.emp_id}</td>
-                <td>{item.amount}</td>
+                <td>{item.amount} LKR</td>
                 <td>{item.unique_key}</td>
                 <td>{moment(new Date(item.payed_date)).format("YYYY MMM DD")}</td>
             </tr>

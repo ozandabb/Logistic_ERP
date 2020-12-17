@@ -3,7 +3,7 @@ import PropType from 'prop-types';
 import { connect } from 'react-redux';
 import {  Button, Card , Form , Image ,FormFile, OverlayTrigger , Tooltip , Popover } from 'react-bootstrap';
 import { ProSidebar, Menu, MenuItem, SubMenu  , SidebarContent  } from 'react-pro-sidebar';
-import { faTable, faBars , faHandshake  , faAddressBook,faObjectGroup,faTruck,faSignOutAlt,faPeopleArrows, faHome, faEnvelope, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons'
+import { faTable, faBars , faHandshake  , faAddressBook,faObjectGroup,faTruck,faSignOutAlt,faPeopleArrows,faEnvelope,faBackward,faDollarSign, faHome, faPen, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -137,7 +137,10 @@ class HRSidebar extends React.Component {
               <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/hr/employees"/></MenuItem>
               <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/hr/vehicles"/></MenuItem>
               <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/hr/driver"/></MenuItem>
-              <MenuItem active={activemenu === 'RECRUITMENT'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Recruitment<Link to="/hr/driver"/></MenuItem>
+              <MenuItem active={activemenu === 'GOALS'} icon={<FontAwesomeIcon icon={faDollarSign} />}>Goals<Link to="/hr/Goals"/></MenuItem>
+              <MenuItem active={activemenu === 'BENEFITS'} icon={<FontAwesomeIcon icon={faEnvelope} />}>Benefits<Link to="/hr/benefits"/></MenuItem>
+              <MenuItem active={activemenu === 'Training'} icon={<FontAwesomeIcon icon={faPen} />}>Training<Link to="/hr/training"/></MenuItem>
+              <MenuItem active={activemenu === 'RECRUITMENT'} icon={<FontAwesomeIcon icon={faBackward} />}>Recruitment<Link to="/hr/driver"/></MenuItem>
               <SubMenu defaultOpen={activemenu === 'REQUEST'} title="Requests" icon={<FontAwesomeIcon icon={faHandshake} />}>
                 <MenuItem active={submenu === 'LOAN'}>Loan<Link to="/hr/Requests/Loans"/></MenuItem>
                 <MenuItem active={submenu === 'LEAVE'}>Leave<Link to="/hr/Requests/Leave"></Link></MenuItem>
