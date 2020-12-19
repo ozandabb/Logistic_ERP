@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import AccSidebar from "./Sidebar.Assi.Acc";
 import { connect } from 'react-redux';
 import DisplayFixedAssetsCardSection from "./Components/FixedAssetsCard.Com/DisplayFixedAssetsCard.Com";
-
 class FixedAssetsCard extends Component {
     render() {
         return (

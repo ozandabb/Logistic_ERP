@@ -8,6 +8,7 @@ class DepreciationBook {
             getAllDepreciationBooks: "/api/depreciation/getall",
             getDepreciationBookByID: "/api/depreciation/getone",
             getDepreciationBookByMethod: "/api/depreciation/method",
+            assigningDepreciationBookToFixedAsset: "/api/depreciation/assign",
         };
     }
 
@@ -124,6 +125,29 @@ class DepreciationBook {
     //Get DepreciationBook By Method
     getDepreciationBookByMethod = async (data, token) => {
         return await Axios.post(`${Config.host}${Config.port}${this.api.getDepreciationBookByMethod}`, data, {
+            headers: {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(Response => {
+                return {
+                    ...Response.data,
+                    status: 201
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                return {
+                    ...err,
+                    status: 400
+                }
+            });
+    }
+
+    //Assigning_a_depreciation_book_to_a_Fixed_Asset
+    assigningDepreciationBookToFixedAsset = async (data, token) => {
+        return await Axios.post(`${Config.host}${Config.port}${this.api.assigningDepreciationBookToFixedAsset}`, data, {
             headers: {
                 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json',
