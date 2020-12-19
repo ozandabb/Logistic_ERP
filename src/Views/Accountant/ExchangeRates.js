@@ -3,17 +3,17 @@ import { withRouter } from "react-router-dom";
 import AccountantSidebar from "./Sidebar.Accountant";
 import { connect } from 'react-redux';
 import ExchangeRates_CONTROLLER from "../../Controllers/Accountant/ExchangeRates.Controller";
-import {Button, Card, Col, FormControl, InputGroup, Table} from "react-bootstrap";
+import { Button, Card, Col, FormControl, InputGroup, Table } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import CONFIG from "../../Controllers/Config.controller";
 import Spinner from 'react-bootstrap/Spinner'
 
 class ExchangeRates extends Component {
     constructor(props) {
-        super( props);
+        super(props);
         this.state = {
             exchange_rates: [],
-            date:'',
+            date: '',
             search: '',
             isLoading: '',
 
@@ -27,44 +27,44 @@ class ExchangeRates extends Component {
 
     getAllExchangeRates = async () => {
         this.setState({
-            isLoading : true,
+            isLoading: true,
         })
-        
+
         const res = await ExchangeRates_CONTROLLER.getAllExchangeRates();
 
         this.setState({
-            isLoading : false,
+            isLoading: false,
             exchange_rates: res.data.rates
         });
         console.log(this.state.exchange_rates);
     };
 
-    onChange = e =>{
-        this.setState({search : e.target.value });
+    onChange = e => {
+        this.setState({ search: e.target.value });
         console.log(this.state.search);
     };
 
-    onChangeDate = e =>{
-        this.setState({date : e.target.value });
+    onChangeDate = e => {
+        this.setState({ date: e.target.value });
         console.log(this.state.date);
     };
 
 
     getAllExchangeRatesForDate = async () => {
         this.setState({
-            isLoading : true,
+            isLoading: true,
         })
-        
+
         const res = await ExchangeRates_CONTROLLER.getAllExchangeRatesForDate(this.state.date);
 
-        if(res.success == true){
+        if (res.success == true) {
             this.setState({
                 exchange_rates: res.data.rates,
-                isLoading : false,
+                isLoading: false,
             });
             console.log(this.state.exchange_rates);
         }
-        else{
+        else {
             CONFIG.setErrorToast(" Please Select a Previous Date");
         }
 
@@ -73,25 +73,25 @@ class ExchangeRates extends Component {
 
 
     render() {
-        const {search,exchange_rates } = this.state;
+        const { search, exchange_rates } = this.state;
 
         //Search
-        const filteredCurrencies  = exchange_rates.filter(Currency => {
+        const filteredCurrencies = exchange_rates.filter(Currency => {
             return Currency.code.toLowerCase().indexOf(search.toLowerCase()) !== -1
         });
 
         return (
-            <div className="bg-light wd-wrapper">
+            < div className="bg-light wd-wrapper" >
                 <AccountantSidebar activemenu={'Exchange_Rates'} />
-                <div className="wrapper-wx" style={{height:"100hv"}}>
+                <div className="wrapper-wx" style={{ height: "100hv" }}>
                     <div className="container-fluid">
                         <div>
                             {/* Title and the add new bank account button */}
-                            <div className="row" style={{marginTop:"5px", fontFamily:"sans-serif", marginBottom:"15px"}}>
+                            <div className="row" style={{ marginTop: "5px", fontFamily: "sans-serif", marginBottom: "15px" }}>
                                 <div className="col-sm-9">
                                     <div className="row">
                                         <div className="col-sm">
-                                            <h6 style={{paddingTop:"10px", paddingLeft:"5px"}}>Exchange Rates<br></br>
+                                            <h6 style={{ paddingTop: "10px", paddingLeft: "5px" }}>Exchange Rates<br></br>
                                                 <span className="text-muted small">Dashboard / Exchange Rates</span></h6>
                                         </div>
                                     </div>
@@ -100,83 +100,74 @@ class ExchangeRates extends Component {
                             <div>
                                 <Row>
                                     {/*search bar*/}
-                                    <Col md={2} style ={{}}>
+                                    <Col md={2} style={{}}>
                                         <InputGroup className="" >
-
-
                                             <FormControl
-                                                style={{height:"38px"}}
+                                                style={{ height: "38px" }}
                                                 aria-label="search"
                                                 placeholder="Search"
-                                                onChange={ this.onChange}
+                                                onChange={this.onChange}
                                                 aria-describedby="basic-addon1"
                                             />
                                             <InputGroup.Append>
-                                                <Button variant="outline-secondary"  onClick ={() => this.search()}>
+                                                <Button variant="outline-secondary" onClick={() => this.search()}>
                                                     <i className="fas fa-search"></i>
                                                 </Button>
                                             </InputGroup.Append>
                                         </InputGroup>
                                     </Col>
-
-
                                     {/*browse by data*/}
-                                    <Col md={{ span: 3, offset: 7 }} style ={{}}>
+                                    <Col md={{ span: 3, offset: 7 }} style={{}}>
 
                                         <InputGroup className="mb-3" >
 
                                             <FormControl
                                                 type="date"
-                                                style={{height:"38px"}}
+                                                style={{ height: "38px" }}
                                                 aria-label="date"
                                                 placeholder="Select Date"
                                                 value={this.state.date}
-                                                onChange={ this.onChangeDate}
+                                                onChange={this.onChangeDate}
                                                 aria-describedby="basic-addon1"
                                             />
                                             <InputGroup.Append>
-                                                <Button variant="outline-secondary"  onClick ={() => this.getAllExchangeRatesForDate()}>Get</Button>
+                                                <Button variant="outline-secondary" onClick={() => this.getAllExchangeRatesForDate()}>Get</Button>
                                             </InputGroup.Append>
                                         </InputGroup>
                                     </Col>
-
                                 </Row>
                             </div>
-
-
                             {/*
                             Display All Bank Accounts
                             */}
                             <div>
-                                <div className="row" style={{display: this.state.isLoading == false ? 'block' : 'none',marginTop:"20px"}}>
+                                <div className="row" style={{ display: this.state.isLoading == false ? 'block' : 'none', marginTop: "20px" }}>
                                     <div className="col-sm">
                                         <Card>
                                             <Table striped bordered hover variant="light">
                                                 <thead>
-                                                <tr>
-                                                    <th>Currency</th>
-                                                    <th>Exchange Rate</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Currency</th>
+                                                        <th>Exchange Rate</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                {
-                                                    filteredCurrencies.map((value , ) =>  {
-                                                        return(
-                                                            <tr key={value.code}>
-                                                                <td>{value.code}</td>
-                                                                <td>{value.rate}</td>
-
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
+                                                    {
+                                                        filteredCurrencies.map((value,) => {
+                                                            return (
+                                                                <tr key={value.code}>
+                                                                    <td>{value.code}</td>
+                                                                    <td>{value.rate}</td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
                                                 </tbody>
                                             </Table>
                                         </Card>
                                     </div>
                                 </div>
-                                
-                                <Spinner animation="border" role="status" style={{display: this.state.isLoading == true ? 'block' : 'none',  margin:'auto'}}>
+                                <Spinner animation="border" role="status" style={{ display: this.state.isLoading == true ? 'block' : 'none', margin: 'auto' }}>
                                     <span className="sr-only">Loading...</span>
                                 </Spinner>
                             </div>

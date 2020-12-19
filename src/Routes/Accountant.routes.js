@@ -2,6 +2,8 @@ import AccountantDashboard from '../Views/Accountant/Dashboard.Accountant';
 import BankAccount from "../Views/Accountant/BankAccount";
 import ExchangeRates from "../Views/Accountant/ExchangeRates";
 import AccountingPeriod from "../Views/Accountant/AccountingPeriod";
+import BusinessVatPostingGroup from "../Views/Accountant/BusinessVatPostingGroup";
+
 
 
 let AccountantRoutes = [
@@ -28,6 +30,12 @@ let AccountantRoutes = [
     path: "/Accountant/AccoutingPeriods",
     name: "AccoutingPeriods",
     component: AccountingPeriod,
+    exact: true,
+  },
+  {
+    path: "/Accountant/BusinessVatPostingGroup",
+    name: "BusinessVatPostingGroup",
+    component: BusinessVatPostingGroup,
     exact: true,
   },
 ];
