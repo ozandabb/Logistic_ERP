@@ -4,6 +4,7 @@ import FixedAssetsClass from '../Views/Assistant Accountant/FixedAssetsClass';
 import FixedAssetsSubClass from '../Views/Assistant Accountant/FixedAssetsSubClass';
 import FixedAssetsPostingGroup from '../Views/Assistant Accountant/FixedAssetsPostingGroup';
 import FixedAssetsCard from '../Views/Assistant Accountant/FixedAssetsCard';
+import DepreciationBook from '../Views/Assistant Accountant/DepreciationBook';
 
 let AssistantAccountantRoutes = [
 
@@ -41,6 +42,12 @@ let AssistantAccountantRoutes = [
     path: "/AssistantAccountant/fixedAssetsCard",
     name: "Fixed Assets Cards",
     component: FixedAssetsCard,
+    exact: true,
+  },
+  {
+    path: "/AssistantAccountant/depreciationBook",
+    name: "Depreciation Book",
+    component: DepreciationBook,
     exact: true,
   },
 ];
