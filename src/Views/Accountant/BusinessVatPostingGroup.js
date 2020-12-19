@@ -214,11 +214,11 @@ class BusinessVatPostingGroup extends Component {
     return (
       <div>
         <div className="bg-light wd-wrapper">
-          <AccountantSidebar activemenu={'VAT_POSTING_GROUP'} />
+          <AccountantSidebar activemenu={'VAT_BUSINESS_POSTING_GROUP'} />
           <div className="wrapper-wx" style={{ height: "100hv" }}>
             <div className="container-fluid">
               <div>
-                {/* Title and the add new bank account button */}
+                {/* Title and the add business vat posting group button */}
                 <div className="row" style={{ marginTop: "5px", fontFamily: "sans-serif", marginBottom: "15px" }}>
                   <div className="col-sm-9">
                     <div className="row">
@@ -309,7 +309,7 @@ class BusinessVatPostingGroup extends Component {
                       <Card.Body>
                         <div className="col-12 bg-white mt-1 pb-1" >
                           <form onSubmit={(e) => this.updateBusinessVatPostingGroup(e)}>
-                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Vat Update Posting Group<br></br>
+                            <h6 className="text-header py-3 mb-0 font-weight-bold line-hight-1">Update Vat Business Posting Group<br></br>
                               <span className="text-muted small">You can update Vat Business Posting Group by updating relevant Information</span></h6>
                             <div className="row" >
                               <div className="col-sm-12">
@@ -368,6 +368,7 @@ class BusinessVatPostingGroup extends Component {
                   </div>
                 </div>
               </div>
+              {/* Table */}
               <div>
                 <div className="row" style={{ display: this.state.isLoading == false ? 'block' : 'none', marginTop: "20px" }}>
                   <div className="col-sm">
