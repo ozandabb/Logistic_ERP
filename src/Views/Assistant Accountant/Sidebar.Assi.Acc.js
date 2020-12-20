@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarContent } from 'react-pro-sidebar';
-import { faTable, faBars, faAddressBook, faObjectGroup, faTruck, faSignOutAlt, faPeopleArrows, faHome, faLandmark, faLocationArrow, faClipboard, faCashRegister } from '@fortawesome/free-solid-svg-icons'
+import { faTable, faBars, faAddressBook, faObjectGroup, faTruck, faSignOutAlt, faPeopleArrows, faHome, faLandmark, faLocationArrow, faClipboard, faCashRegister, faBook } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -52,6 +52,7 @@ class Sidebar_Assi_Acc extends React.Component {
                                     <MenuItem active={submenu === 'FIXED_ASSETS_POSTING_GROUP'}>Posting Groups<Link to="/AssistantAccountant/fixedAssetsPostingGroup" /></MenuItem>
                                     <MenuItem active={submenu === 'FIXED_ASSETS_CARD'}>Cards<Link to="/AssistantAccountant/fixedAssetsCard" /></MenuItem>
                                 </SubMenu>
+                                <MenuItem active={activemenu === 'DEPRECIATION_BOOK'} icon={<FontAwesomeIcon icon={faBook} />}>Depreciation Book<Link to="/AssistantAccountant/depreciationBook" /></MenuItem>
                                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout</MenuItem>
                             </Menu>
                         </SidebarContent>

@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faArrowAltCircleDown, faTrash, faEllipsisV, faPeace, faPenAlt } from '@fortawesome/free-solid-svg-icons'
-import { Tab, Row, Col, Nav, Card, InputGroup, FormControl, Image, Button, Table, Dropdown, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { faSearch, faArrowAltCircleDown, faTrash, faEllipsisV, faPeace, faPenAlt, faBook } from '@fortawesome/free-solid-svg-icons'
+import { Tab, Row, Col, Nav, Card, InputGroup, FormControl, Image, Button, Table, Dropdown, Form, OverlayTrigger, Tooltip, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import CONFIG from '../../../../Controllers/Config.controller';
@@ -12,6 +12,7 @@ import FixedAssetsCard_CONTROLLER from '../../../../Controllers/AssistantAccount
 import FixedAssetsClass_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsClasses.controller';
 import FixedAssetsSubClass_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsSubClasses.controller';
 import FixedAssetsLocation_CONTROLLER from '../../../../Controllers/AssistantAccountant/FixedAssetsLocation.controller';
+import DepreciationBook_CONTROLLER from '../../../../Controllers/AssistantAccountant/DepreciationBook.controller';
 
 class DisplayFixedAssetsCard extends React.Component {
     constructor(props) {
@@ -30,10 +31,16 @@ class DisplayFixedAssetsCard extends React.Component {
             accountNumber: '',
             accountName: '',
 
+            depreciation_book_id: '',
+            fix_assert_id: '',
+
             fixedAssetsCardList: [],
             classList: [],
             subClassList: [],
             locationList: [],
+            depreciationBookList: [],
+
+            isModalOpen: false,
 
             search: '',
 
@@ -49,6 +56,7 @@ class DisplayFixedAssetsCard extends React.Component {
         this.loadAllFixedAssetsClasses();
         this.loadAllFixedAssetsSubClasses();
         this.loadAllFixedAssetsLocations();
+        this.loadAllDepreciationBooks();
     }
 
     //Search input text
@@ -71,6 +79,19 @@ class DisplayFixedAssetsCard extends React.Component {
         } else {
             this.setState({ addFixedAssetsCardState: true })
         }
+    }
+
+    openModal = (id) => {
+        this.setState({
+            isModalOpen: true,
+            fix_assert_id: id
+        });
+    }
+    closeModal = () => {
+        this.setState({
+            isModalOpen: false,
+            fix_assert_id: ''
+        });
     }
 
     //GET all FixedAssetsCards
@@ -159,6 +180,34 @@ class DisplayFixedAssetsCard extends React.Component {
         });
     }
 
+    //GET all DepreciationBooks
+    loadAllDepreciationBooks = async () => {
+        const res = await DepreciationBook_CONTROLLER.getAllDepreciationBooksWithoutPagination(this.props.auth.token);
+        this.setState({
+            depreciationBookList: res.data.rows
+        });
+    }
+
+    //add FixedAssetsCardDepreciation submit
+    onAssignFormSubmit = async (e) => {
+        e.preventDefault();
+        if (this.validateAssign()) {
+            var data = {
+                depreciation_book_id: this.state.depreciation_book_id,
+                fix_assert_id: this.state.fix_assert_id,
+            }
+
+            const result = await DepreciationBook_CONTROLLER.assigningDepreciationBookToFixedAsset(data, this.props.auth.token);
+
+            if (result.status == 201) {
+                CONFIG.setToast("Successfully Assigned");
+                this.clear();
+            } else {
+                CONFIG.setErrorToast(result.response.data.message);
+            }
+        }
+    }
+
     //Clear all input details
     clear = () => {
         this.setState({
@@ -204,7 +253,7 @@ class DisplayFixedAssetsCard extends React.Component {
     };
 
     render() {
-        const { fixedAssetsCardList, errors, classList, locationList, subClassList, current_page, no_of_pages } = this.state;
+        const { fixedAssetsCardList, errors, classList, locationList, subClassList, depreciationBookList, current_page, no_of_pages } = this.state;
         const pageNumbers = [];
 
         for (let i = 1; i <= no_of_pages; i++) {
@@ -574,6 +623,42 @@ class DisplayFixedAssetsCard extends React.Component {
                         </nav>
                     </Card>
                 </div>
+                <Modal show={this.state.isModalOpen} onHide={this.closeModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Assign Depereciation Method</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <form onSubmit={(e) => this.onAssignFormSubmit(e)}>
+                            <div className="row" >
+                                <div className="col-md-12">
+                                    <Form.Group controlId="exampleForm.ControlSelect1">
+                                        <Form.Label>Select Depreciation Method</Form.Label>
+                                        <Form.Control as="select" name="depreciation_book_id" value={this.state.depreciation_book_id} onChange={this.formValueChange}>
+                                            <option value="">Select Depreciation Method</option>
+                                            {
+                                                depreciationBookList && depreciationBookList.map((value,) => {
+                                                    return (
+                                                        <option value={value.id}>{value.depreciation_method}</option>
+                                                    )
+                                                })
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
+                                    {errors.depreciation_book_id && errors.depreciation_book_id.length > 0 &&
+                                        <h4 className="small text-danger mt-2 font-weight-bold mb-0">{errors.depreciation_book_id}</h4>}
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-12 my-2 text-center" >
+                                    <button type="submit" style={{ backgroundColor: "#475466", color: "#FFFFFF", cursor: 'pointer' }} className="btn mt-2 btn btn-sm px-5">Submit</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </Modal.Body>
+                </Modal>
             </div>
         );
     }
@@ -604,6 +689,9 @@ class DisplayFixedAssetsCard extends React.Component {
                             </Dropdown.Item>
                             <Dropdown.Item onClick={() => this.onClickDelete(item.id)}>
                                 <FontAwesomeIcon className="text-danger" icon={faTrash} />&nbsp;&nbsp;Delete
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.openModal(item.id)}>
+                                <FontAwesomeIcon className="text-info" icon={faBook} />&nbsp;&nbsp;Assign Depereciation Book
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -670,6 +758,28 @@ class DisplayFixedAssetsCard extends React.Component {
             count++
         } else {
             errors.description = ''
+        }
+
+        this.setState({ errors });
+        return count == 0;
+    }
+
+    validateAssign = () => {
+        let { errors, depreciation_book_id, fix_assert_id } = this.state;
+        let count = 0;
+
+        if (depreciation_book_id.length === 0) {
+            errors.depreciation_book_id = 'Depreciation Book can not be empty !'
+            count++
+        } else {
+            errors.depreciation_book_id = ''
+        }
+
+        if (fix_assert_id.length === 0) {
+            errors.fix_assert_id = 'Fixed Asset can not be empty !'
+            count++
+        } else {
+            errors.fix_assert_id = ''
         }
 
         this.setState({ errors });

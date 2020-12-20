@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AccSidebar from "./Sidebar.Assi.Acc";
 import { connect } from 'react-redux';
-import DisplayFixedAssetsCardSection from "./Components/FixedAssetsCard.Com/DisplayFixedAssetsCard.Com";
-class FixedAssetsCard extends Component {
+import DisplayDepreciationBookSection from "./Components/DepreciationBook.Com/DisplayDepreciationBook.Com";
+
+class DepreciationBook extends Component {
     render() {
         return (
             <div className="bg-light wd-wrapper">
-                <AccSidebar activemenu={'FIXED_ASSETS'} submenu={'FIXED_ASSETS_CARD'} />
-
+                <AccSidebar activemenu={'DEPRECIATION_BOOK'} />
                 <div className="wrapper-wx" style={{ height: "100hv" }}>
                     <div className="container-fluid">
 
@@ -19,7 +19,7 @@ class FixedAssetsCard extends Component {
                         */}
                         <div className="row" style={{ marginTop: "20px" }}>
                             <div className="col-sm">
-                                <DisplayFixedAssetsCardSection />
+                                <DisplayDepreciationBookSection />
                             </div>
                         </div>
 
@@ -36,4 +36,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, null)(withRouter(FixedAssetsCard));
+export default connect(mapStateToProps, null)(withRouter(DepreciationBook));
