@@ -59,7 +59,8 @@ class Account_Sidebar extends React.Component {
                                 <MenuItem active={activemenu === 'BANK_ACCOUNTS'} icon={<FontAwesomeIcon icon={faPiggyBank} />}>Bank Accounts<Link to="/Accountant/BankAccount" /></MenuItem>
                                 <MenuItem active={activemenu === 'Exchange_Rates'} icon={<FontAwesomeIcon icon={faDollarSign} />}>Exchange Rates<Link to="/Accountant/ExchangeRates" /></MenuItem>
                                 <MenuItem active={activemenu === 'ACCOUNTING_PERIODS'} icon={<FontAwesomeIcon icon={faTable} />}>Accounting Periods<Link to="/Accountant/AccoutingPeriods" /></MenuItem>
-                                <MenuItem active={activemenu === 'VAT_POSTING_GROUP'} icon={<FontAwesomeIcon icon={faTable} />}>VAT Business Posting Group<Link to="/Accountant/BusinessVatPostingGroup" /></MenuItem>
+                                <MenuItem active={activemenu === 'VAT_BUSINESS_POSTING_GROUP'} icon={<FontAwesomeIcon icon={faTable} />}>VAT Business Posting Group<Link to="/Accountant/BusinessVatPostingGroup" /></MenuItem>
+                                <MenuItem active={activemenu === 'VAT_PRODUCT_POSTING_GROUP'} icon={<FontAwesomeIcon icon={faTable} />}>VAT Product Posting Group<Link to="/Accountant/VatProductPostingGroup" /></MenuItem>
                                 <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/" /></MenuItem>
                                 <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/" /></MenuItem>
                                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout</MenuItem>
