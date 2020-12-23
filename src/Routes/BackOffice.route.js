@@ -14,8 +14,8 @@ import SingleRejected from '../Views/BackOffice/BackOffice Components/Sales Orde
 import SinglePending from '../Views/BackOffice/BackOffice Components/Sales Orders/SinglePending'
 import SingleCompleted from '../Views/BackOffice/BackOffice Components/Sales Orders/SingleCompleted'
 
-
-
+import SalesReturn from '../Views/BackOffice/BackOffice Components/Return Orders/returnOrder';
+import SingleChequeVerify from '../Views/BackOffice/BackOffice Components/Cheque/SingleCheque';
 
 let backOfficeRoutes = [
 
@@ -70,6 +70,12 @@ let backOfficeRoutes = [
     exact: true,
   },
   {
+    path: "/backOffice/ChequeVerify/:id",
+    name: "SingleChequeVerify",
+    component: SingleChequeVerify,
+    exact: true,
+  },
+  {
     path: "/backOffice/SalesOrder",
     name: "SalesOrder",
     component: SalesOrder,
@@ -96,6 +102,15 @@ let backOfficeRoutes = [
     component: SingleRejected,
     exact: true,
   },
+
+  {
+    path: "/backOffice/SalesReturn",
+    name: "SalesReturn",
+    component: SalesReturn,
+    exact: true,
+  },
+  
+
 ];
 
 export default backOfficeRoutes;

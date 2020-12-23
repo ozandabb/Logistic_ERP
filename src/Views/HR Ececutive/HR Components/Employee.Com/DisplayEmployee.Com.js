@@ -204,7 +204,7 @@ class DisplayEmployeeCom extends React.Component {
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Basic Information</a>
                                         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Goals</a>
-                                        {/* <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a> */}
+                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Assign Job Card</a>
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -252,7 +252,7 @@ class DisplayEmployeeCom extends React.Component {
                                                     <div className="col-md-6 mt-1 mb-1" >
                                                         <FormInput 
                                                             label={"Date of Birth *"}
-                                                            value={date_of_birth}
+                                                            value={moment(new Date(date_of_birth)).format("YYYY MMM DD")}
                                                             placeholder={"Select one Employee"}
                                                             name="nic"
                                                             onChange={this.formValueChange}
@@ -381,7 +381,7 @@ class DisplayEmployeeCom extends React.Component {
                                                         <div className="col-12 mt-1 mb-1" >
                                                             <FormInput 
                                                                 label={"Basic Salary *"}
-                                                                value={basic_salary}
+                                                                value= {CONFIG.numberWithCommas(parseInt(basic_salary))}
                                                                 placeholder={"Select one Employee"}
                                                                 name="basic_salary"
                                                                 onChange={this.formValueChange}
@@ -486,9 +486,10 @@ class DisplayEmployeeCom extends React.Component {
                                             </div>
 
                                     </div>
-                                    {/* <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    
+                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         ff
-                                    </div> */}
+                                    </div>
                                 </div>
                             </Card>
                         </Col>

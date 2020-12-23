@@ -58,10 +58,10 @@ class ManageTeam_Sidebar extends React.Component {
                 <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/ManagementTeam/dashboard"/></MenuItem>
                 <MenuItem active={activemenu === 'SalesOrder'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Sales Order<Link to="/ManagementTeam/salesorder"/></MenuItem>
                 <MenuItem active={activemenu === 'AssignGift'} icon={<FontAwesomeIcon icon={faGift} />}>Assign Gift<Link to="/ManagementTeam/assigngift"/></MenuItem>
-                {/* <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem> */}
+                <MenuItem active={activemenu === 'MISMATCH'} icon={<FontAwesomeIcon icon={faGift} />}>Mismatch<Link to="/ManagementTeam/PaymentMismatch"/></MenuItem>
                 {/* <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem> */}
                 {/* <MenuItem active={activemenu === 'DRIVERS'} icon={<FontAwesomeIcon icon={faObjectGroup} />}>Drivers<Link to="/"/></MenuItem> */}
-                {/* <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt}  />}>Logout</MenuItem> */}
+                <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt}  />}>Logout</MenuItem>
             
                 {/* <SubMenu defaultOpen={activemenu === 'REGISTRATION'} title="Registration" icon={<FontAwesomeIcon icon={faTachometerAlt} />}>
                     <MenuItem active={submenu === 'CUSTOMER_REG'}>Customer Registration<Link to="/hrstaff/customer_registration"/></MenuItem>
