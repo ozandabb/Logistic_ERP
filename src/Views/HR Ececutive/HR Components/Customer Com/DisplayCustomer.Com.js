@@ -127,7 +127,7 @@ class DisplatCustomerCom extends React.Component {
         const res = await CUST_CONTROLLER.getOneCustByTCODE(t_code,this.props.auth.token);
         const res2 = await CUST_CONTROLLER.getOneUserByUSERNAME(username,this.props.auth.token);
         console.log("user",res2.data.data );
-        console.log("custmoer" , res.data.data.id);
+        console.log("custmoer" , res.data.data);
 
         // this.change_qrcode_toggle();
         if(res.status === 200 ){
@@ -143,6 +143,7 @@ class DisplatCustomerCom extends React.Component {
                 postal_code: res.data.data.postal_code,
                 t_code: res.data.data.t_code,
                 user_id: res.data.data.user_id,
+                credit_limit:res.data.data.credit_limit,
             });
         }
         if(res2.status === 200){
@@ -342,7 +343,7 @@ class DisplatCustomerCom extends React.Component {
                                                 <div className="col-md-6  mt-1 mb-1" >
                                                     <FormInput 
                                                         label={"Date of Birth *"}
-                                                        value={dob}
+                                                        value={moment(new Date(dob)).format("YYYY MMM DD")}
                                                         placeholder={"Select one Customer"}
                                                         name="dob"
                                                         onChange={this.formValueChange}
@@ -385,7 +386,7 @@ class DisplatCustomerCom extends React.Component {
                                                         <FormInput 
                                                             label={"Credit Limit *"}
                                                             placeholder={"Select one Customer"}
-                                                            value={credit_limit}
+                                                            value= {CONFIG.numberWithCommas(parseInt(credit_limit))}
                                                             name="credit_limit"
                                                             onChange={this.formValueChange}
                                                         />

@@ -579,7 +579,9 @@ class DisplayVehiclesCom extends React.Component {
                                                             <FormInput 
                                                                 label={'Insurance Renew Date *'}
                                                                 placeholder={"Select one Vehicle"}
-                                                                value={insurance_renew_date}
+                                                                value={moment(new Date(insurance_renew_date)).format("YYYY MMM DD")}
+
+                                                                //value={insurance_renew_date}
                                                                 name="insurance_renew_date"
                                                                 onChange={this.formValueChange}
                                                             />
@@ -592,7 +594,9 @@ class DisplayVehiclesCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"Service Due Date *"}
                                                                     placeholder={"Select one Vehicle"}
-                                                                    value={service_due}
+                                                                    value={moment(new Date(service_due)).format("YYYY MMM DD")}
+
+                                                                    //value={service_due}
                                                                     name="service_due"
                                                                     onChange={this.formValueChange}
                                                                 />
@@ -627,7 +631,9 @@ class DisplayVehiclesCom extends React.Component {
                                                                 <FormInput 
                                                                     label={"License Renew Date *"}
                                                                     placeholder={"Select one Customer"}
-                                                                    value={licen_renew_date}
+                                                                    value={moment(new Date(licen_renew_date)).format("YYYY MMM DD")}
+
+                                                                    //value={licen_renew_date}
                                                                     name="licen_renew_date"
                                                                     onChange={this.formValueChange}
                                                                 />

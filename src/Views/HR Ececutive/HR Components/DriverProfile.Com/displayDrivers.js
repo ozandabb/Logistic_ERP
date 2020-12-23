@@ -303,7 +303,8 @@ class DisplayDriversCom extends React.Component {
                                                             <FormInput 
                                                                 label={"License Renew Date *"}
                                                                 placeholder={"Select one Driver"}
-                                                                value={next_renew_date}
+                                                                value={moment(new Date(next_renew_date)).format("YYYY MMM DD")}
+                                                                //value={next_renew_date}
                                                                 name="next_renew_date"
                                                                 onChange={this.formValueChange}
                                                             />
