@@ -171,7 +171,7 @@ class Routes extends Component {
         return (
             <div className="bg-light wd-wrapper">
                 <Backoffice_Sidebar activemenu={'routes'} />
-                <div className="wrapper-wx" style={{ height: "100hv", margin: '20px' }} >
+                <div className="wrapper-wx" style={{ height: "100hv", marginLeft: '20px', marginRight:"20px", marginBottom:"20px" }} >
                     <div className="row " style={{ marginTop: "5px", fontFamily: "sans-serif", marginBottom: "15px" }}>
                         <div className="col-sm-9" >
                             <div className="row">

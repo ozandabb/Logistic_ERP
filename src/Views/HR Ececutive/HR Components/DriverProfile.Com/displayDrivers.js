@@ -98,6 +98,7 @@ class DisplayDriversCom extends React.Component {
             this.setState({
                 errors : {},
                 emp_id:res.data.data.emp_id,
+                driver_id: res.data.data.id,
                 licine_no: res.data.data.licine_no,
                 next_renew_date: res.data.data.next_renew_date,
                 description: res.data.data.description,
@@ -166,15 +167,44 @@ class DisplayDriversCom extends React.Component {
 
             console.log("driver update result", result);
 
-            // if(result.status == 200){
-            //     CONFIG.setToast("Successfully Updated!");
-            //     this.clear();
-            //     this.loadAllVehicles();
-            // }
-            // else{
-            //     CONFIG.setErrorToast("Somthing Went Wrong!");
-            //     this.loadAllVehicles();
-            // }
+            if(result.status == 200){
+                CONFIG.setToast("Successfully Updated!");
+                this.clear();
+                this.loadAllVehicles();
+            }
+            else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.loadAllVehicles();
+            }
+        }
+    }
+
+    //vEHICLE aSSGIN form submit
+    onFormSubmitVehicleAssign = async (e) => {
+        e.preventDefault();
+
+        if(this.state.id == ''){
+            CONFIG.setErrorToast("Please Select a Vehicle to Update!");
+        }else{
+            var data = {
+                driver_id: this.state.driver_id,
+                vehicle_id:  this.state.vehicle_id,
+                note: this.state.note,
+            }
+
+            const resultAssVehi = await DRIVER_CONTROLLER.AssignVehicle( data , this.props.auth.token );
+
+            console.log("assign vehicle", resultAssVehi);
+
+            if(resultAssVehi.status == 200){
+                CONFIG.setToast("Successfully Assigned!");
+                this.clearAssignVehi();
+                this.loadAllVehicles();
+            }
+            else{
+                CONFIG.setErrorToast("Somthing Went Wrong!");
+                this.loadAllVehicles();
+            }
         }
     }
 
@@ -187,6 +217,14 @@ class DisplayDriversCom extends React.Component {
             description:'',
             licen_type:'',
             country:'',
+        })
+    }
+
+    clearAssignVehi = ()=>{
+        this.setState({
+            driver_id:'',
+            vehicle_id:'',
+            note:'',
         })
     }
 
@@ -355,7 +393,56 @@ class DisplayDriversCom extends React.Component {
                                         
                                         {/* vehicle assign  tab start here */}
                                         <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-hjhbhjb
+                                            <div className="col-12 bg-white mt-1 pb-1" >
+                                            <div className="col-sm">
+                                                <form onSubmit={(e) => this.onFormSubmitVehicleAssign(e)}>
+                                                    <div className="row" style={{marginBottom:"20px"}}>
+                                                        <div className="col-sm">
+
+                                                            <div className="row">
+                                                                    <div className="col-sm-6 mt-1 mb-1" >
+                                                                        <FormInput 
+                                                                            label={'Driver ID *'}
+                                                                            placeholder={"Enter Driver ID"}
+                                                                            value={this.state.driver_id}
+                                                                            name="driver_id"
+                                                                            onChange={this.formValueChange}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="col-sm-6 mt-1 mb-1" >
+                                                                        <FormInput 
+                                                                            label={'Vehicle ID *'}
+                                                                            placeholder={"Enter Vehicle ID"}
+                                                                            value={this.state.vehicle_id}
+                                                                            name="vehicle_id"
+                                                                            onChange={this.formValueChange}
+                                                                        />
+                                                                    </div>
+                                                            </div>
+                                                            <div className="row">
+                                                                    <div className="col-12 mt-1 mb-1" >
+                                                                        <FormInput 
+                                                                            label={'Note *'}
+                                                                            placeholder={"Enter Special note"}
+                                                                            value={this.state.note}
+                                                                            name="note"
+                                                                            onChange={this.formValueChange}
+                                                                        />
+                                                                    </div>
+                                                            </div>
+
+                                                            <div className="row"> 
+                                                                <div className="col-6 mt-3 mb-1" >
+                                                                    <button type="submit" style={{backgroundColor:"#475466" , color:"#FFFFFF",  cursor: 'pointer'}} className="btn mt-2 btn btn-sm px-5">Submit</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                                </div>
+                                            </div>
                                           
                                         
                                         </div>

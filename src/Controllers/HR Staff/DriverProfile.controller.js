@@ -7,12 +7,26 @@ class DriverController{
             addDriver: "/api/driver/create",
             getAllDriver: "/api/driver/getall",
             getOneDriverByID: "/api/driver",
-            UpdateDriver: "api/driver/update",
+            UpdateDriver: "/api/driver/update",
+            AssignVehicle:"/api/driversandvehicles/create"
         };
     }
 
     addDriver = async (data, token) => {
         return await Axios.post( `${Config.host}${Config.port}${this.api.addDriver}`, data,
+        { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
+            .then(Response => {
+                console.log("driver data" ,Response );
+                return { ...Response.data , status : 200 }
+            })
+            .catch(err => {
+                console.error(err);
+                return { ...err , status : 400 }
+            });
+    }
+
+    AssignVehicle = async (data, token) => {
+        return await Axios.post( `${Config.host}${Config.port}${this.api.AssignVehicle}`, data,
         { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': 'application/json', }} )
             .then(Response => {
                 console.log("driver data" ,Response );
