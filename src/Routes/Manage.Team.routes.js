@@ -3,6 +3,8 @@ import ManagementTeamDashboard from '../Views/Management/Dashboard.manage';
 import SalesOrder from '../Views/Management/Sales Order/SalesOrder';
 import PaymentMismatch from '../Views/Management/Payment Mismatch/AllPaymentMismatch';
 import SinglePaymentMismatch from '../Views/Management/Payment Mismatch/singlePaymentMismatch';
+import SalaryIncrement from '../Views/Management/Salary Increment/SalaryIncrement';
+import SingleSalaryIncrement from '../Views/Management/Salary Increment/SingleSalaryIncrement';
 
 let ManagementTeamRoutes = [
 
@@ -38,6 +40,19 @@ let ManagementTeamRoutes = [
     path: "/ManagementTeam/SinglePaymentMismatch/:id",
     name: "SinglePaymentMismatch",
     component: SinglePaymentMismatch,
+    exact: true,
+  },
+
+  {
+    path: "/ManagementTeam/SalaryIncrement",
+    name: "SalaryIncrement",
+    component: SalaryIncrement,
+    exact: true,
+  },
+  {
+    path: "/ManagementTeam/SingleSalaryIncrement/:id",
+    name: "SingleSalaryIncrement",
+    component: SingleSalaryIncrement,
     exact: true,
   },
 

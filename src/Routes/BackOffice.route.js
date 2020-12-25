@@ -16,6 +16,8 @@ import SingleCompleted from '../Views/BackOffice/BackOffice Components/Sales Ord
 
 import SalesReturn from '../Views/BackOffice/BackOffice Components/Return Orders/returnOrder';
 import SingleChequeVerify from '../Views/BackOffice/BackOffice Components/Cheque/SingleCheque';
+import SingleJobCard from '../Views/BackOffice/BackOffice Components/pages/SingleJobCard';
+
 
 let backOfficeRoutes = [
 
@@ -54,6 +56,12 @@ let backOfficeRoutes = [
     path: "/backOffice/job_cards",
     name: "JobCards",
     component: Jobcards,
+    exact: true,
+  },
+  {
+    path: "/backOffice/SingleJobCard/:id",
+    name: "SingleJobCard",
+    component: SingleJobCard,
     exact: true,
   },
  

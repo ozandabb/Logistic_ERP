@@ -60,8 +60,8 @@ class Backoffice_Sidebar extends React.Component {
                     <MenuItem active={activemenu === 'backOffice_salesOrder'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Order<Link to="/backOffice/salesOrder"/></MenuItem>
                     <MenuItem active={activemenu === 'RETURN_ORDER'} icon={<FontAwesomeIcon icon={faReplyAll} />}>Sales Return<Link to="/backOffice/SalesReturn"/></MenuItem>
                     <MenuItem active={activemenu === 'CHEQUE_VERIFY'} icon={<FontAwesomeIcon icon={faAddressBook} />}>Cheque Verify<Link to="/backOffice/ChequeVerify"/></MenuItem>
-                    {/* <MenuItem active={activemenu === 'routes'} icon={<FontAwesomeIcon icon={faRoute} />}>Routes<Link to="/backOffice/routes"/></MenuItem> */}
-                    {/* <MenuItem active={activemenu === 'backoffice_job_card'} icon={<FontAwesomeIcon icon={faTasks} />}>Job Cards<Link to="/backOffice/job_cards"/></MenuItem> */}
+                    <MenuItem active={activemenu === 'routes'} icon={<FontAwesomeIcon icon={faRoute} />}>Routes<Link to="/backOffice/routes"/></MenuItem>
+                    <MenuItem active={activemenu === 'backoffice_job_card'} icon={<FontAwesomeIcon icon={faTasks} />}>Job Cards<Link to="/backOffice/job_cards"/></MenuItem>
                     {/* <MenuItem active={activemenu === 'EMPLOYEES'} icon={<FontAwesomeIcon icon={faTable} />}>Employees<Link to="/"/></MenuItem>
                     <MenuItem active={activemenu === 'VEHICLES'} icon={<FontAwesomeIcon icon={faTruck} />}>Vehicles<Link to="/"/></MenuItem>
 

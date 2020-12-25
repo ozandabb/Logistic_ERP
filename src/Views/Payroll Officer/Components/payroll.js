@@ -178,7 +178,7 @@ class runPayroll extends React.Component {
                                                                 <div className="col-sm-6 mt-1 mb-1" >
                                                                     <FormInput 
                                                                         label={'Year *'}
-                                                                        placeholder={"Enter Yeaar"}
+                                                                        placeholder={"Enter Year"}
                                                                         value={this.state.year}
                                                                         name="year"
                                                                         type="Number"
