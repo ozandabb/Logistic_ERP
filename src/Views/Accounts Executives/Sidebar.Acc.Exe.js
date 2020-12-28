@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { ProSidebar, Menu, MenuItem, SidebarContent } from 'react-pro-sidebar';
-import { faTable, faBars, faAddressBook, faObjectGroup, faTruck, faSignOutAlt, faPeopleArrows, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faTable, faBars, faAddressBook, faObjectGroup, faTruck, faSignOutAlt, faPeopleArrows, faHome, faCashRegister } from '@fortawesome/free-solid-svg-icons'
 import "../../assersts/commoncss/sidebar.css";
 import { SignOut } from '../../Redux/Action/authAction';
 import { Link, withRouter } from "react-router-dom";
@@ -38,29 +38,15 @@ class Account_execu_Sidebar extends React.Component {
                 </nav>
 
                 <div className={`sidebar_wrap sidebar-top ${side_bar_toggle ? "sidebar_active" : ""}shadow`} >
-
-                    {/* <div className="sidebar-header pb-4 pt-2">
-                <div className="d-flex px-4">
-                <img src="/images/user2.jpg" className="rounded-circle sidebar-image my-auto"></img>
-                        <div className="my-auto">
-                                    <h6 style={{lineHeight: '12px', fontWeight: 600}}
-                                        className={`text-white mb-0 mt-1`}>HR Staff </h6>
-                                    <span className="small text-light ">@GamageUYT</span>
-                        </div>
-                </div>
-            </div> */}
-
                     <ProSidebar>
                         <SidebarContent>
                             <Menu iconShape="circle">
                                 <MenuItem active={activemenu === 'DASHBOARD'} icon={<FontAwesomeIcon icon={faHome} />}>Dashboard<Link to="/AccountsExecutives/dashboard" /></MenuItem>
+                                <MenuItem active={activemenu === 'ACCOUNTS'} icon={<FontAwesomeIcon icon={faCashRegister} />}>Accounts<Link to="/AccountsExecutives/accounts" /></MenuItem>
                                 <MenuItem active={activemenu === 'PAYMENTS'} icon={<FontAwesomeIcon icon={faPeopleArrows} />}>Payments<Link to="/AccountsExecutives/payments" /></MenuItem>
                                 <MenuItem active={activemenu === 'gg'} onClick={() => this.signoutuser()} icon={<FontAwesomeIcon icon={faSignOutAlt} />}>Logout</MenuItem>
                             </Menu>
                         </SidebarContent>
-                        {/* <SidebarFooter style={{backgroundColor:"#475466",height:"50px",color:"#FFFFFF", padding:"15px"}}>
-                Contact Admin
-                </SidebarFooter> */}
                     </ProSidebar>
 
                 </div>
